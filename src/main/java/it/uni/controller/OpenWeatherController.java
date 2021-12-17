@@ -16,8 +16,10 @@ public class OpenWeatherController
 	@Autowired
 	private OpenWeatherService weatherservice;
 	 
+	
+	//Si puo aggiungere qui la rilevazione dell'ip per la previsione se non si passa un parametro
 	@GetMapping("/getForecast")
-	public JSONObject forecast5day(@RequestParam(value="nome", defaultvalue="Rome") String nome) {
+	public JSONObject forecast5day(@RequestParam(value="nome", defaultValue="Rome") String nome) {
 		return weatherservice.forecast5day(nome);
 	}
 	

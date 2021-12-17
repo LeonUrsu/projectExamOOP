@@ -10,12 +10,16 @@ import java.text.ParseException;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.springframework.stereotype.Service;
-
+import it.uni.model.ApiReference;
 
 @Service
 public class OpenWeatherServiceImp implements OpenWeatherService{
+	
+	
+	
 	
 	/**
 	 * 
@@ -23,6 +27,8 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	@Override
 	public JSONObject forecast5day(String nome) {
 		
+		JSONParser Jparser = new JSONParser(callApi());
+		JSONObject JForecast5day = (JSONObject) Jparser.parse(callApi());
 		
 		return null;
 	}
@@ -51,10 +57,6 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 			finally	{	
 				myBR.close();	
 			}				
-//			if(isObject) 
-//				return (JSONObject) JSONValue.parseWithException(letto);	 //parse JSON Object	
-//			else 
-//				return (JSONArray) JSONValue.parseWithException(letto);	//parse JSON Array
 		}
 		catch(IOException e) {
 			e.printStackTrace();
