@@ -1,4 +1,4 @@
-package it.uni.model;
+package it.uni.main.model;
 
 
 public class City extends GeoLocation {

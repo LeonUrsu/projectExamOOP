@@ -1,6 +1,6 @@
-package it.uni.model;
+package it.uni.main.model;
 
-import it.uni.interfaceToUse.ForecastData;
+import it.uni.main.interfaceToUse.ForecastData;
 
 public class ForecastDataImpl implements ForecastData{
 	

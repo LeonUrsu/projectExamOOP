@@ -1,4 +1,4 @@
-package it.uni.interfaceToUse;
+package it.uni.main.interfaceToUse;
 
 public interface ForecastData {
 	

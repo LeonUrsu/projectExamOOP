@@ -1,4 +1,4 @@
-package it.uni.service;
+package it.uni.main.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.springframework.stereotype.Service;
-import it.uni.model.ApiReference;
+import it.uni.main.model.ApiReference;
 
 @Service
 public class OpenWeatherServiceImp implements OpenWeatherService{
@@ -26,11 +26,15 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 */
 	@Override
 	public JSONObject forecast5day(String nome) {
-		
-		JSONParser Jparser = new JSONParser(callApi());
-		JSONObject JForecast5day = (JSONObject) Jparser.parse(callApi());
-		
-		return null;
+		JSONParser Jparser = new JSONParser();
+		JSONObject JForecast5day = null;
+		ApiReference apiObj = new ApiReference();
+		try {
+			JForecast5day = (JSONObject) Jparser.parse(callApi(apiObj.Url5day));
+		} catch (org.json.simple.parser.ParseException e) {
+			e.printStackTrace();
+		  }
+	return JForecast5day;
 	}
 	
 	
