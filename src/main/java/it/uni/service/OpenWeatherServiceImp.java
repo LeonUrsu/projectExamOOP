@@ -17,10 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class OpenWeatherServiceImp implements OpenWeatherService{
 	
-	
+	/**
+	 * 
+	 */
 	@Override
 	public JSONObject forecast5day(String nome) {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 	
@@ -33,8 +36,8 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	/**
 	 * metodo per chiamare un API tramite url con return del JSON ricevuto dall'API
 	 * 
-	 * @param myUrl url 0
-	 * @return
+	 * @param myUrl url fonte di previsioni di 5 giorni ogni 3 ore
+	 * @return String JSON
 	 */
 	public String callApi(String myUrl) {
 		String letto = "";
@@ -62,11 +65,9 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	return letto;
 	}
 
-	@Override
-	public JSONObject forecast5day(String nome) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
+	
 	
 	
 	
