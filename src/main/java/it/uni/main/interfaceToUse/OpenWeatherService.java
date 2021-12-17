@@ -1,4 +1,4 @@
-package it.uni.main.service;
+package it.uni.main.interfaceToUse;
 
 import org.json.simple.JSONObject;
 

@@ -13,6 +13,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
+import it.uni.main.interfaceToUse.OpenWeatherService;
 import it.uni.main.utils.ApiReference;
 
 
@@ -20,6 +21,14 @@ import it.uni.main.utils.ApiReference;
 
 @Service
 public class OpenWeatherServiceImp implements OpenWeatherService{
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 
 	 */

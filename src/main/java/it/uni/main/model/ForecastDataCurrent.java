@@ -2,7 +2,7 @@ package it.uni.main.model;
 
 import it.uni.main.interfaceToUse.ForecastData;
 
-public class ForecastDataCurrent extends ForecastData5Days implements ForecastData{
+public class ForecastDataCurrent extends Forecast5Days implements ForecastData{
 	
 	private long dayTime;
 	private	Temperature temperature;

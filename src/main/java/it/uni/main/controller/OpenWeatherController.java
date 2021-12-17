@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import it.uni.main.interfaceToUse.OpenWeatherService;
 import it.uni.main.model.Humidity;
-import it.uni.main.service.OpenWeatherService;
 
 
 
