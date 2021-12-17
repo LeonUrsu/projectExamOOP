@@ -36,7 +36,12 @@ public class City extends GeoLocation {
 		this.cityName = cityName;
 	}
 
+	@Override
+	public String toString() {
+		return "Città: " + cityName + " Stato: " + country + " Coordinate:" + getLat() + " " + getLon();
+	}
 
+	
 
 		
 }

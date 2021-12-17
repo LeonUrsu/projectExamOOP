@@ -27,5 +27,10 @@ public class GeoLocation {
 		this.lon = lon;
 	}
 
+	@Override
+	public String toString() {
+		return "Coordinate:" + lat + " " + lon ;
+	}
+
 	
 }

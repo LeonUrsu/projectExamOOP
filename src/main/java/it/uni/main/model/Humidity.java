@@ -24,5 +24,11 @@ public class Humidity {
 	 public String getUnit() {
 	     return DEFAULT_UNIT;
 	 }
+
+	@Override
+	public String toString() {
+		return "Umidità:" + value + DEFAULT_UNIT;
+	}
 	
+	 
 }

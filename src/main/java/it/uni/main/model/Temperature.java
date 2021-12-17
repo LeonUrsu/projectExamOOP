@@ -2,6 +2,7 @@ package it.uni.main.model;
 
 public class Temperature {
 	
+	
 	private double temp;
 	private double tempMin;
 	private double tempMax;
@@ -46,8 +47,12 @@ public class Temperature {
 		this.tempFeel = tempFeel;
 	}
 
-	
-	
+	@Override
+	public String toString() {
+		return "Temperatura:" + temp + " Temperatura minima:" + tempMin + " Temperatura massima:" + tempMax 
+				+ " Temperatura percepita:" + tempFeel;
+	}
+
 	
 
 
