@@ -11,35 +11,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import it.uni.main.model.Humidity;
+import it.uni.main.service.OpenWeatherService;
 
 
 
 @RestController
 public class OpenWeatherController 
 {
-//	@Autowired
-//	private OpenWeatherService weatherservice;
-//	
+	@Autowired
+	private OpenWeatherService weatherservice;
 	
-	@RequestMapping("/ciao")
-	  public Humidity T()
-	  {
-		  return new Humidity(12);
-	  }
 	
-//	//Si puo aggiungere qui la rilevazione dell'ip per la previsione se non si passa un parametro
-//	@GetMapping("/getForecast")
-//	public JSONObject forecast5day(@RequestParam(value="nome", defaultValue="Rome") String nome) {
-//		//return weatherservice.forecast5day(nome);
-//		return new JSONObject();
-//		
-		
-		
-	 
+	
+	//Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
+	//un parametro nome della citta
+	@GetMapping("/getForecast")
+	public JSONObject forecast5day(@RequestParam(value="nome", defaultValue="Rome") String nome) {
+		return weatherservice.forecast5day(nome);
 	}
 	
-
 	
+	
+	
+	
+	
+	
+	
+	
+	
+}	
 	
 	
 	

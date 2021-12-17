@@ -1,4 +1,4 @@
-package it.uni.main.model;
+package it.uni.main.utils;
 
 public class ApiReference 
 {
