@@ -10,11 +10,10 @@ import java.net.URLConnection;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+//import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import it.uni.main.interfaceToUse.OpenWeatherService;
-import it.uni.main.utils.ApiReference;
 
 
 

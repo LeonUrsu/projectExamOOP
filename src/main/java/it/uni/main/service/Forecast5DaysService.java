@@ -1,19 +1,14 @@
 package it.uni.main.service;
 
-import javax.transaction.Transactional;
-
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import it.uni.main.interfaceToUse.Forecast5DayRepository;
 import it.uni.main.utils.ApiReference;
 
 
 
 @Service
-@Transactional
 public class Forecast5DaysService extends OpenWeatherServiceImp {
-	@Autowired Forecast5DayRepository forecast5DayRepository;
+	
 	
 	
 	
