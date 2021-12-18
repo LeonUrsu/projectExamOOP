@@ -29,15 +29,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	
 	
 	
-	/**
-	 * 
-	 */
-	@Override
-	public JSONObject forecast5day(String name) {
-		ApiReference apiObj = new ApiReference();
-		//Todo salvare i valori in una classe in un database in modo che si possa accedere nuovamente a loro
-		return callApi(apiObj.Url5day);
-	}
+	
 
 	
 	
