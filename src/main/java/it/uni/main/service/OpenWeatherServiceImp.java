@@ -6,10 +6,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.github.cliftonlabs.json_simple.JsonObject;
 
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 //import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +41,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 * @return String JSON
 	 */
 	@Override
-	public JSONObject callApi(String myUrl) {
+	public JsonObject callApi(String myUrl) {
 		String letto = "";
 		try {
 			URLConnection openConnection = new URL(myUrl).openConnection();
@@ -58,23 +60,27 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 		catch (Exception e) {
 			e.printStackTrace();
 		}	
-	return toJSONObject(letto);
+	return toJsonObject(letto);
 	}
 
 
 	
 	/**
-	 * metodo che che converte oggetto di tipo String in tipo JSONObject
+	 * metodo che che converte oggetto di tipo String in tipo JsonObject
 	 * @param toConvert oggetto di tipo String
 	 */
 	@Override
-	public JSONObject toJSONObject(String toConvert){
-		JSONObject JObjectParsed = null;
+	
+	
+	public	JsonObject toJsonObject(String toConvert){
+		JsonObject JObjectParsed = new JsonObject();
+		;
 		try {
-			JSONParser Jparser = new JSONParser();
-			JObjectParsed = (JSONObject) Jparser.parse(toConvert);
-			}
-		catch(org.json.simple.parser.ParseException e) {
+			JsonParser Jparser = new JsonParser();
+			JObjectParsed = (JsonObject) Jparser.par;
+			
+		}
+		catch(ParseException e) {
 			e.printStackTrace();
 		}
 		return JObjectParsed;
