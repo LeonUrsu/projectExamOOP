@@ -9,9 +9,9 @@ import java.net.URLConnection;
 import java.text.ParseException;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.github.cliftonlabs.json_simple.JsonObject;
-
-
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 //import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 * @return String JSON
 	 */
 	@Override
-	public JsonObject callApi(String myUrl) {
+	public JSONObject callApi(String myUrl) {
 		String letto = "";
 		try {
 			URLConnection openConnection = new URL(myUrl).openConnection();
@@ -49,16 +49,16 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 			BufferedReader myBR = new BufferedReader(new InputStreamReader(myIS));	
 			try {
 				for( String linea = ""  ;  (linea = myBR.readLine()) != null  ;  letto += linea );	
-			}
+				}
 			finally	{	
-				myBR.close();	
-			}				
+					myBR.close();	
+					}				
+			}
+		catch(IOException e) {	
+			e.printStackTrace();	
 		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception e) {	
+			e.printStackTrace();	
 		}	
 	return toJsonObject(letto);
 	}
@@ -70,20 +70,13 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 * @param toConvert oggetto di tipo String
 	 */
 	@Override
-	
-	
-	public	JsonObject toJsonObject(String toConvert){
-		JsonObject JObjectParsed = new JsonObject();
-		;
-		try {
-			JsonParser Jparser = new JsonParser();
-			JObjectParsed = (JsonObject) Jparser.par;
-			
-		}
-		catch(ParseException e) {
-			e.printStackTrace();
-		}
-		return JObjectParsed;
+	public	JSONObject toJsonObject(String toConvert){
+		JSONObject JObjectParsed = new JSONObject();
+		JSONObject jsonObject2 = null;
+		JSONParser parser = new JSONParser();
+		JSONObject jsonObject = (JSONObject)parser.parse(toConvert);
+		jsonObject2 = jsonObject;
+		return jsonObject2;
 	}
 
 	

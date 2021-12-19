@@ -1,6 +1,6 @@
 package it.uni.main.service;
 
-import com.github.cliftonlabs.json_simple.JsonObject;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 import it.uni.main.utils.ApiReference;
 
@@ -16,10 +16,10 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	 *
 	 *@param nome della citta su cui cercare le previsioni 
 	 */
-	public JsonObject forecast5day(String name) {
+	public JSONObject forecast5day(String name) {
 		ApiReference apiObj = new ApiReference();
 		//Todo salvare i valori in una classe in un database in modo che si possa accedere nuovamente a loro
-		return callApi(apiObj.Url5day);
+		return null;//callApi(apiObj.Url5day);
 	}
 	
 	
