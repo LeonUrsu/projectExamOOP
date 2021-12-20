@@ -40,6 +40,7 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 		//filtra il JSONArray con 5 elementi, li converte in Forecast5Days Array e li salva in modo statico
 		Vector<Forecast5Days> forecast5DaysVec = new Vector<Forecast5Days>();
 		for(int i=0, u=forecasts5.size()  ;  i<u  ; i++) {
+			
 			JSONObject tmpObj;
 			tmpObj = (JSONObject) forecasts5.get(i);
 			System.out.println("------------" + tmpObj);

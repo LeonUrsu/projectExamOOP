@@ -7,3 +7,4 @@ import it.uni.main.model.Forecast5Days;
 public class DataDinamicClass {
 
 }
+
