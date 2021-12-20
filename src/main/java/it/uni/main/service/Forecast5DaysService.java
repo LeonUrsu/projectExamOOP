@@ -26,7 +26,7 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	 *@param nome della citta su cui cercare le previsioni 
 	 */
 	public Vector<Forecast5Days> forecast5day(String name) {
-		JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\50dayforecast.txt");;
+		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response5Days.json");;
 		//"C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\50dayforecast.txt"
 		//creo un vettore con 40 previsoni e un altro vuoto
 		JSONArray forecasts40 = new JSONArray();
@@ -39,12 +39,13 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 		
 		//filtra il JSONArray con 5 elementi, li converte in Forecast5Days Array e li salva in modo statico
 		Vector<Forecast5Days> forecast5DaysVec = new Vector<Forecast5Days>();
-		for(int i=0, u=forecasts5.size()  ;  i<u  ; i++) {
+		for(int i=0 ;  i< forecasts5.size()  ; i++) {
 			
-			JSONObject tmpObj;
-			tmpObj = (JSONObject) forecasts5.get(i);
+			JSONObject tmpObj = (JSONObject) forecasts5.get(i);
 			System.out.println("------------" + tmpObj);
-			Humidity humidity = new Humidity(Integer.parseInt((tmpObj.get("humidity")).toString()));
+			
+			System.out.println(tmpObj.get("temp"));
+			Humidity humidity = new Humidity(Integer.parseInt(tmpObj.get("humidity").toString()));
 			
 			Forecast5Days javaObj = new Forecast5Days(humidity);
 			forecast5DaysVec.add(javaObj);
