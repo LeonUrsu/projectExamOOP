@@ -1,6 +1,7 @@
 package it.uni.main.controller;
 
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class OpenWeatherController
 	//Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
 	//un parametro nome della citta
 	@GetMapping("/getForecast")
-	public JSONObject forecast5day(@RequestParam(value="nome", defaultValue="Rome") String nome) {
+	public Object forecast5day(@RequestParam(value="nome", defaultValue="Rome") String nome) {
 		return forecast5Day.forecast5day(nome);
 	}
 	

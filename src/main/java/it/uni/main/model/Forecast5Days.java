@@ -8,15 +8,17 @@ public class Forecast5Days {
 	
 	public Forecast5Days(Humidity humidity) {
 		this.humidity = humidity;
-	}	
-
+	}
+	
+	public void setHumidity(Humidity humidity) {
+		this.humidity = humidity;
+	}
+		
 	public Humidity getHumidity() {
 		return humidity;
 	}
 
-	public void setHumidity(Humidity humidity) {
-		this.humidity = humidity;
-	}
+	
 
 	
 }

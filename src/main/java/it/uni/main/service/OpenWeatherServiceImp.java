@@ -31,9 +31,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	@Override
 	public JSONObject callApi(String myUrl) {
 		JSONObject Jobject= new JSONObject();
-
 		try {
-				
 			URLConnection openConnection = new URL(myUrl).openConnection();
 			InputStream in = openConnection.getInputStream();
 			
@@ -68,16 +66,17 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	@Override
 	public	JSONObject toJsonObject(String toConvert) 
 	{
-		
 		//JSONParser parser = new JSONParser();
 		//Object obj = parser.parse()
-		
-		
-		
 		return null;
 	}
 
 	
+	
+	/*
+	 * metodo che converte un file txt con JSON e restituisce un oggetto JSONObject
+	 * @param myFile - file con jSON txt 
+	 */
 	public JSONObject leggiJsondaFile(String myFile)
 	{
 		JSONObject Jobject = null;
