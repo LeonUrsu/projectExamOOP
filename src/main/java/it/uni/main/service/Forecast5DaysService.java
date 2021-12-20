@@ -21,7 +21,7 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	 *@param nome della citta su cui cercare le previsioni 
 	 */
 	public JSONObject forecast5day(String name) {
-		JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\50dayforecast.txt");;
+		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main");
 		
 		//creo un vettore con 40 previsoni e un altro vuoto
 		JSONArray forecasts40 = new JSONArray();

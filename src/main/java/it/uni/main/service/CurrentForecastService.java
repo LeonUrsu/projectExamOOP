@@ -1,6 +1,8 @@
 package it.uni.main.service;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 
@@ -9,10 +11,17 @@ import it.uni.main.utils.ApiReference;
 
 @Service
 public class CurrentForecastService extends OpenWeatherServiceImp implements ForecastDataCurr{
-	public JSONObject forecastCurr(String name) {
-		ApiReference apiObj = new ApiReference();
-		//Todo salvare i valori in una classe in un database in modo che si possa accedere nuovamente a loro
-		return callApi(apiObj.UrlCurr);
+	
+	
+	public JSONObject forecastCurr(String name) throws ParseException {
+		
+		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
+	
+		JSONObject tmp = (JSONObject) oggettoJ.get("main");
+		
+		
+		return tmp;
+		
 	}
 	
 }
