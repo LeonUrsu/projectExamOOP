@@ -5,7 +5,6 @@ public class Forecast5Days {
 	
 
 	private Humidity humidity;
-<<<<<<< HEAD
 	private String dataTime ;
 	
 	
@@ -13,7 +12,6 @@ public class Forecast5Days {
 		this.humidity = humidity;
 		this.dataTime = dataTime;
 	}
-	
 	
 	
 	public void setHumidity(Humidity humidity) {
@@ -28,17 +26,6 @@ public class Forecast5Days {
 		this.dataTime = dataTime;
 	}
 
-=======
-	
-	public Forecast5Days(Humidity humidity) {
-		this.humidity = humidity;
-	}
-	
-	public void setHumidity(Humidity humidity) {
-		this.humidity = humidity;
-	}
-		
->>>>>>> 7b83ff9f5aca71a94cc963594c51dcfcb2c47d89
 	public Humidity getHumidity() {
 		return humidity;
 	}
