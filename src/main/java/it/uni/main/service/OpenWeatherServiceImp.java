@@ -5,16 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLConnection;
-import java.text.ParseException;
 
-import com.fasterxml.jackson.core.JsonParser;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
-//import org.json.simple.parser.ParseException;
+import org.json.simple.parser.ParseException;
+import java.net.URLConnection;
 import org.springframework.stereotype.Service;
-
 import it.uni.main.interfaceToUse.OpenWeatherService;
 
 
@@ -23,16 +19,7 @@ import it.uni.main.interfaceToUse.OpenWeatherService;
 @Service
 public class OpenWeatherServiceImp implements OpenWeatherService{
 	
-	
-	
-	
-	
-	
-	
-	
-	
 
-	
 	
 	/**
 	 * metodo per chiamare un API tramite url con return del JSON ricevuto dall'API
@@ -42,25 +29,33 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 */
 	@Override
 	public JSONObject callApi(String myUrl) {
-		String letto = "";
+		JSONObject Jobject= new JSONObject();
+
 		try {
+				
 			URLConnection openConnection = new URL(myUrl).openConnection();
-			InputStream myIS = openConnection.getInputStream();
-			BufferedReader myBR = new BufferedReader(new InputStreamReader(myIS));	
+			InputStream in = openConnection.getInputStream();
+			
+			String data = "";
+			String line = "";
 			try {
-				for( String linea = ""  ;  (linea = myBR.readLine()) != null  ;  letto += linea );	
-				}
-			finally	{	
-					myBR.close();	
-					}				
+			   InputStreamReader inR = new InputStreamReader( in );
+			   BufferedReader buf = new BufferedReader( inR );
+			  
+			   while ( ( line = buf.readLine() ) != null ) {
+				   data+= line;
+			   }
+			} finally {
+			   in.close();
 			}
-		catch(IOException e) {	
-			e.printStackTrace();	
+				Jobject = (JSONObject) JSONValue.parseWithException(data);	 
+				
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		catch (Exception e) {	
-			e.printStackTrace();	
-		}	
-	return toJsonObject(letto);
+		return Jobject;
 	}
 
 
@@ -70,17 +65,43 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 * @param toConvert oggetto di tipo String
 	 */
 	@Override
-	public	JSONObject toJsonObject(String toConvert){
-		JSONObject JObjectParsed = new JSONObject();
-		JSONObject jsonObject2 = null;
-		JSONParser parser = new JSONParser();
-		JSONObject jsonObject = (JSONObject)parser.parse(toConvert);
-		jsonObject2 = jsonObject;
-		return jsonObject2;
+	public	JSONObject toJsonObject(String toConvert) 
+	{
+		
+		//JSONParser parser = new JSONParser();
+		//Object obj = parser.parse()
+		
+		
+		
+		return null;
 	}
 
 	
-	
+	public JSONObject leggiJsondaFile()
+	{
+		String data = "";
+		String line = "";
+		try {
+		   InputStreamReader inR = new InputStreamReader( in );
+		   BufferedReader buf = new BufferedReader( inR );
+		  
+		   while ( ( line = buf.readLine() ) != null ) {
+			   data+= line;
+		   }
+		} finally {
+		   in.close();
+		}
+			Jobject = (JSONObject) JSONValue.parseWithException(data);	 
+			
+	} catch (IOException | ParseException e) {
+		e.printStackTrace();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+		
+		
+		
+	}
 	
 	
 	

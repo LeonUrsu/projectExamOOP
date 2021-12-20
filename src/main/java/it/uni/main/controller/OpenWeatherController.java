@@ -25,7 +25,7 @@ public class OpenWeatherController
 	
 	//Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
 	//un parametro nome della citta
-	@GetMapping("/getForecast/{name}")
+	@GetMapping("/getForecast")
 	public JSONObject forecast5day(@RequestParam(value="nome", defaultValue="Rome") String nome) {
 		return forecast5Day.forecast5day(nome);
 	}
