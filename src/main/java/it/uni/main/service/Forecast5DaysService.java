@@ -28,7 +28,7 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 		
 		//Todo salvare i valori in una classe in un database in modo che si possa accedere nuovamente a loro
 		//return callApi(ApiReference.Url5day.replace("{city name}", name));
-		return callApi("api.openweathermap.org/data/2.5/weather?q=Rome&appid=57b8994a4dd46d6b80a3f810f6882a2f");
+		return leggiJsondaFile();
 	}
 	
 	

@@ -1,6 +1,7 @@
 package it.uni.main.service;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -77,30 +78,27 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	}
 
 	
-	public JSONObject leggiJsondaFile()
+	public JSONObject leggiJsondaFile(String myFile)
 	{
+		JSONObject Jobject = null;
 		String data = "";
 		String line = "";
 		try {
-		   InputStreamReader inR = new InputStreamReader( in );
-		   BufferedReader buf = new BufferedReader( inR );
+		   FileReader FR = new FileReader(myFile);
+		   BufferedReader buf = new BufferedReader( FR );
 		  
 		   while ( ( line = buf.readLine() ) != null ) {
 			   data+= line;
 		   }
-		} finally {
-		   in.close();
+		   buf.close();
+		   Jobject = (JSONObject) JSONValue.parseWithException(data);
 		}
-			Jobject = (JSONObject) JSONValue.parseWithException(data);	 
-			
-	} catch (IOException | ParseException e) {
+	 catch (IOException | ParseException e) {
 		e.printStackTrace();
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-		
-		
-		
+	return Jobject;
 	}
 	
 	
