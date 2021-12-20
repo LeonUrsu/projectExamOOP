@@ -1,5 +1,7 @@
 package it.uni.main.service;
 
+import java.util.Vector;
+
 import javax.print.attribute.Size2DSyntax;
 import it.uni.main.dataDinamic.DataDinamicClass;
 import org.json.simple.JSONArray;
@@ -14,15 +16,18 @@ import it.uni.main.utils.ApiReference;
 
 @Service
 public class Forecast5DaysService extends OpenWeatherServiceImp {
+	public static Vector<Forecast5Days> forecast5DaysVec = null; 
+	
+	
 	
 	
 	/**metodo che ciama l'api e salva temporanemente mella memoria le previsioni u cui andranno poi fatte le statistiche 
 	 *
 	 *@param nome della citta su cui cercare le previsioni 
 	 */
-	public JSONObject forecast5day(String name) {
+	public Vector<Forecast5Days> forecast5day(String name) {
 		JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\50dayforecast.txt");;
-		
+		//"C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\50dayforecast.txt"
 		//creo un vettore con 40 previsoni e un altro vuoto
 		JSONArray forecasts40 = new JSONArray();
 		forecasts40 = (JSONArray) oggettoJ.get("list");
@@ -32,20 +37,22 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 		for(int i=0, u=forecasts40.size()  ;  i<u  ;  i+=8) 
 			forecasts5.add(forecasts40.get(i));
 		
-		//filtra il JSONArray con 5 elementi e li converte in Java Object Array
-		//Vector<>
+		//filtra il JSONArray con 5 elementi, li converte in Forecast5Days Array e li salva in modo statico
+		Vector<Forecast5Days> forecast5DaysVec = new Vector<Forecast5Days>();
 		for(int i=0, u=forecasts5.size()  ;  i<u  ; i++) {
-			JSONObject tmpObj = (JSONObject) forecasts5.get(i);
-			Humidity humidity = new Humidity((int)tmpObj.get("humidity"));
-			Forecast5Days javaObj = new Forecast5Days(humidity);
-			forecast5
+			JSONObject tmpObj;
+			tmpObj = (JSONObject) forecasts5.get(i);
+			System.out.println("------------" + tmpObj);
+			Humidity humidity = new Humidity(Integer.parseInt((tmpObj.get("humidity")).toString()));
 			
+			Forecast5Days javaObj = new Forecast5Days(humidity);
+			forecast5DaysVec.add(javaObj);
 		}
-
-		//Todo salvare i valori in una classe in un database in modo che si possa accedere nuovamente a lor
+		
+	
 		
 		
-		return null;
+		return forecast5DaysVec;
 	}
 	
 	

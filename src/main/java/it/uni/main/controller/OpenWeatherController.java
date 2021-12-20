@@ -1,7 +1,6 @@
 package it.uni.main.controller;
 
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,6 @@ import it.uni.main.service.CurrentForecastService;
 import it.uni.main.service.Forecast5DaysService;
 
 
-
 @RestController
 public class OpenWeatherController 
 {
@@ -20,8 +18,6 @@ public class OpenWeatherController
 	private Forecast5DaysService forecast5Day;
 	@Autowired 
 	private CurrentForecastService currentForecast;
-	
-	
 	
 	
 	//Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
