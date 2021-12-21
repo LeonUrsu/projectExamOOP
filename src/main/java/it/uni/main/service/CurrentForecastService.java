@@ -58,6 +58,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	}
 	
 	
+	
 	/**
 	 * Metodo che serializza su file un array di oggetti java di tipo Forecast5Days
 	 * @param name
@@ -66,8 +67,13 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 */	
 	public void forecastCurr(String name) throws ParseException, IOException {
 		
+<<<<<<< HEAD
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
 		
+=======
+		JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\prova01.txt");
+		Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
+>>>>>>> 41b9b4ef568f138af9d0692575889fb57cf7c71c
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
@@ -77,21 +83,37 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 													 
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
 		
+<<<<<<< HEAD
 		String dt = new String(oggettoJ.get("dt").toString());
 		
 		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, dt);
 
 		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", ForecastDataCurrentVector);
 		
+=======
+		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, "data");
+		
+		
+	
+		
+		apriDaFILE("C:\\Users\\DeskTop-L\\Desktop\\prova02.dat", ForecastDataCurrentVector);
+>>>>>>> 41b9b4ef568f138af9d0692575889fb57cf7c71c
 		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
 		if(ForecastDataCurrentVector.size() < 48) 
 		ForecastDataCurrentVector.add(javaObj);
 		else {
 			ForecastDataCurrentVector.remove(0);
+<<<<<<< HEAD
 			ForecastDataCurrentVector.add(javaObj);
 		}	
+=======
+			ForecastDataCurrentVector.add(javaObj);	
+		}
+>>>>>>> 41b9b4ef568f138af9d0692575889fb57cf7c71c
+		
 		
 		//Salvare su file il vettore 
+<<<<<<< HEAD
 		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",ForecastDataCurrentVector);
 		
 	}
@@ -138,5 +160,38 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		}
 	
 			 
+=======
+		salvaSuFILE("C:\\Users\\DeskTop-L\\Desktop\\prova02.dat",ForecastDataCurrentVector);
+		}
+	
+	
+		public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
+			ObjectOutputStream oss = null;
+			try{
+			oss = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(nomeFile)));
+			oss.writeObject(vettore);
+			oss.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}			
+			}
+		
+		
+		
+		public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore){
+			ObjectInputStream ois = null;
+			try{
+			ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(nomeFile)));
+			vettore = (Vector<ForecastDataCurrent>) ois.readObject();
+			ois.close();
+			}
+			catch(Exception e){
+			System.out.println("error");
+			}
+			}
+		
+		 
+>>>>>>> 41b9b4ef568f138af9d0692575889fb57cf7c71c
 
 }
