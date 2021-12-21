@@ -1,5 +1,6 @@
 package it.uni.main.service;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,18 +41,18 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	    TimerTask task = new TimerTask() {
 	        public void run() 
 	        {
-	        	try {
-					forecastCurr(name);
-				} catch (ParseException e) {
+	        try {
+	        	forecastCurr(name);
+			}catch(ParseException e) {
 					e.printStackTrace();
-				} catch (IOException e) {
+			}catch(IOException e) {
 					e.printStackTrace();
-				}
-	        }
-	    };
+			}
+	      }
+	   };
 	    Timer timer = new Timer("Timer");
 	    long delay = 1000L;
-	    timer.scheduleAtFixedRate(task,delay,10000);
+	    timer.scheduleAtFixedRate(task,delay,3500);
 	}
 	
 	
@@ -79,50 +80,53 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		
 		
 		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", ForecastDataCurrentVector);
+		System.out.println(ForecastDataCurrentVector.toString());
+		
 		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
-		if(ForecastDataCurrentVector.size() < 10) {
-			System.out.println("aggiunto");
+		if(ForecastDataCurrentVector.size() < 10) 
 		ForecastDataCurrentVector.add(javaObj);
-		}else {
-			System.out.println("tolto e aggiunto");
+		else {
 			ForecastDataCurrentVector.remove(0);
 			ForecastDataCurrentVector.add(javaObj);
-			
-		}
+		}	
 		
 		//Salvare su file il vettore 
 		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",ForecastDataCurrentVector);
 		
-		
 	}
 	
-			public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
-				ObjectOutputStream oss = null;
-				try{
-				oss = new ObjectOutputStream(new FileOutputStream(nomeFile));
+	public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
+			ObjectOutputStream oss = null;
+			try{
+				oss = new ObjectOutputStream(
+					   new BufferedOutputStream(
+					    new FileOutputStream(nomeFile)));
 				oss.writeObject(vettore);
 				}
-				catch(Exception e){
-					//aggiungere il messaggio di errore
-				}finally {
+			catch(Exception e){
+					System.out.println("nononono");
+			}finally {
 					oss.close();
-				}			
+		}			
 	}
+
+	@SuppressWarnings("unchecked")
+	public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore){
+		ObjectInputStream ois = null;
+		try{
 			
-			public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore){
-				vettore = new Vector<ForecastDataCurrent>();
-				ObjectInputStream ois;
-				try{
-				ois = new ObjectInputStream(new FileInputStream(nomeFile));
-			
-				ois.readObject();
-				
-				}
-				catch(Exception e){
-				System.out.println("sei scemo");
-				}
-				}
-			
+			ois = new ObjectInputStream(
+				new BufferedInputStream(
+				new FileInputStream(nomeFile)));
+		
+			vettore.addAll((Vector<ForecastDataCurrent>)ois.readObject());
+		}
+		catch(Exception e){
+			System.out.println("sei scemo");
+		}
+		
+		}
+	
 			 
 
 }
