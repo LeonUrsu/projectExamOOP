@@ -55,6 +55,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	}
 	
 	
+	
 	/**
 	 * Metodo che serializza su file un array di oggetti java di tipo Forecast5Days
 	 * @param name

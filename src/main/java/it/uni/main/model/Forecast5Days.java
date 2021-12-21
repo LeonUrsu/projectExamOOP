@@ -12,7 +12,7 @@ public class Forecast5Days implements Serializable{
 	private Humidity humidity;
 	
 	public Forecast5Days(Humidity humidity, String dt) {
-		this.dt = dtConverter(dt);
+		this.dt = dt;
 		this.humidity = humidity;
 	}
 	
@@ -37,20 +37,16 @@ public class Forecast5Days implements Serializable{
 		return humidity;
 	}
 
-	public String dtConverter(String dt) {
-    long tmp = Long.parseLong(dt);
-	Date date = new java.util.Date(tmp*1000L); 
-
-	SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); 
-	sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+1")); 
-	String formattedDate = sdf.format(date);
-	return formattedDate;
-	}
-
-
 	@Override
 	public String toString() {
 		return "dt =" + dt ;
+	}
+	
+	
+	//da testare
+	public Date fromUnixToDate(String d)
+	{
+		return new java.util.Date(Long.parseLong(d)*1000);
 	}
 	
 	

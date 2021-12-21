@@ -22,25 +22,23 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	 *@param nome della citta su cui cercare le previsioni 
 	 */
 	public Vector<Forecast5Days> forecast5day(String name) {
-		//call api che non funziona 
 		//JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\50dayforecast.txt");
 		JSONObject oggettoJ = callApi(ApiReference.Url5dayP1 + name + ApiReference.Url5dayP2);
-		
 		forecast5DaysVec = new Vector<Forecast5Days>(); //riservo spazio statico in memoria per il vettore
 		JSONArray forecasts40 = (JSONArray) oggettoJ.get("list");
 		
 		//carico il vettore vuoto con 5 previsioni ogni 24 ore a partire dall'ora della chiamata all'api
-		for (int i=0, u=forecasts40.size()  ;  i<u  ;  i+=8) {	
+		for (int i=0, u=forecasts40.size()  ;  i<u  ;  i+=8) {
 			//recuperata l'umidità tramite strati a cipolla
 			JSONObject tmpObj = (JSONObject)forecasts40.get(i);
-			String tmpDate = (String) tmpObj.get("dt_txt"); //prendo data e ora della previsione
+			long tmpDate = (long) tmpObj.get("dt");//prendo data e ora della previsione
 			tmpObj = (JSONObject) tmpObj.get("main");
 			long humidityLong = (long)tmpObj.get("humidity");//prendo humidity della previsione
-			Humidity humidity = new Humidity((int)humidityLong);
-			Forecast5Days tmpForecast = new Forecast5Days(humidity, tmpDate);
+			Humidity humidity = new Humidity( (int) (long) humidityLong);
+			Forecast5Days tmpForecast = new Forecast5Days(humidity,	String.valueOf(tmpDate));
 			forecast5DaysVec.add(tmpForecast);
 		}
-		return forecast5DaysVec;
+		return forecast5DaysVec; 
 	}
 	
 	
