@@ -51,11 +51,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	
 	
 	
-	
-	
-	
-	
-	
+
 	
 	public ForecastDataCurrent forecastCurr(String name) throws ParseException, IOException {
 		
