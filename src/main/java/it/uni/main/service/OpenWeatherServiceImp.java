@@ -98,27 +98,37 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 		   buf.close();
 		   Jobject = (JSONObject) JSONValue.parseWithException(data);
 		}
-	 catch (IOException | ParseException e) {
-		e.printStackTrace();
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-	return Jobject;
-	}
-
-	public void CreateTxtFile() {
-	String fileName = "my-file.txt";
-    String encoding = "UTF-8";
-    
-    try{
-    PrintWriter writer = new PrintWriter(fileName, encoding);
-    
-    }
-    catch (IOException e){
-      System.out.println("An error occurred.");
-      e.printStackTrace();
-    }
+		 catch (IOException | ParseException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Jobject;
+		}
+	
+	
+	
+		
+		public void CreateTxtFile() {
+		String fileName = "my-file.txt";
+	    String encoding = "UTF-8";
+	    
+	    try{
+	    PrintWriter writer = new PrintWriter(fileName, encoding);
+	    }
+	    catch (IOException e){
+	      System.out.println("An error occurred.");
+	      e.printStackTrace();
+	    }
   }
+
+
+
+	@Override
+	public JSONObject toJsonObject(Object toConvert) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	
 	
