@@ -23,9 +23,6 @@ import it.uni.main.model.ForecastDataCurrent;
 
 @Service
 public class OpenWeatherServiceImp implements OpenWeatherService{
-	
-
-	
 	/**
 	 * metodo per chiamare un API tramite url con return del JSON ricevuto dall'API
 	 * 
@@ -33,11 +30,14 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 * @return String JSON
 	 */
 	@Override
-	public JSONObject callApi(String myUrl) {
+	public JSONObject callApi(String myUrl) 
+	{
+		System.out.println("URL----->" + myUrl);
+		
 		JSONObject Jobject= new JSONObject();
 		try {
 			URLConnection openConnection = new URL(myUrl).openConnection();
-			InputStream in = openConnection.getInputStream();
+			InputStream in = openConnection.getInputStream();//QUI ECCEZIONE
 			
 			String data = "";
 			String line = "";
@@ -60,8 +60,8 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 		}
 		return Jobject;
 	}
-
-
+	
+	
 	
 	/**
 	 * metodo che che converte oggetto di tipo String in tipo JsonObject

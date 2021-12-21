@@ -2,18 +2,12 @@ package it.uni.main.model;
 
 
 public class Forecast5Days {
-	
-	 
-
-	private Humidity humidity;
 	private String dayTime ;
-	
-	
+	private Humidity humidity;
 	
 	public Forecast5Days(Humidity humidity, String dayTime) {
-		this.humidity = humidity;
 		this.dayTime = dayTime;
-		
+		this.humidity = humidity;
 	}
 	
 	
