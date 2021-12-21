@@ -22,7 +22,11 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	 *@param nome della citta su cui cercare le previsioni 
 	 */
 	public Vector<Forecast5Days> forecast5day(String name) {
+<<<<<<< HEAD
 		
+=======
+		//call api che non funziona 
+>>>>>>> f892d1f0ae627455c1e455e772b4564899e765e1
 		JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\50dayforecast.txt");
 		//JSONObject oggettoJ = callApi(ApiReference.Url5dayP1 + name + ApiReference.Url5dayP2);
 		

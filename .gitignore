@@ -32,4 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
+<<<<<<< HEAD
 response.json
+=======
+response.json
+Test.txt
+>>>>>>> f892d1f0ae627455c1e455e772b4564899e765e1

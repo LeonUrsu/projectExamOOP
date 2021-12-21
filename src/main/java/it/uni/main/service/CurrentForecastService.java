@@ -31,12 +31,20 @@ import it.uni.main.utils.ApiReference;
 @Service
 public class CurrentForecastService<E> extends OpenWeatherServiceImp implements ForecastDataCurr{
 	
+<<<<<<< HEAD
+=======
+	Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
+>>>>>>> f892d1f0ae627455c1e455e772b4564899e765e1
 	
 	/**
 	 * metodo che aggiorna il file locale con una nuova previsione 
 	 * 
 	 * @param name - nome della città
 	 */
+<<<<<<< HEAD
+=======
+	
+>>>>>>> f892d1f0ae627455c1e455e772b4564899e765e1
 	public void ripetizioneMetodo(String name) {
 	    TimerTask task = new TimerTask() {
 	        public void run() 
@@ -52,11 +60,18 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	   };
 	    Timer timer = new Timer("Timer");
 	    long delay = 1000L;
+<<<<<<< HEAD
 	    timer.scheduleAtFixedRate(task,delay,3500);
 	}
 	
 	
 	
+=======
+	    timer.scheduleAtFixedRate(task,delay,60*60*1000);
+	}
+	
+	
+>>>>>>> f892d1f0ae627455c1e455e772b4564899e765e1
 	/**
 	 * Metodo che serializza su file un array di oggetti java di tipo Forecast5Days
 	 * @param name
@@ -65,6 +80,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 */	
 	public void forecastCurr(String name) throws ParseException, IOException {
 		
+<<<<<<< HEAD
 <<<<<<< HEAD
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
 <<<<<<< HEAD
@@ -76,6 +92,10 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 =======
 		Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 >>>>>>> parent of ecfa358 (definiti due metodi all'interno di forecastDataCurrent, cambiato vettore ForecastDataCurrentVector da locale a globale)
+=======
+		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
+		
+>>>>>>> f892d1f0ae627455c1e455e772b4564899e765e1
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
@@ -85,6 +105,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 													 
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
 		
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 		String dt = new String(oggettoJ.get("dt").toString());
@@ -121,10 +142,39 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		
 		//Salvare su file il vettore 
 <<<<<<< HEAD
+=======
+		String dt = new String(oggettoJ.get("dt").toString());
+		
+		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, dt);
+
+		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", ForecastDataCurrentVector);
+		
+		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
+		if(ForecastDataCurrentVector.size() < 48) 
+		ForecastDataCurrentVector.add(javaObj);
+		else {
+			ForecastDataCurrentVector.remove(0);
+			ForecastDataCurrentVector.add(javaObj);
+		}	
+		
+		//Salvare su file il vettore 
+>>>>>>> f892d1f0ae627455c1e455e772b4564899e765e1
 		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",ForecastDataCurrentVector);
 		
 	}
 	
+<<<<<<< HEAD
+=======
+	public boolean compareId() {
+		
+		return true;
+	}
+	public void svuotaFileLocale(String nomeFile,Vector<ForecastDataCurrent> vettore) {
+		vettore.removeAll(vettore);
+		//todo:pulire file txt
+	}
+	
+>>>>>>> f892d1f0ae627455c1e455e772b4564899e765e1
 	public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
 			ObjectOutputStream oss = null;
 			try{
@@ -158,6 +208,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		}
 	
 			 
+<<<<<<< HEAD
 =======
 		salvaSuFILE("C:\\Users\\DeskTop-L\\Desktop\\prova02.dat",ForecastDataCurrentVector);
 		}
@@ -191,5 +242,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		
 		 
 >>>>>>> 41b9b4ef568f138af9d0692575889fb57cf7c71c
+=======
+>>>>>>> f892d1f0ae627455c1e455e772b4564899e765e1
 
 }
