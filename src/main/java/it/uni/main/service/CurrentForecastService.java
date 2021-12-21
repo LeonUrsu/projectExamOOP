@@ -45,8 +45,8 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	    };
 	    Timer timer = new Timer("Timer");
 	    
-	    long delay = 1000L * 60 * 60;
-	    timer.schedule(task, delay);
+	    long delay = 1000L;
+	    timer.scheduleAtFixedRate(task,delay,60*60*1000 );
 	}
 	
 	
@@ -55,15 +55,10 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	
 	public void forecastCurr(String name) throws ParseException, IOException {
 		
-		
-		
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
 		Vector<ForecastDataCurrent> marco = new Vector<ForecastDataCurrent>();
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		
-	
-		
-	
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
 												Double.parseDouble(tmp.get("temp_min").toString()),
 												Double.parseDouble(tmp.get("temp_max").toString()),
@@ -71,23 +66,17 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 													 
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
 		
-		
-		
-
 		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, "data");
 		
 		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
 		marco.add(javaObj);
 		
 		//Salvare su file il vettore 
-		
 		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",marco);
 		
 		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", marco);
-		
-		
-	
 	}
+	
 			public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
 				ObjectOutputStream oss = null;
 				try{
@@ -95,13 +84,10 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 				oss.writeObject(vettore);
 				}
 				catch(Exception e){
-			
+					//aggiungere il messaggio di errore
 				}finally {
 					oss.close();
-				}
-				
-				
-				
+				}			
 	}
 			
 			public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore){
