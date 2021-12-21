@@ -13,7 +13,7 @@ public class ForecastDataCurrent extends Forecast5Days implements Serializable {
 		super(humidity, dayTime);
 		this.temperature = temperature;
 	}
-
+	
 	public Temperature getTemperature() {
 		return temperature;
 	}

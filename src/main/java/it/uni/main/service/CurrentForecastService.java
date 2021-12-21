@@ -30,6 +30,12 @@ import it.uni.main.utils.ApiReference;
 @Service
 public class CurrentForecastService<E> extends OpenWeatherServiceImp implements ForecastDataCurr{
 	
+	
+	/**
+	 * metodo che aggiorna il file locale con una nuova previsione 
+	 * 
+	 * @param name - nome della città
+	 */
 	public void ripetizioneMetodo(String name) {
 	    TimerTask task = new TimerTask() {
 	        public void run() 
@@ -44,15 +50,17 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	        }
 	    };
 	    Timer timer = new Timer("Timer");
-	    
 	    long delay = 1000L;
 	    timer.scheduleAtFixedRate(task,delay,10000);
 	}
 	
 	
-	
-
-	
+	/**
+	 * Metodo che serializza su file un array di oggetti java di tipo Forecast5Days
+	 * @param name
+	 * @throws ParseException
+	 * @throws IOException
+	 */	
 	public void forecastCurr(String name) throws ParseException, IOException {
 		
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
