@@ -113,7 +113,6 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	
 	
 	
-		
 		public void CreateTxtFile() {
 		String fileName = "my-file.txt";
 	    String encoding = "UTF-8";

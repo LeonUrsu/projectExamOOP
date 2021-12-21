@@ -51,7 +51,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	   };
 	    Timer timer = new Timer("Timer");
 	    long delay = 1000L;
-	    timer.scheduleAtFixedRate(task,delay,5000);
+	    timer.scheduleAtFixedRate(task,delay,1000 * 60 * 60);
 	}
 	
 	
