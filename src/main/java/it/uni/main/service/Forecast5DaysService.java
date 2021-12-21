@@ -23,8 +23,8 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	 */
 	public Vector<Forecast5Days> forecast5day(String name) {
 		//call api che non funziona 
-		JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\50dayforecast.txt");
-		//JSONObject oggettoJ = callApi(ApiReference.Url5dayP1 + name + ApiReference.Url5dayP2);
+		//JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\50dayforecast.txt");
+		JSONObject oggettoJ = callApi(ApiReference.Url5dayP1 + name + ApiReference.Url5dayP2);
 		
 		forecast5DaysVec = new Vector<Forecast5Days>(); //riservo spazio statico in memoria per il vettore
 		JSONArray forecasts40 = (JSONArray) oggettoJ.get("list");

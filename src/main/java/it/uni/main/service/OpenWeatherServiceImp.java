@@ -14,6 +14,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 import java.net.URLConnection;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.stereotype.Service;
 import it.uni.main.interfaceToUse.OpenWeatherService;
 import it.uni.main.model.ForecastDataCurrent;
@@ -32,7 +35,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	@Override
 	public JSONObject callApi(String myUrl) 
 	{
-		System.out.println("URL----->" + myUrl);
+		//System.out.println("URL----->" + myUrl);
 		
 		JSONObject Jobject= new JSONObject();
 		try {
@@ -74,7 +77,6 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 		tmp.put(toConvert, );
 		*/
 		return null;
-		
 	}
 
 	
@@ -131,6 +133,15 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	}
 
 	
+	
+
+
+
+	public String CurrentTime() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		LocalDateTime now = LocalDateTime.now();  
+		return dtf.format(now);
+	}
 	
 	
 }
