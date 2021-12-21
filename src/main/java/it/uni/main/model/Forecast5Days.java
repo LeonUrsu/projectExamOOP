@@ -3,34 +3,41 @@ package it.uni.main.model;
 
 public class Forecast5Days {
 	
+	 
 
 	private Humidity humidity;
-	private String dataTime ;
+	private String dayTime ;
 	
 	
-	public Forecast5Days(Humidity humidity, String dataTime) {
+	
+	public Forecast5Days(Humidity humidity, String dayTime) {
 		this.humidity = humidity;
-		this.dataTime = dataTime;
+		this.dayTime = dayTime;
+		
 	}
 	
 	
+	public String getDayTime() {
+		return dayTime;
+	}
+
+
+	public void setDayTime(String dayTime) {
+		this.dayTime = dayTime;
+	}
+
+
 	public void setHumidity(Humidity humidity) {
 		this.humidity = humidity;
 	}
 	
-	public String getDataTime() {
-		return dataTime;
-	}
-
-	public void setDataTime(String dataTime) {
-		this.dataTime = dataTime;
-	}
+	
 
 	public Humidity getHumidity() {
 		return humidity;
 	}
 
 	
-
+	
 	
 }

@@ -1,17 +1,14 @@
 package it.uni.main.model;
 
 
-
 public class ForecastDataCurrent extends Forecast5Days {
 	
 	
 	private	Temperature temperature;
-	private DayTime DayTime;
 	
-	public ForecastDataCurrent(Humidity humidity, Temperature temperature, DayTime dt) {
-		super(humidity);
+	public ForecastDataCurrent(Humidity humidity, Temperature temperature, String dayTime) {
+		super(humidity, dayTime);
 		this.temperature = temperature;
-		DayTime = dt;
 	}
 
 	public Temperature getTemperature() {
@@ -22,13 +19,6 @@ public class ForecastDataCurrent extends Forecast5Days {
 		this.temperature = temperature;
 	}
 
-	public DayTime getDayTime() {
-		return DayTime;
-	}
-
-	public void setDayTime(DayTime dayTime) {
-		DayTime = dayTime;
-	}
 
 	
 	

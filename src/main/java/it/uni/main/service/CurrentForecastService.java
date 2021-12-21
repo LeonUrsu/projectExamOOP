@@ -1,5 +1,7 @@
 package it.uni.main.service;
 
+import java.util.Date;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 
 import it.uni.main.interfaceToUse.ForecastDataCurr;
+import it.uni.main.model.DayTime;
 import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.model.Humidity;
@@ -20,6 +23,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	
 	public JSONObject forecastCurr(String name) throws ParseException {
 		
+	
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
 	
 		JSONObject tmp = (JSONObject) oggettoJ.get("main");
@@ -34,14 +38,14 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 													 
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
 		
-		Daytime daytime = new DayTime(Integer.parseInt(oggettoJ.get("dt").toString()));
+		DayTime daytime = new DayTime(Long.parseLong(oggettoJ.get("dt").toString()));
 		
-		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, Integer.parseInt(oggettoJ.get("dt").toString()));
+		
 
 		
-		System.out.println(javaObj.getDayTime());
-		System.out.println(javaObj.getHumidity());
-		return null ;
+		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, daytime );
+		
+		return null;
 		
 	}
 	
