@@ -1,7 +1,11 @@
 package it.uni.main.model;
 
+import java.io.Serializable;
 
-public class Forecast5Days {
+public class Forecast5Days implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String dayTime ;
 	private Humidity humidity;
 	

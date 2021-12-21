@@ -1,7 +1,10 @@
 package it.uni.main.model;
 
-public class Temperature {
+import java.io.Serializable;
+
+public class Temperature implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	
 	private double temp;
 	private double tempMin;

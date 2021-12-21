@@ -46,7 +46,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	    Timer timer = new Timer("Timer");
 	    
 	    long delay = 1000L;
-	    timer.scheduleAtFixedRate(task,delay,60*60*1000 );
+	    timer.scheduleAtFixedRate(task,delay,10000);
 	}
 	
 	
@@ -56,7 +56,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	public void forecastCurr(String name) throws ParseException, IOException {
 		
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
-		Vector<ForecastDataCurrent> marco = new Vector<ForecastDataCurrent>();
+		Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
@@ -68,13 +68,24 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		
 		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, "data");
 		
+		
+		
+		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", ForecastDataCurrentVector);
 		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
-		marco.add(javaObj);
+		if(ForecastDataCurrentVector.size() < 10) {
+			System.out.println("aggiunto");
+		ForecastDataCurrentVector.add(javaObj);
+		}else {
+			System.out.println("tolto e aggiunto");
+			ForecastDataCurrentVector.remove(0);
+			ForecastDataCurrentVector.add(javaObj);
+			
+		}
 		
 		//Salvare su file il vettore 
-		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",marco);
+		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",ForecastDataCurrentVector);
 		
-		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", marco);
+		
 	}
 	
 			public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
@@ -95,12 +106,12 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 				ObjectInputStream ois;
 				try{
 				ois = new ObjectInputStream(new FileInputStream(nomeFile));
+			
+				ois.readObject();
 				
-				System.out.println((JSONObject)ois.readObject());
-
 				}
 				catch(Exception e){
-				//messaggio di errore
+				System.out.println("sei scemo");
 				}
 				}
 			

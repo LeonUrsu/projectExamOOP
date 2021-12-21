@@ -1,7 +1,11 @@
 package it.uni.main.model;
 
-public class Humidity {
-	
+import java.io.Serializable;
+
+public class Humidity implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private static final String DEFAULT_UNIT = "%";
 	
 	public int value; 

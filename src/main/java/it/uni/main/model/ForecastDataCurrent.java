@@ -22,6 +22,11 @@ public class ForecastDataCurrent extends Forecast5Days implements Serializable {
 		this.temperature = temperature;
 	}
 
+	@Override
+	public String toString() {
+		return temperature.toString() ;
+	}
+
 
 	
 	
