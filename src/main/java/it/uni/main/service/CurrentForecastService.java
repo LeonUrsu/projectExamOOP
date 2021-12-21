@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 import org.json.simple.JSONObject;
@@ -27,6 +29,32 @@ import it.uni.main.utils.ApiReference;
 
 @Service
 public class CurrentForecastService extends OpenWeatherServiceImp implements ForecastDataCurr{
+	
+	public void ripetizioneMetodo(String name) {
+	    TimerTask task = new TimerTask() {
+	        public void run() 
+	        {
+	        	try {
+					forecastCurr(name);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        }
+	    };
+	    Timer timer = new Timer("Timer");
+	    
+	    long delay = 1000L * 60 * 60;
+	    timer.schedule(task, delay);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	public ForecastDataCurrent forecastCurr(String name) throws ParseException, IOException {
