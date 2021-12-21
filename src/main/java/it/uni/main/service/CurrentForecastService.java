@@ -31,14 +31,12 @@ import it.uni.main.utils.ApiReference;
 @Service
 public class CurrentForecastService<E> extends OpenWeatherServiceImp implements ForecastDataCurr{
 	
-	Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 	
 	/**
 	 * metodo che aggiorna il file locale con una nuova previsione 
 	 * 
 	 * @param name - nome della città
 	 */
-	
 	public void ripetizioneMetodo(String name) {
 	    TimerTask task = new TimerTask() {
 	        public void run() 
@@ -54,7 +52,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	   };
 	    Timer timer = new Timer("Timer");
 	    long delay = 1000L;
-	    timer.scheduleAtFixedRate(task,delay,60*60*1000);
+	    timer.scheduleAtFixedRate(task,delay,3500);
 	}
 	
 	
@@ -69,11 +67,15 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		
 <<<<<<< HEAD
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
+<<<<<<< HEAD
 		
 =======
 		JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\prova01.txt");
 		Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 >>>>>>> 41b9b4ef568f138af9d0692575889fb57cf7c71c
+=======
+		Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
+>>>>>>> parent of ecfa358 (definiti due metodi all'interno di forecastDataCurrent, cambiato vettore ForecastDataCurrentVector da locale a globale)
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
@@ -84,11 +86,16 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
 		String dt = new String(oggettoJ.get("dt").toString());
+=======
+		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, "data");
 		
-		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, dt);
-
+		
+>>>>>>> parent of ecfa358 (definiti due metodi all'interno di forecastDataCurrent, cambiato vettore ForecastDataCurrentVector da locale a globale)
+		
 		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", ForecastDataCurrentVector);
+		System.out.println(ForecastDataCurrentVector.toString());
 		
 =======
 		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, "data");
@@ -99,7 +106,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		apriDaFILE("C:\\Users\\DeskTop-L\\Desktop\\prova02.dat", ForecastDataCurrentVector);
 >>>>>>> 41b9b4ef568f138af9d0692575889fb57cf7c71c
 		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
-		if(ForecastDataCurrentVector.size() < 48) 
+		if(ForecastDataCurrentVector.size() < 10) 
 		ForecastDataCurrentVector.add(javaObj);
 		else {
 			ForecastDataCurrentVector.remove(0);
@@ -116,15 +123,6 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 <<<<<<< HEAD
 		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",ForecastDataCurrentVector);
 		
-	}
-	
-	public boolean compareId() {
-		
-		return true;
-	}
-	public void svuotaFileLocale(String nomeFile,Vector<ForecastDataCurrent> vettore) {
-		vettore.removeAll(vettore);
-		//todo:pulire file txt
 	}
 	
 	public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{

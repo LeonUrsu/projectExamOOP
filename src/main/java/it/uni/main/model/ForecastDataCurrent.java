@@ -9,8 +9,8 @@ public class ForecastDataCurrent extends Forecast5Days implements Serializable {
 	
 	private	Temperature temperature;
 	
-	public ForecastDataCurrent(Humidity humidity, Temperature temperature, String dt) {
-		super(humidity,dt);
+	public ForecastDataCurrent(Humidity humidity, Temperature temperature, String dayTime) {
+		super(humidity, dayTime);
 		this.temperature = temperature;
 	}
 	
@@ -24,7 +24,7 @@ public class ForecastDataCurrent extends Forecast5Days implements Serializable {
 
 	@Override
 	public String toString() {
-		return temperature.toString() + " " +getDayTime() +" "+ getHumidity();
+		return temperature.toString() ;
 	}
 
 
