@@ -31,7 +31,6 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	private Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 	
 	
-	
 	/**
 	 * metodo che aggiorna il file locale con una nuova previsione 
 	 * 
