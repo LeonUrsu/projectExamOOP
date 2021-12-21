@@ -14,6 +14,11 @@ public interface OpenWeatherService
 	 * metodo che che converte oggetto di tipo String in tipo JsonObject
 	 * @param toConvert oggetto di tipo String
 	 */
+	/**
+	 * metodo che che converte oggetto di tipo String in tipo JsonObject
+	 * @param toConvert oggetto di tipo String
+	 */
+	JSONObject toJsonObject(Object toConvert);
 
 	
 }

@@ -1,6 +1,15 @@
 package it.uni.main.service;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.Vector;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -10,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 
 import it.uni.main.interfaceToUse.ForecastDataCurr;
-import it.uni.main.model.DayTime;
 import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.model.Humidity;
@@ -21,12 +29,13 @@ import it.uni.main.utils.ApiReference;
 public class CurrentForecastService extends OpenWeatherServiceImp implements ForecastDataCurr{
 	
 	
-	public JSONObject forecastCurr(String name) throws ParseException {
+	public ForecastDataCurrent forecastCurr(String name) throws ParseException, IOException {
 		
-	
+		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
+		
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
-	
-		JSONObject tmp = (JSONObject) oggettoJ.get("main");
+		Vector<ForecastDataCurrent> marco = new Vector<ForecastDataCurrent>();
+		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		
 	
 		
@@ -38,15 +47,27 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 													 
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
 		
-		DayTime daytime = new DayTime(Long.parseLong(oggettoJ.get("dt").toString()));
 		
 		
 
+		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, "data");
 		
-		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, daytime );
+		marco.add(javaObj);
+		
+			
+		
+		 
+		
+		
+		//fare metodo aggiungi in coda e rm il primo -->
+		
+		
+		
+		
 		
 		return null;
 		
-	}
 	
+	}
+
 }

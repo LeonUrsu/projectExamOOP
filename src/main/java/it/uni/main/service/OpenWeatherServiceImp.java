@@ -1,10 +1,13 @@
 package it.uni.main.service;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 
 import org.json.simple.JSONObject;
@@ -13,6 +16,7 @@ import org.json.simple.parser.ParseException;
 import java.net.URLConnection;
 import org.springframework.stereotype.Service;
 import it.uni.main.interfaceToUse.OpenWeatherService;
+import it.uni.main.model.ForecastDataCurrent;
 
 
 
@@ -64,11 +68,13 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 * @param toConvert oggetto di tipo String
 	 */
 	@Override
-	public	JSONObject toJsonObject(String toConvert) 
+	public JSONObject toJsonObject(String toConvert) 
 	{
-		//JSONParser parser = new JSONParser();
-		//Object obj = parser.parse()
+		/*JSONObject tmp = new JSONObject();
+		tmp.put(toConvert, );
+		*/
 		return null;
+		
 	}
 
 	
@@ -99,10 +105,36 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	}
 	return Jobject;
 	}
-	
-	
-	
-	
+
+	public void CreateTxtFile() {
+	String fileName = "my-file.txt";
+    String encoding = "UTF-8";
+    
+    try{
+    PrintWriter writer = new PrintWriter(fileName, encoding);
+    
+    }
+    catch (IOException e){
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+  }
+
+	public void salvaFile(String myFile, boolean isObject) {
+		
+		try {
+			PrintWriter file_output = new PrintWriter(new BufferedWriter(new FileWriter(myFile)));
+			
+			if(isObject)
+				file_output.println(this.jo);
+			else
+				file_output.println(this.ja);
+			
+			file_output.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	
