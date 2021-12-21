@@ -28,6 +28,7 @@ import it.uni.main.model.ForecastDataCurrent;
 
 @Service
 public class OpenWeatherServiceImp implements OpenWeatherService{
+	
 	/**
 	 * metodo per chiamare un API tramite url con return del JSON ricevuto dall'API
 	 * 
@@ -66,79 +67,6 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 		return Jobject;
 	}
 	
-	
-	
-	
-	/**
-	 * metodo per chiamare un API tramite url con return del JSON ricevuto dall'API
-	 * 
-	 * @param myUrl url fonte di previsioni di 5 giorni ogni 3 ore
-	 * @return String JSON
-	 */
-	@Override
-	public JSONObject callApiV2(String myUrl) 
-	{
-		//System.out.println("URL----->" + myUrl);
-		
-		JSONObject Jobject= new JSONObject();
-		try {
-			URL url = new URL(myUrl);  
-		    URLConnection connection = url.openConnection( );   
-		    InputStream in = connection.getInputStream();
-
-			String data = "";
-			String line = "";
-			try {
-			   InputStreamReader inR = new InputStreamReader( in );
-			   BufferedReader buf = new BufferedReader( inR );
-			  
-			   while ( ( line = buf.readLine() ) != null ) {
-				   data+= line;
-			   }
-			} finally {
-			   in.close();
-			}
-				Jobject = (JSONObject) JSONValue.parseWithException(data);	 
-				
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Jobject;
-	}
-	
-	
-	public JSONObject chiamataAPI(String myUrl) {
-		try {
-			URLConnection openConnection = new URL(myUrl).openConnection();
-			InputStream in = openConnection.getInputStream();
-			
-			String data = "";
-			String line = "";
-			try {
-			   InputStreamReader inR = new InputStreamReader( in );
-			   BufferedReader buf = new BufferedReader( inR );
-			  
-			   while ( ( line = buf.readLine() ) != null ) {
-				   data+= line;
-			   }
-			} finally {
-			   in.close();
-			}
-			System.out.println("Dati scaricati: "+data);
-			
-			JSONObject tmp = (JSONObject) JSONValue.parseWithException(data);	 //parse JSON Object
-			System.out.println("JSONObject scaricato: "+ tmp);	
-			return tmp;
-		
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new JSONObject();
-	}
 	
 	
 	/**
@@ -199,14 +127,6 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	    }
   }
 
-
-		
-		
-	@Override
-	public JSONObject toJsonObject(Object toConvert) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	
 
