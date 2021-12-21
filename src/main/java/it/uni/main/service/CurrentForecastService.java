@@ -26,12 +26,12 @@ import it.uni.main.model.Temperature;
 import it.uni.main.utils.ApiReference;
 
 @Service
-public class CurrentForecastService extends OpenWeatherServiceImp implements ForecastDataCurr{
+public class CurrentForecastService<E> extends OpenWeatherServiceImp implements ForecastDataCurr{
 	
 	
-	public ForecastDataCurrent forecastCurr(String name) throws ParseException, IOException {
+	public void forecastCurr(String name) throws ParseException, IOException {
 		
-		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
+		
 		
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
 		Vector<ForecastDataCurrent> marco = new Vector<ForecastDataCurrent>();
@@ -52,22 +52,48 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 
 		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, "data");
 		
+		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
 		marco.add(javaObj);
 		
-			
+		//Salvare su file il vettore 
 		
-		 
+		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",marco);
 		
+		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", marco);
 		
-		//fare metodo aggiungi in coda e rm il primo -->
-		
-		
-		
-		
-		
-		return null;
 		
 	
 	}
+			public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
+				ObjectOutputStream oss = null;
+				try{
+				oss = new ObjectOutputStream(new FileOutputStream(nomeFile));
+				oss.writeObject(vettore);
+				}
+				catch(Exception e){
+			
+				}finally {
+					oss.close();
+				}
+				
+				
+				
+	}
+			
+			public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore){
+				vettore = new Vector<ForecastDataCurrent>();
+				ObjectInputStream ois;
+				try{
+				ois = new ObjectInputStream(new FileInputStream(nomeFile));
+				
+				System.out.println((JSONObject)ois.readObject());
+
+				}
+				catch(Exception e){
+				//messaggio di errore
+				}
+				}
+			
+			 
 
 }

@@ -5,9 +5,6 @@ import java.io.Serializable;
 public class ForecastDataCurrent extends Forecast5Days implements Serializable {
 	
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private	Temperature temperature;

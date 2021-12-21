@@ -120,21 +120,6 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
     }
   }
 
-	public void salvaFile(String myFile, boolean isObject) {
-		
-		try {
-			PrintWriter file_output = new PrintWriter(new BufferedWriter(new FileWriter(myFile)));
-			
-			if(isObject)
-				file_output.println(this.jo);
-			else
-				file_output.println(this.ja);
-			
-			file_output.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	
 	
