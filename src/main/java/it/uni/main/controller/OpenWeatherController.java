@@ -34,10 +34,13 @@ public class OpenWeatherController
 	}
 	
 	
+	
 	@GetMapping("/prova")
-	public ForecastDataCurrent currentForecast(@RequestParam(value="nome", defaultValue="Rome") String nome) throws IOException, ParseException{
-		return currentForecast.ripetizioneMetodo(nome);	
+	public void currentForecast(@RequestParam(value="nome", defaultValue="Rome") String nome) throws IOException, ParseException{
+	currentForecast.ripetizioneMetodo(nome);	
 	}
+	
+	
 	
 	
 	
