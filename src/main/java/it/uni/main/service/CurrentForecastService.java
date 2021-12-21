@@ -31,12 +31,14 @@ import it.uni.main.utils.ApiReference;
 @Service
 public class CurrentForecastService<E> extends OpenWeatherServiceImp implements ForecastDataCurr{
 	
+	Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 	
 	/**
 	 * metodo che aggiorna il file locale con una nuova previsione 
 	 * 
 	 * @param name - nome della città
 	 */
+	
 	public void ripetizioneMetodo(String name) {
 	    TimerTask task = new TimerTask() {
 	        public void run() 
@@ -52,7 +54,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	   };
 	    Timer timer = new Timer("Timer");
 	    long delay = 1000L;
-	    timer.scheduleAtFixedRate(task,delay,3500);
+	    timer.scheduleAtFixedRate(task,delay,60*60*1000);
 	}
 	
 	
@@ -65,7 +67,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	public void forecastCurr(String name) throws ParseException, IOException {
 		
 		JSONObject oggettoJ = leggiJsondaFile("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\response.json");
-		Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
+		
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
@@ -75,15 +77,14 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 													 
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
 		
-		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, "data");
+		String dt = new String(oggettoJ.get("dt").toString());
 		
-		
-		
+		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, dt);
+
 		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", ForecastDataCurrentVector);
-		System.out.println(ForecastDataCurrentVector.toString());
 		
 		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
-		if(ForecastDataCurrentVector.size() < 10) 
+		if(ForecastDataCurrentVector.size() < 48) 
 		ForecastDataCurrentVector.add(javaObj);
 		else {
 			ForecastDataCurrentVector.remove(0);
@@ -93,6 +94,15 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		//Salvare su file il vettore 
 		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",ForecastDataCurrentVector);
 		
+	}
+	
+	public boolean compareId() {
+		
+		return true;
+	}
+	public void svuotaFileLocale(String nomeFile,Vector<ForecastDataCurrent> vettore) {
+		vettore.removeAll(vettore);
+		//todo:pulire file txt
 	}
 	
 	public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
