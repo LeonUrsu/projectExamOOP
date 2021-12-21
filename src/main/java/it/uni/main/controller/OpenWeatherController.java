@@ -1,6 +1,8 @@
 package it.uni.main.controller;
 
 
+import java.io.IOException;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.service.Forecast5DaysService;
 
@@ -30,7 +33,7 @@ public class OpenWeatherController
 	
 	
 	@GetMapping("/prova")
-	public JSONObject currentForecast(@RequestParam(value="nome", defaultValue="Rome") String nome) throws ParseException{
+	public ForecastDataCurrent currentForecast(@RequestParam(value="nome", defaultValue="Rome") String nome) throws IOException, ParseException{
 		return currentForecast.forecastCurr(nome);
 		
 		
