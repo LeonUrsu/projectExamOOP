@@ -30,12 +30,12 @@ public class Forecast5Days implements Serializable{
 		this.humidity = humidity;
 	}
 	
-	
-
 	public Humidity getHumidity() {
 		return humidity;
 	}
 
+	
+	
 	@Override
 	public String toString() {
 		return "dt =" + dt ;

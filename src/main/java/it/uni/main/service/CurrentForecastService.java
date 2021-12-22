@@ -2,19 +2,29 @@ package it.uni.main.service;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.util.Collection;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import ch.qos.logback.core.subst.Token.Type;
 
 import org.apache.catalina.filters.ExpiresFilter.XPrintWriter;
 import org.json.simple.JSONObject;
@@ -26,6 +36,7 @@ import it.uni.main.interfaceToUse.ForecastDataCurr;
 import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.model.Humidity;
 import it.uni.main.model.Temperature;
+import it.uni.main.utils.ApiReference;
 
 @Service
 public class CurrentForecastService<E> extends OpenWeatherServiceImp implements ForecastDataCurr{
@@ -58,6 +69,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	   };
 	    Timer timer = new Timer("Timer");
 	    long delay = 1000L;
+	    
 	    timer.scheduleAtFixedRate(task,delay,1000 * 60 * 60);
 	}
 	
@@ -70,23 +82,20 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 * @throws IOException
 	 */	
 	public void forecastCurr(String name) throws ParseException, IOException {
-		JSONObject oggettoJ = leggiJsondaFile("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\fileCurrent.json");
+		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + name + ApiReference.Url5dayP2);
 		
+		//creazione del JAVA Object dal JSONObject
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
 												Double.parseDouble(tmp.get("temp_min").toString()),
 												Double.parseDouble(tmp.get("temp_max").toString()),
 												Double.parseDouble(tmp.get("feels_like").toString()));	
-		
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
-		
 		String dt = new String(oggettoJ.get("dt").toString());
-		
 		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, dt);
 		
-		//caricare su un vettore tutti i javaOBj dal file salvati fin'ora <--
+		//Caricamento dal file delle previsioni Current e posizionati su ForecastCurrentVector
 		apriDaFILE("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\prova2.dat", ForecastDataCurrentVector);
-		
 		
 		if(ForecastDataCurrentVector.size() < 48) {
 		ForecastDataCurrentVector.add(javaObj);
@@ -95,10 +104,10 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 			ForecastDataCurrentVector.remove(0);
 			ForecastDataCurrentVector.add(javaObj);
 		}	
-		
-		//Salvare su file il vettore 
+		//Salvataggio degli elementi nella Ram su un file locale
 		salvaSuFILE("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\prova2.dat",ForecastDataCurrentVector);
 	}
+	
 	
 	
 	
@@ -123,10 +132,10 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		e.printStackTrace();
 		}
 	}
+
 	
 	
-	
-	
+		
 	/**
 	 * Metodo che passando un oggetto Vector come parametro locale lo salva su un file di nome nomeFile
 	 * @param nomeFile
@@ -139,24 +148,16 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 			oss = new PrintWriter(new BufferedWriter(new FileWriter(nomeFile)));
 			Gson gson = new Gson();
 			String inJSON = gson.toJson(vettore);
-			System.out.println(vettore);//PROVA
 			oss.print(inJSON);
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally {
 			oss.close();
-			System.out.println("salvato su file: " + nomeFile + "   " + super.CurrentTime());
+			System.out.println("salvati " + ForecastDataCurrentVector.size() + " elementi su file: " + nomeFile + "   " + super.CurrentTime());
 		}			
 	}
 
 	
-	
-	
-	private ObjectOutputStream BufferedOutputStream(FileOutputStream fileOutputStream) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 
 	/**
@@ -166,21 +167,39 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 */
 	@SuppressWarnings("unchecked")
 	public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore){
-		ObjectInputStream ois = null;
 		try{
-			vettore = new Vector<ForecastDataCurrent>();
-			ois = new ObjectInputStream(
-				new BufferedInputStream(
-				new FileInputStream(nomeFile)));
-			vettore.addAll((Vector<ForecastDataCurrent>)ois.readObject());
-			ois.close();
-
+			//vettore.removeAllElements();
+			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
+			String inJSON = "";
+			while(scr.hasNext())
+				inJSON += scr.nextLine();
+			Gson gson = new Gson();
+			Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJSON, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
+			
+			ForecastDataCurrent tmpFor = tmpVec.lastElement();
+			Temperature temperature = new Temperature(tmpFor.getTemperature().getTemp(),
+													  tmpFor.getTemperature().getTempMin(),
+													  tmpFor.getTemperature().getTempMax(),
+													  tmpFor.getTemperature().getTempFeel());
+			Humidity humidity = new Humidity(tmpFor.getHumidity().getValue());
+			String dt = new String(tmpFor.getDayTime());								
+			tmpFor = new ForecastDataCurrent(humidity, temperature, dt);	
+			vettore.add(tmpFor);
+			System.out.println("zize vett seconddario DOPO "+vettore.get(0).getHumidity());
 		}
 		catch(Exception e){
-			System.out.println("file " + nomeFile + " vuoto "  );
+			System.out.println("file " + nomeFile + "  vuoto "  );
 		}
 	}
 	
-			 
+	
 
+	
+	
+	@SuppressWarnings("unused")
+	private ObjectOutputStream BufferedOutputStream(FileOutputStream fileOutputStream) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+		
 }
