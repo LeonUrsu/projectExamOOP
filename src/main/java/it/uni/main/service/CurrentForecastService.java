@@ -197,6 +197,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	}
 	
 	
+	
 	@SuppressWarnings("unused")
 	private ObjectOutputStream BufferedOutputStream(FileOutputStream fileOutputStream) {
 		// TODO Auto-generated method stub
