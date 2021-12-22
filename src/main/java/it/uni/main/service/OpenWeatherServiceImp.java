@@ -114,6 +114,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	    
 	    try{
 	    PrintWriter writer = new PrintWriter(fileName, encoding);
+	    writer.close();
 	    }
 	    catch (IOException e){
 	      System.out.println("An error occurred.");

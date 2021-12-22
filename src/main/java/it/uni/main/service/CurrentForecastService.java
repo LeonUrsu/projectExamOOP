@@ -1,21 +1,14 @@
 package it.uni.main.service;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.util.Collection;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,13 +17,9 @@ import java.util.Vector;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import ch.qos.logback.core.subst.Token.Type;
-
-import org.apache.catalina.filters.ExpiresFilter.XPrintWriter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
-
 
 import it.uni.main.interfaceToUse.ForecastDataCurr;
 import it.uni.main.model.ForecastDataCurrent;
@@ -41,12 +30,15 @@ import it.uni.main.utils.ApiReference;
 @Service
 public class CurrentForecastService<E> extends OpenWeatherServiceImp implements ForecastDataCurr{
 	
+	
+	
 	/**
 	 * vettore che aumenterà dimensionalmente ogni 60minuti di un nuovo 
 	 * elemento ForecastDataCurrent fino a raggiungere un valore massimo 
-	 * stabilito dal programmatore
+	 * stabilito dal programmatore tramite il PARAMETRO PROGRAMMATORE
 	 */
 	private Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
+	
 	
 	
 	/**
@@ -70,7 +62,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	    Timer timer = new Timer("Timer");
 	    long delay = 1000L;
 	    
-	    timer.scheduleAtFixedRate(task,delay,1000 * 60 * 60);
+	    timer.scheduleAtFixedRate(task,delay,1000 );//* 60 * 60);
 	}
 	
 	
@@ -82,9 +74,10 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 * @throws IOException
 	 */	
 	public void forecastCurr(String name) throws ParseException, IOException {
-		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + name + ApiReference.Url5dayP2);
+		apriDaFILE("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\prova2.dat", ForecastDataCurrentVector);
 		
-		//creazione del JAVA Object dal JSONObject
+		//Creazione del JAVA Object dal JSONObject
+		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + name + ApiReference.Url5dayP2);
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
 												Double.parseDouble(tmp.get("temp_min").toString()),
@@ -94,17 +87,15 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		String dt = new String(oggettoJ.get("dt").toString());
 		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, dt);
 		
-		//Caricamento dal file delle previsioni Current e posizionati su ForecastCurrentVector
-		apriDaFILE("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\prova2.dat", ForecastDataCurrentVector);
-		
-		if(ForecastDataCurrentVector.size() < 48) {
+		//Caricamento dal file delle previsioni Current e posizionamento su ForecastCurrentVector
+		if(ForecastDataCurrentVector.size() < 48) {   //PARAMETRO PROGRAMMATORE
 		ForecastDataCurrentVector.add(javaObj);
 		}
 		else {
 			ForecastDataCurrentVector.remove(0);
 			ForecastDataCurrentVector.add(javaObj);
 		}	
-		//Salvataggio degli elementi nella Ram su un file locale
+		//Salvataggio degli elementi dalla memoria volatile sulla memoria di massa
 		salvaSuFILE("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\prova2.dat",ForecastDataCurrentVector);
 	}
 	
@@ -165,27 +156,17 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 * @param nomeFile
 	 * @param vettore
 	 */
-	@SuppressWarnings("unchecked")
 	public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore){
 		try{
-			//vettore.removeAllElements();
 			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
 			String inJSON = "";
 			while(scr.hasNext())
 				inJSON += scr.nextLine();
 			Gson gson = new Gson();
 			Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJSON, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
-			
-			ForecastDataCurrent tmpFor = tmpVec.lastElement();
-			Temperature temperature = new Temperature(tmpFor.getTemperature().getTemp(),
-													  tmpFor.getTemperature().getTempMin(),
-													  tmpFor.getTemperature().getTempMax(),
-													  tmpFor.getTemperature().getTempFeel());
-			Humidity humidity = new Humidity(tmpFor.getHumidity().getValue());
-			String dt = new String(tmpFor.getDayTime());								
-			tmpFor = new ForecastDataCurrent(humidity, temperature, dt);	
-			vettore.add(tmpFor);
-			System.out.println("zize vett seconddario DOPO "+vettore.get(0).getHumidity());
+			if(tmpVec.size() > vettore.size()) 
+				sincronizzaElementi(vettore, tmpVec);
+			vettore = tmpVec;	
 		}
 		catch(Exception e){
 			System.out.println("file " + nomeFile + "  vuoto "  );
@@ -193,7 +174,27 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	}
 	
 	
-
+	
+	/**
+	 * Metodo che ci permette di caricare sul Vector gli oggetti se e solo se esistenti già nel file locale 
+	 *
+	 * @param vettore su cui sincronizzare
+	 * @param toSinc da inizializzare
+	 * @return
+	 */
+	private void sincronizzaElementi(Vector<ForecastDataCurrent> vettore, Vector<ForecastDataCurrent> toSinc ){
+		for(int i=0, u=toSinc.size() ; i<u ; i++) {				//insertElementAt(E obj, int index) toUSE
+			ForecastDataCurrent tmpFor = toSinc.get(i);
+			Temperature temperature = new Temperature(tmpFor.getTemperature().getTemp(),
+													  tmpFor.getTemperature().getTempMin(),
+													  tmpFor.getTemperature().getTempMax(),
+													  tmpFor.getTemperature().getTempFeel());
+			Humidity humidity = new Humidity(tmpFor.getHumidity().getValue());
+			String dt = new String(tmpFor.getDayTime());								
+			tmpFor = new ForecastDataCurrent(humidity, temperature, dt);
+			vettore.insertElementAt(tmpFor, i);
+		}
+	}
 	
 	
 	@SuppressWarnings("unused")

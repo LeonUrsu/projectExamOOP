@@ -4,7 +4,6 @@ package it.uni.main.controller;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.uni.main.model.Forecast5Days;
-import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.service.Forecast5DaysService;
 
