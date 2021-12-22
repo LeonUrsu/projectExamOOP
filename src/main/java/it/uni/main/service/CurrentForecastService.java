@@ -2,19 +2,22 @@ package it.uni.main.service;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
+import com.google.gson.Gson;
+
+import org.apache.catalina.filters.ExpiresFilter.XPrintWriter;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +26,15 @@ import it.uni.main.interfaceToUse.ForecastDataCurr;
 import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.model.Humidity;
 import it.uni.main.model.Temperature;
-import it.uni.main.utils.ApiReference;
 
 @Service
 public class CurrentForecastService<E> extends OpenWeatherServiceImp implements ForecastDataCurr{
 	
+	/**
+	 * vettore che aumenterà dimensionalmente ogni 60minuti di un nuovo 
+	 * elemento ForecastDataCurrent fino a raggiungere un valore massimo 
+	 * stabilito dal programmatore
+	 */
 	private Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 	
 	
@@ -96,7 +103,6 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	
 	
 	public boolean compareId() {
-		
 		return true;
 	}
 	
@@ -128,23 +134,31 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 * @throws IOException
 	 */
 	public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
-			ObjectOutputStream oss = null;
-			try{
-				oss = new ObjectOutputStream(
-					   new BufferedOutputStream(
-					    new FileOutputStream(nomeFile)));
-				oss.writeObject(vettore);
-				}catch(Exception e){
-					System.out.println("nononono");
-				 }finally {
-					oss.close();
-					System.out.println("salvato su file: " + nomeFile + "   " + super.CurrentTime());
-				  }			
+		PrintWriter oss = null;
+		try{
+			oss = new PrintWriter(new BufferedWriter(new FileWriter(nomeFile)));
+			Gson gson = new Gson();
+			String inJSON = gson.toJson(vettore);
+			System.out.println(vettore);//PROVA
+			oss.print(inJSON);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			oss.close();
+			System.out.println("salvato su file: " + nomeFile + "   " + super.CurrentTime());
+		}			
 	}
 
 	
 	
 	
+	private ObjectOutputStream BufferedOutputStream(FileOutputStream fileOutputStream) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	/**
 	 * metodo che carica un vettore di oggetto da un file locale e lo carica su un vettore
 	 * @param nomeFile

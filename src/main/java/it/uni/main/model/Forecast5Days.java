@@ -2,7 +2,6 @@ package it.uni.main.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 
 public class Forecast5Days implements Serializable{
 	
