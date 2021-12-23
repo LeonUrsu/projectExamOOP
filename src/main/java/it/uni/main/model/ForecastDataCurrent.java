@@ -10,7 +10,7 @@ public class ForecastDataCurrent extends Forecast5Days implements Serializable {
 	private	Temperature temperature;
 	private City city;
 	
-	public ForecastDataCurrent(Humidity humidity, Temperature temperature, long dt,City city) {
+	public ForecastDataCurrent(Humidity humidity, Temperature temperature, long dt, City city) {
 		super(humidity,dt);
 		this.temperature = temperature;
 		this.city = city;
