@@ -75,7 +75,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 * @throws IOException
 	 */	
 	public void forecastCurr(String name) throws ParseException, IOException {
-		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", ForecastDataCurrentVector);
+		apriDaFILE("projectExamOOP-main\\Test.txt", ForecastDataCurrentVector);
 		
 		//Creazione del JAVA Object dal JSONObject
 		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + name + ApiReference.UrlCurrP2);
@@ -102,7 +102,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 			ForecastDataCurrentVector.add(javaObj);
 		}	
 		//Salvataggio degli elementi dalla memoria volatile sulla memoria di massa
-		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",ForecastDataCurrentVector);
+		salvaSuFILE("projectExamOOP-main\\Test.txt",ForecastDataCurrentVector);
 	}
 	
 	

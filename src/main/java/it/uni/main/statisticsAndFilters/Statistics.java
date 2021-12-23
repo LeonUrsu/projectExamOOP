@@ -17,7 +17,7 @@ public class Statistics {
 		return 0;	
 	}
 	
-	calcolaVarianzaTemp
+	//calcolaVarianzaTemp
 	
 	
 	
