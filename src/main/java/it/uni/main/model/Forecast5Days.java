@@ -9,28 +9,29 @@ public class Forecast5Days implements Serializable{
 	
 	private String dt ;
 	private Humidity humidity;
+
 	
-	public Forecast5Days(Humidity humidity, String dt) {
+	public Forecast5Days(Humidity humidity, String dt){
 		this.dt = dt;
 		this.humidity = humidity;
 	}
 	
-	
-	public String getDayTime() {
+
+	public String getDayTime(){
 		return dt;
 	}
 
 
-	public void setDayTime(String dt) {
+	public void setDayTime(String dt){
 		this.dt = dt;
 	}
 
 
-	public void setHumidity(Humidity humidity) {
+	public void setHumidity(Humidity humidity){
 		this.humidity = humidity;
 	}
 	
-	public Humidity getHumidity() {
+	public Humidity getHumidity(){
 		return humidity;
 	}
 
@@ -43,8 +44,7 @@ public class Forecast5Days implements Serializable{
 	
 	
 	//da testare
-	public Date fromUnixToDate(String d)
-	{
+	public Date fromUnixToDate(String d){
 		return new java.util.Date(Long.parseLong(d)*1000);
 	}
 	

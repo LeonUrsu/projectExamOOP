@@ -7,9 +7,11 @@ public class City extends GeoLocation {
 	private int ID;
 	private String cityName;
 	
-	public City(float lat, float lon, int ID, String cityName, String country) {
+	public City(float lat, float lon, int ID, String cityName) {
 		super(lat, lon);
-		this.country = country;
+		this.ID= ID;
+		this.cityName = cityName;
+		
 	}
 
 	public String getCountry() {

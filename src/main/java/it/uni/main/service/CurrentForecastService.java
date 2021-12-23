@@ -22,6 +22,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import it.uni.main.interfaceToUse.ForecastDataCurr;
+import it.uni.main.model.City;
 import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.model.Humidity;
 import it.uni.main.model.Temperature;
@@ -62,7 +63,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	    Timer timer = new Timer("Timer");
 	    long delay = 1000L;
 	    
-	    timer.scheduleAtFixedRate(task,delay,1000 );//* 60 * 60);
+	    timer.scheduleAtFixedRate(task,delay,1000 * 60 * 60 );
 	}
 	
 	
@@ -74,10 +75,10 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 * @throws IOException
 	 */	
 	public void forecastCurr(String name) throws ParseException, IOException {
-		apriDaFILE("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\prova2.dat", ForecastDataCurrentVector);
+		apriDaFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt", ForecastDataCurrentVector);
 		
 		//Creazione del JAVA Object dal JSONObject
-		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + name + ApiReference.Url5dayP2);
+		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + name + ApiReference.UrlCurrP2);
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
 												Double.parseDouble(tmp.get("temp_min").toString()),
@@ -85,7 +86,12 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 												Double.parseDouble(tmp.get("feels_like").toString()));	
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
 		String dt = new String(oggettoJ.get("dt").toString());
-		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity, temperature, dt);
+		tmp = (JSONObject)oggettoJ.get("coord");
+		City city = new City(Float.parseFloat(tmp.get("lon").toString()),
+							 Float.parseFloat(tmp.get("lat").toString()),
+							 Integer.parseInt(oggettoJ.get("id").toString()),
+							 				  oggettoJ.get("name").toString());
+							 ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity,temperature,dt,city);
 		
 		//Caricamento dal file delle previsioni Current e posizionamento su ForecastCurrentVector
 		if(ForecastDataCurrentVector.size() < 48) {   //PARAMETRO PROGRAMMATORE
@@ -96,7 +102,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 			ForecastDataCurrentVector.add(javaObj);
 		}	
 		//Salvataggio degli elementi dalla memoria volatile sulla memoria di massa
-		salvaSuFILE("C:\\Users\\DeskTop-L\\Desktop\\OOP EXAM\\prova2.dat",ForecastDataCurrentVector);
+		salvaSuFILE("D:\\WorkSpaceECLIPSE\\projectExamOOP-main\\Test.txt",ForecastDataCurrentVector);
 	}
 	
 	
@@ -190,8 +196,12 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 													  tmpFor.getTemperature().getTempMax(),
 													  tmpFor.getTemperature().getTempFeel());
 			Humidity humidity = new Humidity(tmpFor.getHumidity().getValue());
-			String dt = new String(tmpFor.getDayTime());								
-			tmpFor = new ForecastDataCurrent(humidity, temperature, dt);
+			String dt = new String(tmpFor.getDayTime());
+			City city = new City(tmpFor.getCity().getLat(),
+								 tmpFor.getCity().getLon(),
+								 tmpFor.getCity().getID(),
+								 tmpFor.getCity().getCityName());
+			tmpFor = new ForecastDataCurrent(humidity, temperature, dt,	city);
 			vettore.insertElementAt(tmpFor, i);
 		}
 	}
