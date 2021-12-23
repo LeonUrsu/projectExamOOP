@@ -1,8 +1,10 @@
 package it.uni.main.model;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Forecast5Days implements Serializable{
 	
@@ -10,10 +12,9 @@ public class Forecast5Days implements Serializable{
 	
 	private String dt ;
 	private Humidity humidity;
-	private long unixTime;
 	
-	public Forecast5Days(Humidity humidity, long dt){
-		this.dt = EpochConverter(dt);
+	public Forecast5Days(Humidity humidity, long unixTime){
+		dt = EpochConverter(unixTime);
 		this.humidity = humidity;
 	}
 	
@@ -36,37 +37,21 @@ public class Forecast5Days implements Serializable{
 		return humidity;
 	}
 	
-	
-	public long getUnixTime() {
-		return unixTime;
-	}
-
-
-	public void setUnixTime(long unixTime) {
-		this.unixTime = unixTime;
-	}
-
 
 	@Override
 	public String toString() {
 		return "dt =" + dt ;
 	}
 	
-	
-	//da testare
-	public Date fromUnixToDate(String d){
-		return new java.util.Date(Long.parseLong(d)*1000);
+
+	public String EpochConverter(long unixTime) {
+		java.util.Date dateTime = new java.util.Date((long) Double.valueOf(unixTime).longValue() * 1000);
+		String fromTimeZone = "GMT+1";
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		df.setTimeZone(TimeZone.getTimeZone(fromTimeZone));
+		String reportDate = df.format(dateTime);
+		return reportDate;
 	}
-	
-	public String EpochConverter(long dt) {
-		Date date = new Date(dt);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String myDate = format.format(date);
-		return myDate;
-	}
-	
-	
-	
 	
 	
 }

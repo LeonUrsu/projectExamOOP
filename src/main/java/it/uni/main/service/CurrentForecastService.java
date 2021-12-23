@@ -85,7 +85,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 												Double.parseDouble(tmp.get("temp_max").toString()),
 												Double.parseDouble(tmp.get("feels_like").toString()));	
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
-		String dt = new String(oggettoJ.get("dt").toString());
+		long dt = Long.parseLong(oggettoJ.get("dt").toString());
 		tmp = (JSONObject)oggettoJ.get("coord");
 		City city = new City(Float.parseFloat(tmp.get("lon").toString()),
 							 Float.parseFloat(tmp.get("lat").toString()),
@@ -196,7 +196,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 													  tmpFor.getTemperature().getTempMax(),
 													  tmpFor.getTemperature().getTempFeel());
 			Humidity humidity = new Humidity(tmpFor.getHumidity().getValue());
-			String dt = new String(tmpFor.getDayTime());
+			long dt = Long.parseLong(tmpFor.getDayTime());
 			City city = new City(tmpFor.getCity().getLat(),
 								 tmpFor.getCity().getLon(),
 								 tmpFor.getCity().getID(),

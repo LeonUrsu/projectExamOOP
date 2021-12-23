@@ -1,1 +1,1 @@
-[{"temperature":{"temp":7.33,"tempMin":6.28,"tempMax":8.2,"tempFeel":6.03},"city":{"ID":2643743,"cityName":"London","lat":-0.1257,"lon":51.5085},"dt":"1640251355","humidity":{"value":93}}]
+[{"temperature":{"temp":-2.27,"tempMin":-3.52,"tempMax":2.23,"tempFeel":-2.27},"city":{"ID":4219762,"cityName":"Rome","lat":-85.1647,"lon":34.257},"dt":"23/12/2021 12:06:01","humidity":{"value":90}}]
