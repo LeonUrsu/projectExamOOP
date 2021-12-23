@@ -31,11 +31,11 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 		for (int i=0, u=forecasts40.size()  ;  i<u  ;  i+=8) {
 			//recuperata l'umidità tramite strati a cipolla
 			JSONObject tmpObj = (JSONObject)forecasts40.get(i);
-			long tmpDate = (long) tmpObj.get("dt");//prendo data e ora della previsione
+			long tmpDate = Long.parseLong(tmpObj.get("dt").toString());//prendo data e ora della previsione
 			tmpObj = (JSONObject) tmpObj.get("main");
 			long humidityLong = (long)tmpObj.get("humidity");//prendo humidity della previsione
 			Humidity humidity = new Humidity( (int) (long) humidityLong);
-			Forecast5Days tmpForecast = new Forecast5Days(humidity,	String.valueOf(tmpDate));
+			Forecast5Days tmpForecast = new Forecast5Days(humidity,	tmpDate);
 			forecast5DaysVec.add(tmpForecast);
 		}
 		return forecast5DaysVec; 
