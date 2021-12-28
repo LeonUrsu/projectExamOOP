@@ -10,17 +10,26 @@ public class StatisticsCurrentForecasts extends Statistics{
 	//in base ai parametri passati sulle rotte del controller 
 	
 	//ATTRIBUTI INTERNI------------------------------
+	private long oraInizio = 0;
+	private long oraFine = 0;
+	private long giorniDiFiltraggio = 0;
 	private double tempMin = 0;
 	private double tempMax = 0;
 	private double tempMedia = 0;
 	private double varianzaTempPercepita = 0;
 	private double varianzaTempReale = 0;
-	//private City città = City();
+	private City città = null;
 	
 	
 	public StatisticsCurrentForecasts(long initialValue, long finalValue, int days, Vector<ForecastDataCurrent> filteredVector)
 	{
-	
+		this.oraInizio = initialValue;
+		this.oraFine = finalValue;
+		this.giorniDiFiltraggio = days;
+		//City tmpC = filteredVector.get(0).getCity();
+		//this.città = new City(tmpC.getLat(), tmpC.getLon(), tmpC.getID(), tmpC.getCityName());
+		
+		
 	}
 	
 	

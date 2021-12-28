@@ -2,8 +2,11 @@ package it.uni.main.statisticsAndFilters;
 
 import java.util.Vector;
 
+import org.springframework.stereotype.Service;
+
 import it.uni.main.model.ForecastDataCurrent;
 
+@Service
 public class Filters {
 	
 	//	Filtra il vettore ForecastDataCurrentVector presente nella classe CurrentForecastService 
@@ -20,7 +23,8 @@ public class Filters {
 		
 		//ToDo filtraggio ForecastDataCurrentVector in filteredVector
 		//ToDo aggiungere City al oggetto StatisticsCurrentForecasts
-	 	return new StatisticsCurrentForecasts(initialValue, finalValue, filteredVector);
+		System.out.println(new StatisticsCurrentForecasts(1, 2, null));
+		return new StatisticsCurrentForecasts(1, 2, null);
 	}
 	
 
