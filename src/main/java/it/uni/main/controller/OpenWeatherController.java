@@ -2,6 +2,7 @@ package it.uni.main.controller;
 
 
 import java.io.IOException;
+import java.util.Timer;
 import java.util.Vector;
 
 import org.json.simple.parser.ParseException;
@@ -49,9 +50,11 @@ public class OpenWeatherController
 	
 	/**
 	 * Rotta che ferma il salvataggio delle previsioni
+	 * @throws InterruptedException 
 	 */
 	@GetMapping("/stopCurrentService")
-	public void currentForecastStop(){
+	public void currentForecastStop(Timer timer){
+	currentForecast.stopTimer();
 	}
 	
 	

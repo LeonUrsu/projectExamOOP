@@ -48,7 +48,11 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	 * 
 	 * @param name - nome della città
 	 */
+	Timer timer = null;
+	
 	public void ripetizioneMetodo(String name) {
+		
+		if(timer == null) {
 	    TimerTask task = new TimerTask() {
 	        public void run() 
 	        {
@@ -61,13 +65,17 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 			}
 	      }
 	   };
-	    Timer timer = new Timer("Timer");
-	    long delay = 1000L;
-	    
-	    timer.scheduleAtFixedRate(task,delay,1000 * 60 * 60 );
+	  
+	  timer = new Timer("Timer");
+	  timer.scheduleAtFixedRate(task,1000,1000 * 60 * 60);
+	   }
 	}
 	
-	
+	public void stopTimer() {
+		
+		timer.cancel();
+		timer = null;
+}
 	
 	/**
 	 * Metodo che serializza su file un array di oggetti java di tipo Forecast5Days
