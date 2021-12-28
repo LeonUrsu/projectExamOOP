@@ -2,9 +2,37 @@ package it.uni.main.statisticsAndFilters;
 
 import java.util.Vector;
 
-public class StatisticsCurrentForecasts extends Statistics{
+import it.uni.main.model.City;
+import it.uni.main.model.ForecastDataCurrent;
 
-	//questa classe ricevera il Vector<ForecastCurrent> da filter
+public class StatisticsCurrentForecasts extends Statistics{
+	//questa classe riceverà un Vector<ForecastDataCurrent> filtrato dalla classe Filter 
+	//in base ai parametri passati sulle rotte del controller 
+	
+	//ATTRIBUTI INTERNI------------------------------
+	private double tempMin = 0;
+	private double tempMax = 0;
+	private double tempMedia = 0;
+	private double varianzaTempPercepita = 0;
+	private double varianzaTempReale = 0;
+	//private City città = City();
+	
+	
+	public StatisticsCurrentForecasts(long initialValue, long finalValue, int days, Vector<ForecastDataCurrent> filteredVector)
+	{
+	
+	}
+	
+	
+	public StatisticsCurrentForecasts(long initialValue, long finalValue, Vector<ForecastDataCurrent> filteredVector)
+	{
+	
+	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -14,8 +42,9 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @param previsioni di tipo Vector di previsioni con possibile filtraggio  
 	 * @return valore double
 	 */
-	protected double varianzaTempMisurata(Vector<Object> previsioni)
+	protected double varianzaTempReale(Vector<ForecastDataCurrent> previsioni)
 	{
+
 		return 0;	
 	}
 	
@@ -24,9 +53,24 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @param previsioni previsioni di tipo Vector di previsioni con possibile filtraggio 
 	 * @return valore double
 	 */
-	protected double varianzaTempPercepita(Vector<Object> previsioni)
+	protected double varianzaTempPercepita(Vector<ForecastDataCurrent> previsioni)
 	{
 		return 0;	
+	}
+	
+	
+	/**
+	 * metodo per il calcolo della media della temperatura gioraliera 
+	 * @param previsioni previsioni di tipo Vector di previsioni con possibile filtraggio
+	 * @return valore double
+	 */
+	protected double mediaTemp(Vector<ForecastDataCurrent> previsioni)
+	{
+		double media = 0;
+		for(ForecastDataCurrent e : previsioni)
+			media += e.getTemperature().getTemp();
+		
+		return media;
 	}
 	
 	

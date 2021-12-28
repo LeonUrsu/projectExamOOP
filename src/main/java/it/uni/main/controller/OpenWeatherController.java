@@ -60,11 +60,11 @@ public class OpenWeatherController
 	 * Rotta per il filtraggio della banda oraria giornaliera in base ai parametri formali passati
 	 * @param initialValue ora iniziale di inizio filtraggio
 	 * @param finalValue ora finale del filtraggio
-	 * @param days giorni di  filtraggio, se 0 restituisce 
-	 * @return vettore di previsioni meteo in base ai parametri passati
+	 * @param days giorni di  filtraggio, se 0 restituisce un errore ancora da stabilire
+	 * @return vector di previsioni meteo in base ai parametri passati
 	 */
 	@GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}")
-	public Vector<ForecastDataCurrent>  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable long days){
+	public Vector<ForecastDataCurrent>  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days){
 		return null;
 	}
 	
@@ -72,9 +72,9 @@ public class OpenWeatherController
 	
 	/**
 	 * Rotta per il filtraggio della banda oraria dell'ultima settimana
-	 * @param initialValue
-	 * @param finalValue
-	 * @return
+	 * @param initialValue ora iniziale di inizio filtraggio
+	 * @param finalValue ora finale del filtraggio 
+	 * @return vector di previsioni meteo in base ai parametri passati
 	 */
 	@GetMapping("/filter/weekly/{initialValue}/{finalValue}")
 	public Vector<ForecastDataCurrent> weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue){
