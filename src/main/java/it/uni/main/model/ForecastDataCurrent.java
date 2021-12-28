@@ -36,7 +36,7 @@ public class ForecastDataCurrent extends Forecast5Days implements Serializable {
 
 	@Override
 	public String toString(){
-		return temperature.toString() + " " +getDayTime().toString() +" "+ getHumidity().toString() +" "+getCity().toString() ;
+		return temperature.toString() + " " + getDayTime() +" "+ getHumidity().toString() +" "+getCity().toString() ;
 	}
 
 

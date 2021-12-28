@@ -29,7 +29,7 @@ import it.uni.main.model.Temperature;
 import it.uni.main.utils.ApiReference;
 
 @Service
-public class CurrentForecastService<E> extends OpenWeatherServiceImp implements ForecastDataCurr{
+public class CurrentForecastService extends OpenWeatherServiceImp implements ForecastDataCurr{
 	
 	
 	
@@ -85,6 +85,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 												Double.parseDouble(tmp.get("temp_max").toString()),
 												Double.parseDouble(tmp.get("feels_like").toString()));	
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
+		
 		long dt = Long.parseLong(oggettoJ.get("dt").toString());
 		tmp = (JSONObject)oggettoJ.get("coord");
 		City city = new City(Float.parseFloat(tmp.get("lon").toString()),
@@ -132,8 +133,6 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 		}
 	}
 
-	
-	
 		
 	/**
 	 * Metodo che passando un oggetto Vector come parametro locale lo salva su un file di nome nomeFile
@@ -174,7 +173,6 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 			Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJSON, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
 			if(tmpVec.size() > vettore.size()) 
 				sincronizzaElementi(vettore, tmpVec);
-			vettore = tmpVec;	
 		}
 		catch(Exception e){
 			System.out.println("file " + nomeFile + "  vuoto "  );
@@ -191,6 +189,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 	 * @return
 	 */
 	private void sincronizzaElementi(Vector<ForecastDataCurrent> vettore, Vector<ForecastDataCurrent> toSinc ){
+		
 		for(int i=0, u=toSinc.size() ; i<u ; i++) {				//insertElementAt(E obj, int index) toUSE
 			ForecastDataCurrent tmpFor = toSinc.get(i);
 			Temperature temperature = new Temperature(tmpFor.getTemperature().getTemp(),
@@ -198,7 +197,7 @@ public class CurrentForecastService<E> extends OpenWeatherServiceImp implements 
 													  tmpFor.getTemperature().getTempMax(),
 													  tmpFor.getTemperature().getTempFeel());
 			Humidity humidity = new Humidity(tmpFor.getHumidity().getValue());
-			long dt = Long.parseLong(tmpFor.getDayTime());
+			long dt = tmpFor.getDayTime();
 			City city = new City(tmpFor.getCity().getLat(),
 								 tmpFor.getCity().getLon(),
 								 tmpFor.getCity().getID(),
