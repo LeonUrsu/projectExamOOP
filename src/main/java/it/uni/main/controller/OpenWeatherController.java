@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.uni.main.model.CurrentStats;
 import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.service.Forecast5DaysService;
+import it.uni.main.statisticsAndFilters.Filters;
 
 
 @RestController
@@ -25,7 +27,8 @@ public class OpenWeatherController
 	private Forecast5DaysService forecast5Day;
 	@Autowired 
 	private CurrentForecastService currentForecast;
-	
+	@Autowired
+	private Filters filters;
 	
 	//Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
 	//un parametro nome della citta
@@ -68,7 +71,7 @@ public class OpenWeatherController
 	 */
 	@GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}")
 	public Vector<ForecastDataCurrent>  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days){
-		return null;
+		return filters.dailyFilter(finalValue, finalValue, days);
 	}
 	
 	
