@@ -17,6 +17,7 @@ import java.util.Vector;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
@@ -75,7 +76,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	 * @throws IOException
 	 */	
 	public void forecastCurr(String name) throws ParseException, IOException {
-		apriDaFILE("currentForecastData.json", ForecastDataCurrentVector);
+		apriDaFILE("currentForecastData.json", ForecastDataCurrentVector, name);
 		
 		//Creazione del JAVA Object dal JSONObject
 		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + name + ApiReference.UrlCurrP2);
@@ -101,18 +102,26 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 		else {
 			ForecastDataCurrentVector.remove(0);
 			ForecastDataCurrentVector.add(javaObj);
-		}	
-		//Salvataggio degli elementi dalla memoria volatile sulla memoria di massa
+		}	//Salvataggio degli elementi dalla memoria volatile sulla memoria di massa
+		
 		salvaSuFILE("currentForecastData.json",ForecastDataCurrentVector);
 		
 		//risolvere doppio processo e cambio città
 	}
 	
 	
-	
-	
-	public boolean compareId() {
-		return true;
+	//metodo per compare ID della città gia presente nel vettore e quello della chiamata api
+	public boolean compareId(String name,Vector<ForecastDataCurrent> vettore ) {
+		JSONObject compare1 = callApi(ApiReference.UrlCurrP1 + name + ApiReference.UrlCurrP2);
+		
+		int ID = vettore.lastElement().getCity().getID();
+		
+		int ID2 = Integer.parseInt(compare1.get("id").toString());
+		
+		if(ID == ID2)
+			return true;
+		else
+			return false;
 	}
 	
 	
@@ -163,7 +172,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	 * @param nomeFile
 	 * @param vettore
 	 */
-	public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore){
+	public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore,String name){
 		try{
 			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
 			String inJSON = "";
@@ -172,7 +181,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 			Gson gson = new Gson();
 			Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJSON, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
 			if(tmpVec.size() > vettore.size()) 
-				sincronizzaElementi(vettore, tmpVec);
+				sincronizzaElementi(vettore, tmpVec,name);
 		}
 		catch(Exception e){
 			System.out.println("file " + nomeFile + "  vuoto "  );
@@ -188,9 +197,9 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	 * @param toSinc da inizializzare
 	 * @return
 	 */
-	private void sincronizzaElementi(Vector<ForecastDataCurrent> vettore, Vector<ForecastDataCurrent> toSinc ){
-		
-		for(int i=0, u=toSinc.size() ; i<u ; i++) {				//insertElementAt(E obj, int index) toUSE
+	private void sincronizzaElementi(Vector<ForecastDataCurrent> vettore, Vector<ForecastDataCurrent> toSinc, String name ){
+		if(compareId(name, toSinc)){
+		for(int i=0, u=toSinc.size() ; i<u ; i++) {	//insertElementAt(E obj, int index) toUSE
 			ForecastDataCurrent tmpFor = toSinc.get(i);
 			Temperature temperature = new Temperature(tmpFor.getTemperature().getTemp(),
 													  tmpFor.getTemperature().getTempMin(),
@@ -205,6 +214,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 			tmpFor = new ForecastDataCurrent(humidity, temperature, dt,	city);
 			vettore.insertElementAt(tmpFor, i);
 		}
+	 }
 	}
 	
 	
