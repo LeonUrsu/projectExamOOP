@@ -39,7 +39,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	 * elemento ForecastDataCurrent fino a raggiungere un valore massimo 
 	 * stabilito dal programmatore tramite il PARAMETRO PROGRAMMATORE
 	 */
-	private Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
+	public static Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 	
 	
 	

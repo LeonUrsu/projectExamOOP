@@ -8,14 +8,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
+
+import com.google.gson.Gson;
+
 import it.uni.main.interfaceToUse.OpenWeatherService;
 
 
@@ -60,6 +65,24 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 			e.printStackTrace();
 		}
 		return Jobject;
+	}
+	
+	
+	public void apriDaFILE(String nomeFile, JSONObject jObj, JSONArray jArr){
+		try{
+			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
+			String inJSON = "";
+			while(scr.hasNext())
+				inJSON += scr.nextLine();
+			Gson gson = new Gson();
+			if(jObj == null)
+				jArr = gson.fromJson(inJSON, JSONArray.class);
+			else
+				jObj = gson.fromJson(inJSON, JSONObject.class);
+		}
+		catch(Exception e){
+			System.out.println("file " + nomeFile + "  non aperto o vuoto"  );
+		}
 	}
 	
 	
