@@ -3,13 +3,25 @@ package it.uni.main.statisticsAndFilters;
 import java.util.Vector;
 
 import org.springframework.stereotype.Service;
+import java.math.*;
 
+import it.uni.main.model.CurrentStats;
 import it.uni.main.model.ForecastDataCurrent;
 
 @Service
 public class StatisticsCurrentForecasts extends Statistics{
-	//questa classe riceverà un Vector<ForecastDataCurrent> filtrato dalla classe Filter 
-	//in base ai parametri passati sulle rotte del controller 
+	
+	
+	
+	public CurrentStats currentStats(long initialValue, long finalValue, int days,Vector<ForecastDataCurrent> filteredVector) { 
+	//	
+		double tempMin = filteredVector.get(0).getTemperature().getTempMin();
+		double tempMax = filteredVector.get(0).getTemperature().getTempMax();
+		double tempMedia = mediaTemp(filteredVector);
+		double
+		
+		return new CurrentStats();
+	}
 	
 	
 	
@@ -21,8 +33,29 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 */
 	protected double varianzaTempReale(Vector<ForecastDataCurrent> previsioni)
 	{
-
-		return 0;	
+		double tmp = 0;
+		double scartoMedia = 0;
+		double media = 0;
+		double somma = 0;
+		int contatore = 0;
+		double varianza = 0;
+		
+		for(ForecastDataCurrent e : previsioni) {
+			somma += e.getTemperature().getTemp();
+			contatore = previsioni.size();
+		}
+		
+		media = somma/contatore;
+		somma = 0;
+		for(ForecastDataCurrent e : previsioni) {
+			scartoMedia = (e.getTemperature().getTemp()) - media;
+			tmp = Math.pow(scartoMedia, 2.0);
+			somma += tmp;
+		}
+		
+		varianza = somma/contatore;
+		
+			return varianza;
 	}
 	
 	/**
@@ -32,7 +65,29 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 */
 	protected double varianzaTempPercepita(Vector<ForecastDataCurrent> previsioni)
 	{
-		return 0;	
+		double tmp = 0;
+		double scartoMedia = 0;
+		double media = 0;
+		double somma = 0;
+		int contatore = 0;
+		double varianza = 0;
+		
+		for(ForecastDataCurrent e : previsioni) {
+			somma += e.getTemperature().getTempFeel();
+			contatore = previsioni.size();
+		}
+		
+		media = somma/contatore;
+		somma = 0;
+		for(ForecastDataCurrent e : previsioni) {
+			scartoMedia = (e.getTemperature().getTempFeel()) - media;
+			tmp = Math.pow(scartoMedia, 2.0);
+			somma += tmp;
+		}
+		
+		varianza = somma/contatore;
+		
+			return varianza;
 	}
 	
 	
@@ -44,9 +99,13 @@ public class StatisticsCurrentForecasts extends Statistics{
 	protected double mediaTemp(Vector<ForecastDataCurrent> previsioni)
 	{
 		double media = 0;
-		for(ForecastDataCurrent e : previsioni)
-			media += e.getTemperature().getTemp();
-		
+		double somma = 0;
+		int contatore = 0;
+		for(ForecastDataCurrent e : previsioni) {
+			somma += e.getTemperature().getTemp();
+			contatore++;
+		}
+		media = somma/contatore;
 		return media;
 	}
 	
@@ -56,9 +115,17 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @param previsioni previsioni di tipo Vector di previsioni con possibile filtraggio
 	 * @return valore double
 	 */
-	protected double mediaTempMax(Vector<Object> previsioni)
+	protected double mediaTempMax(Vector<ForecastDataCurrent> previsioni)
 	{
-		return 0;
+		double media = 0;
+		double somma = 0;
+		int contatore = 0;
+		for(ForecastDataCurrent e : previsioni) {
+			somma += e.getTemperature().getTempMax();
+			contatore++;
+		}
+		media = somma/contatore;
+		return media;
 	}
 	
 	
@@ -67,9 +134,17 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @param previsioni previsioni di tipo Vector di previsioni con possibile filtraggio
 	 * @return valore double
 	 */
-	protected double mediaTempMin(Vector<Object> previsioni)
+	protected double mediaTempMin(Vector<ForecastDataCurrent> previsioni)
 	{
-		return 0;
+		double media = 0;
+		double somma = 0;
+		int contatore = 0;
+		for(ForecastDataCurrent e : previsioni) {
+			somma += e.getTemperature().getTempMin();
+			contatore++;
+		}
+		media = somma/contatore;
+		return media;
 	}
 	
 	
@@ -79,9 +154,15 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @param previsioni previsioni di tipo Vector di previsioni con possibile filtraggio
 	 * @return valore double
 	 */
-	protected double TempMinAssoluta(Vector<Object> previsioni)
+	protected double TempMinAssoluta(Vector<ForecastDataCurrent> previsioni)
 	{
-		return 0;
+
+		double tempMinAssoluta = previsioni.get(0).getTemperature().getTempMin();
+		for(int i = 0; i < previsioni.size(); i++) 
+			if(tempMinAssoluta > previsioni.get(i).getTemperature().getTempMin())
+				tempMinAssoluta = previsioni.get(i).getTemperature().getTempMin();
+			
+		return tempMinAssoluta;
 	}
 	
 	
@@ -90,9 +171,16 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @param previsioni previsioni di tipo Vector di previsioni con possibile filtraggio
 	 * @return valore double
 	 */
-	protected double TempMaxAssoluta(Vector<Object> previsioni)
+	protected double TempMaxAssoluta(Vector<ForecastDataCurrent> previsioni)
 	{
-		return 0;
+		double tempMaxAssoluta = previsioni.get(0).getTemperature().getTempMax();
+		for(int i = 0; i < previsioni.size(); i++) 
+			if(tempMaxAssoluta > previsioni.get(i).getTemperature().getTempMax())
+				tempMaxAssoluta = previsioni.get(i).getTemperature().getTempMax();
+			
+		return tempMaxAssoluta;
+		
+		
 	}
 	
 	

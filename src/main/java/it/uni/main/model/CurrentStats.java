@@ -15,13 +15,20 @@ public class CurrentStats {
 		private City città = null;
 		
 		
-		public CurrentStats(long initialValue, long finalValue, int days, Vector<ForecastDataCurrent> filteredVector)
-		{
+		public CurrentStats(long initialValue, long finalValue, int days, 
+				Vector<ForecastDataCurrent> filteredVector,double tempMin,double tempMax,
+				double tempMedia,double varianzaTempPercepita,double varianzaTempReale,City città){
+			
 			this.oraInizio = initialValue;
 			this.oraFine = finalValue;
 			this.giorniDiFiltraggio = days;
-			//City tmpC = filteredVector.get(0).getCity();
-			//this.città = new City(tmpC.getLat(), tmpC.getLon(), tmpC.getID(), tmpC.getCityName());
+			this.tempMin = tempMin;
+			this.tempMax = tempMax;
+	 		this.tempMedia = tempMedia;
+			this.varianzaTempPercepita = varianzaTempPercepita;
+			this.varianzaTempReale = varianzaTempReale;	
+			City tmpC = filteredVector.get(0).getCity();
+			this.città = new City(tmpC.getLat(), tmpC.getLon(), tmpC.getID(), tmpC.getCityName());
 		}
 		
 		public CurrentStats(long initialValue, long finalValue, Vector<ForecastDataCurrent> filteredVector)
