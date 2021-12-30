@@ -35,7 +35,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	
 	
 	/**
-	 * vettore che aumenterà dimensionalmente ogni 60minuti di un nuovo 
+	 * vettore che aumenterà dimensionalmente ogni 3600s (60 minuti) di un nuovo 
 	 * elemento ForecastDataCurrent fino a raggiungere un valore massimo 
 	 * stabilito dal programmatore tramite il PARAMETRO PROGRAMMATORE
 	 */
@@ -44,50 +44,59 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	
 	
 	/**
-	 * metodo che aggiorna il file locale con una nuova previsione 
+	 * metodo che aggiorna il file locale con una nuova previsione (root)
 	 * 
 	 * @param name - nome della città
 	 */
 	Timer timer = null;
-	
 	public void ripetizioneMetodo(String name) {
-		
 		if(timer == null) {
-	    TimerTask task = new TimerTask() {
-	        public void run() 
-	        {
-	        try {
-	        	forecastCurr(name);
-			}catch(ParseException e) {
-					e.printStackTrace();
-			}catch(IOException e) {
-					e.printStackTrace();
-			}
-	      }
-	   };
-	  
-	  timer = new Timer("Timer");
-	  timer.scheduleAtFixedRate(task,1000,1000 * 60 * 60);
+		    TimerTask task = new TimerTask() {
+		        public void run() {
+			        try {
+			        	forecastCurr(name);
+					}catch(ParseException e) {
+							e.printStackTrace();
+					}catch(IOException e) {
+							e.printStackTrace();
+					}
+		        }
+		   };
+		   timer = new Timer("Timer");
+		   timer.scheduleAtFixedRate(task,1000,1000 * 60 * 60);
 	   }
 	}
 	
-	public void stopTimer() {
-		
-		timer.cancel();
-		timer = null;
-}
+	
 	
 	/**
-	 * Metodo che serializza su file un array di oggetti java di tipo Forecast5Days
-	 * @param name
+	 * Metodo per fermare il Timer (root)
+	 */
+	public void stopTimer() {
+		timer.cancel();
+		timer = null;
+	}
+	
+
+	
+	/**
+	 * Metodo che serializza su file locale in formato JSON un array di oggetti java di tipo Vector<ForecastDataCurrent>
+	 * ogni 3600s (60 minuti) e riempie il ForecastDataCurrentVector della classe
+	 * @param cityName - nome della città passata 
 	 * @throws ParseException
 	 * @throws IOException
 	 */	
-	public void forecastCurr(String name) throws ParseException, IOException {
-		apriDaFILE("currentForecastData.json", ForecastDataCurrentVector, name);
+	public void forecastCurr(String cityName) throws ParseException, IOException {
 		
+		if(ForecastDataCurrentVector.isEmpty())
+			apriDaFile("currentForecastData.json", ForecastDataCurrentVector, cityName);
+		else 
+			if(!compareId(cityName, ForecastDataCurrentVector)) 
+				ForecastDataCurrentVector.removeAllElements();			 	
+		
+	
 		//Creazione del JAVA Object dal JSONObject
-		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + name + ApiReference.UrlCurrP2);
+		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
 												Double.parseDouble(tmp.get("temp_min").toString()),
@@ -104,28 +113,28 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 							 ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity,temperature,dt,city);
 		
 		//Caricamento dal file delle previsioni Current e posizionamento su ForecastCurrentVector
-		if(ForecastDataCurrentVector.size() < 48) {   //PARAMETRO PROGRAMMATORE
-		ForecastDataCurrentVector.add(javaObj);
-		}
+		if(ForecastDataCurrentVector.size() < 48)    //PARAMETRO PROGRAMMATORE
+			ForecastDataCurrentVector.add(javaObj);
 		else {
 			ForecastDataCurrentVector.remove(0);
 			ForecastDataCurrentVector.add(javaObj);
 		}	//Salvataggio degli elementi dalla memoria volatile sulla memoria di massa
 		
-		salvaSuFILE("currentForecastData.json",ForecastDataCurrentVector);
-		
-		//risolvere doppio processo e cambio città
+		salvaSuFile("currentForecastData.json",ForecastDataCurrentVector);
 	}
 	
 	
-	//metodo per compare ID della città gia presente nel vettore e quello della chiamata api
-	public boolean compareId(String name,Vector<ForecastDataCurrent> vettore ) {
-		JSONObject compare1 = callApi(ApiReference.UrlCurrP1 + name + ApiReference.UrlCurrP2);
-		
-		int ID = vettore.lastElement().getCity().getID();
-		
-		int ID2 = Integer.parseInt(compare1.get("id").toString());
-		
+	
+	/**
+	 * metodo per comparare gli ID di due città, una presente nel vettore e la seconda nel cityName
+	 * @param cityName - da cui estrarre l'ID
+	 * @param vettore - da cui estrarre l'ID2
+	 * @return
+	 */
+	public boolean compareId(String cityName,Vector<ForecastDataCurrent> vettore ) {
+		JSONObject compare1 = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
+		int ID = Integer.parseInt(compare1.get("id").toString());
+		int ID2 = vettore.lastElement().getCity().getID();
 		if(ID == ID2)
 			return true;
 		else
@@ -134,12 +143,12 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	
 	
 	
-
+	@SuppressWarnings("unused")
+	@Deprecated //in data 30/12/21 dopo modifica a ForecastCurr
 	/**
-	 * salva su un file passato nel parametro formale
+	 * metodo che svuota file locale
 	 * @param nomeFile parametro formale
 	 */
-	@SuppressWarnings("unused")
 	private void svuotaFileLocale(String nomeFile) {
 		try{
 			FileWriter FW = new FileWriter(nomeFile);
@@ -153,11 +162,11 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 		
 	/**
 	 * Metodo che passando un oggetto Vector come parametro locale lo salva su un file di nome nomeFile
-	 * @param nomeFile
+	 * @param nomeFile - file locale
 	 * @param vettore
 	 * @throws IOException
 	 */
-	public void salvaSuFILE(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
+	public void salvaSuFile(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
 		PrintWriter oss = null;
 		try{
 			oss = new PrintWriter(new BufferedWriter(new FileWriter(nomeFile)));
@@ -174,13 +183,12 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 
 	
 
-
 	/**
-	 * metodo che carica un vettore di oggetto da un file locale e lo carica su un vettore
-	 * @param nomeFile
-	 * @param vettore
+	 * metodo che carica un vettore di oggetti da un file  nomeFile e lo carica su un vettore
+	 * @param nomeFile - file locale
+	 * @param vettore 
 	 */
-	public void apriDaFILE(String nomeFile, Vector<ForecastDataCurrent> vettore,String name){
+	public void apriDaFile(String nomeFile, Vector<ForecastDataCurrent> vettore,String cityName){
 		try{
 			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
 			String inJSON = "";
@@ -188,18 +196,20 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 				inJSON += scr.nextLine();
 			Gson gson = new Gson();
 			Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJSON, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
-			if(tmpVec.size() > vettore.size()) 
-				sincronizzaElementi(vettore, tmpVec,name);
+			if(tmpVec.size() != 0)
+				vettore.addAll(tmpVec);
 		}
 		catch(Exception e){
-			System.out.println("file " + nomeFile + "  vuoto "  );
+			System.out.println("apertura file " + nomeFile + " non riuscita"  );
 		}
 	}
 	
 	
 	
+	@SuppressWarnings("unused")
+	@Deprecated //in data 30/12/21 dopo modifica a ForecastCurr
 	/**
-	 * Metodo che ci permette di caricare sul Vector gli oggetti se e solo se esistenti già nel file locale 
+	 * Metodo che ci permette di caricare sul Vector gli oggetti (se e solo se) esistenti già nel file locale 
 	 *
 	 * @param vettore su cui sincronizzare
 	 * @param toSinc da inizializzare
@@ -227,6 +237,11 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	
 	
 	
+	/**
+	 * sei inutile
+	 * @param fileOutputStream
+	 * @return
+	 */
 	@SuppressWarnings("unused")
 	private ObjectOutputStream BufferedOutputStream(FileOutputStream fileOutputStream) {
 		// TODO Auto-generated method stub
