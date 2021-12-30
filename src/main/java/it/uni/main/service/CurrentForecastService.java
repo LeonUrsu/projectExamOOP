@@ -39,8 +39,12 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	 * elemento ForecastDataCurrent fino a raggiungere un valore massimo 
 	 * stabilito dal programmatore tramite il PARAMETRO PROGRAMMATORE
 	 */
-	public static Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
+	public Vector<ForecastDataCurrent> ForecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 	
+	public Vector<ForecastDataCurrent> getForecastDataCurrentVector ()
+	{
+		return this.ForecastDataCurrentVector;
+	}
 	
 	
 	/**
@@ -87,14 +91,13 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	 * @throws IOException
 	 */	
 	public void forecastCurr(String cityName) throws ParseException, IOException {
-		
+
 		if(ForecastDataCurrentVector.isEmpty())
-			apriDaFile("currentForecastData.json", ForecastDataCurrentVector, cityName);
+			apriDaFile("currentForecastData.json", ForecastDataCurrentVector);
 		else 
 			if(!compareId(cityName, ForecastDataCurrentVector)) 
 				ForecastDataCurrentVector.removeAllElements();			 	
 		
-	
 		//Creazione del JAVA Object dal JSONObject
 		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
 		JSONObject tmp = (JSONObject)oggettoJ.get("main");
@@ -188,7 +191,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	 * @param nomeFile - file locale
 	 * @param vettore 
 	 */
-	public void apriDaFile(String nomeFile, Vector<ForecastDataCurrent> vettore,String cityName){
+	public void apriDaFile(String nomeFile, Vector<ForecastDataCurrent> vettore){
 		try{
 			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
 			String inJSON = "";
