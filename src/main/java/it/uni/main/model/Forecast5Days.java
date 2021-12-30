@@ -1,6 +1,9 @@
 package it.uni.main.model;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 public class Forecast5Days implements Serializable{
 	
@@ -40,14 +43,20 @@ public class Forecast5Days implements Serializable{
 	}
 	
 
-	/*public String EpochConverter(long unixTime) {
+	@Deprecated
+	/**
+	 * Metodo che ci restitusce formato UTC in stringa di un formato unix del tempo
+	 * @param unixTime tempo in unix
+	 * @return UTC in stringa
+	 */
+	public String EpochConverter(long unixTime) {
 		java.util.Date dateTime = new java.util.Date((long) Double.valueOf(unixTime).longValue() * 1000);
 		String fromTimeZone = "GMT+1";
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		df.setTimeZone(TimeZone.getTimeZone(fromTimeZone));
 		String reportDate = df.format(dateTime);
 		return reportDate;
-	}*/
+	}
 	
 	
 }

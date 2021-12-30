@@ -8,10 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.ParseException;
+
 import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +17,8 @@ import java.util.Scanner;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import it.uni.main.interfaceToUse.OpenWeatherService;
 
@@ -36,11 +35,11 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 * @return String JSON
 	 */
 	@Override
-	public JSONObject callApi(String myUrl) 
+	public JsonObject callApi(String myUrl) 
 	{
 		//System.out.println("URL----->" + myUrl);
 		
-		JSONObject Jobject= new JSONObject();
+		JsonObject Jobject = new JsonObject();
 		try {
 			URLConnection openConnection = new URL(myUrl).openConnection();
 			InputStream in = openConnection.getInputStream();//QUI ECCEZIONE
@@ -57,9 +56,10 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 			} finally {
 			   in.close();
 			}
-				Jobject = (JSONObject) JSONValue.parseWithException(data);	 
+			Gson gson = new Gson();
+			Jobject = gson.fromJson(data, JsonObject.class);
 				
-		} catch (IOException | ParseException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,7 +68,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	}
 	
 	
-	public void apriDaFILE(String nomeFile, JSONObject jObj, JSONArray jArr){
+	public void apriDaFILE(String nomeFile, JsonObject jObj, JsonArray jArr){
 		try{
 			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
 			String inJSON = "";
@@ -76,9 +76,9 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 				inJSON += scr.nextLine();
 			Gson gson = new Gson();
 			if(jObj == null)
-				jArr = gson.fromJson(inJSON, JSONArray.class);
+				jArr = gson.fromJson(inJSON, JsonArray.class);
 			else
-				jObj = gson.fromJson(inJSON, JSONObject.class);
+				jObj = gson.fromJson(inJSON, JsonObject.class);
 		}
 		catch(Exception e){
 			System.out.println("file " + nomeFile + "  non aperto o vuoto"  );
@@ -87,12 +87,13 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	
 	
 	
+	@Deprecated
 	/**
 	 * metodo che che converte oggetto di tipo String in tipo JsonObject
 	 * @param toConvert oggetto di tipo String
 	 */
 	@Override
-	public JSONObject toJsonObject(String toConvert) 
+	public JsonObject toJsonObject(String toConvert) 
 	{
 		/*JSONObject tmp = new JSONObject();
 		tmp.put(toConvert, );
@@ -106,9 +107,9 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	 * metodo che converte un file txt con JSON e restituisce un oggetto JSONObject
 	 * @param myFile - file con jSON txt 
 	 */
-	public JSONObject leggiJsondaFile(String myFile)
+	public JsonObject leggiJsondaFile(String myFile)
 	{
-		JSONObject Jobject = null;
+		JsonObject Jobject = null;
 		String data = "";
 		String line = "";
 		try {
@@ -119,9 +120,10 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 			   data+= line;
 		   }
 		   buf.close();
-		   Jobject = (JSONObject) JSONValue.parseWithException(data);
+		   Gson gson = new Gson();
+		   Jobject = gson.fromJson(data, JsonObject.class);
 		}
-		 catch (IOException | ParseException e) {
+		 catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();

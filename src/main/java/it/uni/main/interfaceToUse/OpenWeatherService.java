@@ -1,11 +1,11 @@
 package it.uni.main.interfaceToUse;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 public interface OpenWeatherService 
 {
-	public abstract JSONObject toJsonObject(String toConvert);
-	public abstract JSONObject callApi(String myUrl);
+	public abstract JsonObject toJsonObject(String toConvert);
+	public abstract JsonObject callApi(String myUrl);
 	
 	
 }

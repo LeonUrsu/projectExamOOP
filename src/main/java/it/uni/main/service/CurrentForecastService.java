@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,10 +17,8 @@ import java.util.Vector;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonObject;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import it.uni.main.interfaceToUse.ForecastDataCurr;
@@ -99,8 +98,8 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 				ForecastDataCurrentVector.removeAllElements();			 	
 		
 		//Creazione del JAVA Object dal JSONObject
-		JSONObject oggettoJ = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
-		JSONObject tmp = (JSONObject)oggettoJ.get("main");
+		JsonObject oggettoJ = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
+		JsonObject tmp = oggettoJ.getAsJsonObject("main");
 		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
 												Double.parseDouble(tmp.get("temp_min").toString()),
 												Double.parseDouble(tmp.get("temp_max").toString()),
@@ -108,7 +107,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
 		
 		long dt = Long.parseLong(oggettoJ.get("dt").toString());
-		tmp = (JSONObject)oggettoJ.get("coord");
+		tmp = oggettoJ.getAsJsonObject("coord");
 		City city = new City(Float.parseFloat(tmp.get("lon").toString()),
 							 Float.parseFloat(tmp.get("lat").toString()),
 							 Integer.parseInt(oggettoJ.get("id").toString()),
@@ -135,7 +134,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	 * @return
 	 */
 	public boolean compareId(String cityName,Vector<ForecastDataCurrent> vettore ) {
-		JSONObject compare1 = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
+		JsonObject compare1 = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
 		int ID = Integer.parseInt(compare1.get("id").toString());
 		int ID2 = vettore.lastElement().getCity().getID();
 		if(ID == ID2)

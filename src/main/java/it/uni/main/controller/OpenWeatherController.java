@@ -2,10 +2,10 @@ package it.uni.main.controller;
 
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Timer;
 import java.util.Vector;
 
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,11 +30,17 @@ public class OpenWeatherController
 	@Autowired
 	private Filters filters;
 	
+	
 	//Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
 	//un parametro nome della citta
+	/**
+	 * Rotta che ci restituisce un array di oggetti con informazioni sull'umidità degli ultimi 5 giorni
+	 * @param  nome della città su cui prendere le previsioni
+	 * @return Vector di previsioni
+	 */
 	@GetMapping("/getForecast")
-	public Vector<Forecast5Days> forecast5day(@RequestParam(value="nome", defaultValue="Rome") String nome) {
-		return forecast5Day.forecast5day(nome);
+	public Vector<Object> forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
+		return forecast5Day.forecast5day(cityName);
 	}
 	
 	
@@ -45,14 +51,14 @@ public class OpenWeatherController
 	 * @throws ParseException
 	 */
 	@GetMapping("/startCurrentService") //si potrebbe aggiungere un periodo di funzionamento
-	public void currentForecast(@RequestParam(value="nome", defaultValue="Rome") String nome) throws IOException, ParseException{
-	currentForecast.ripetizioneMetodo(nome);	
+	public void currentForecast(@RequestParam(value="nome", defaultValue="Rome") String cityName) throws IOException, ParseException{
+	currentForecast.ripetizioneMetodo(cityName);	
 	}
 	
 	
 	
 	/**
-	 * Rotta che ferma il salvataggio delle previsioni
+	 * Rotta che ferma il salvataggio delle previsioni ogni ora
 	 * @throws InterruptedException 
 	 */
 	@GetMapping("/stopCurrentService")
@@ -63,21 +69,23 @@ public class OpenWeatherController
 	
 	
 	/**
-	 * Rotta per il filtraggio della banda oraria giornaliera in base ai parametri formali passati
+	 * Rotta per il filtraggio delle previsioni su una banda passante per l'intervallo orario giornaliero in base ai 
+	 * parametri passati
 	 * @param initialValue ora iniziale di inizio filtraggio
 	 * @param finalValue ora finale del filtraggio
 	 * @param days giorni di  filtraggio, se 0 restituisce un errore ancora da stabilire
 	 * @return vector di previsioni meteo in base ai parametri passati
 	 */
 	@GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}")
-	public Vector<ForecastDataCurrent>  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days){
+	public CurrentStats  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days){
 		return filters.dailyFilter(finalValue, finalValue, days);
 	}
 	
 	
 	
 	/**
-	 * Rotta per il filtraggio della banda oraria dell'ultima settimana
+	 * Rotta per il filtraggio delle previsioni su una banda passante per l'intervallo orario giornaliero in base ai 
+	 * parametri passati
 	 * @param initialValue ora iniziale di inizio filtraggio
 	 * @param finalValue ora finale del filtraggio 
 	 * @return vector di previsioni meteo in base ai parametri passati
