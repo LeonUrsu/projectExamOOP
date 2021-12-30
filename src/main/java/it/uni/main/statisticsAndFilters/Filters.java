@@ -20,26 +20,26 @@ public class Filters {
 	
 	
 	//TO TEST
-	public Vector<ForecastDataCurrent> weeklyFilter(long initialValue, long finalValue) throws IllegalArgumentException {
+	public CurrentStats weeklyFilter(long initialValue, long finalValue) throws IllegalArgumentException {
 		return dailyFilter(initialValue, finalValue, 7);
 	}
 	
 
-	
 	//TO TEST
-	public Vector<ForecastDataCurrent> dailyFilter(long initialValue, long finalValue, int days)  throws IllegalArgumentException
-	{																							// unix format per gli Value
+	public CurrentStats dailyFilter(long initialValue, long finalValue, int days)  throws IllegalArgumentException
+	{																							//unix format per gli Value
 		CurrentForecastService currentForecastService = new CurrentForecastService();
 		Vector<ForecastDataCurrent> tmpVec = new Vector<ForecastDataCurrent>();
-		tmpVec.addAll(currentForecastService.getForecastDataCurrentVector());
+		tmpVec.addAll(currentForecastService.getForecastDataCurrentVector());					//assegno il vettore presente nella RAM
 		if(tmpVec == null || tmpVec.size() == 0)
-			currentForecastService.apriDaFile(FileReferenceOOPE.myFile, tmpVec );				//posso fondere tmpVec con FilteredVec
+			currentForecastService.apriDaFile(FileReferenceOOPE.myFile, tmpVec );				//IDEA: posso fondere tmpVec con FilteredVec
 		Vector<ForecastDataCurrent> filteredVector = new Vector<ForecastDataCurrent>();
 		confrontaOre(finalValue, finalValue);
-		//fin qui ok
-		daysPeriodFilter(initialValue, finalValue, days, tmpVec, filteredVector);
-	 	return filteredVector; //creazione statistiche poi return delle stesse
+		daysPeriodFilter(initialValue, finalValue, days, tmpVec, filteredVector); 				//filtraggio TO-TEST
+		StatisticsCurrentForecasts statisticsCurrentForecasts = new StatisticsCurrentForecasts();
+		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, days, filteredVector);
 	}
+	
 	
 	
 	/**
@@ -58,8 +58,8 @@ public class Filters {
 								  Vector<ForecastDataCurrent> filteredVector) throws IllegalArgumentException{
 		//find the biggest dt time in Vector
 		long unix = findBiggestValue(toFilterVector);
-		//TO TEST
-		//look if we can filter 'n' days OR if in tmpVec there are 'n days' of forecasts	
+		
+		//look if we can filter 'n' days OR if in tmpVec there are 'n days' of forecasts //TO-TEST
 		if(days!=0) {
 			boolean looked = true;
 			unix -= days * 86400;							//valore minimo accettabile per il filtraggio
@@ -68,8 +68,8 @@ public class Filters {
 					looked = false;
 			if(looked) throw new IllegalArgumentException();
 		}	
-		//TO TEST
-		//filtering process																	
+		
+		//filtering process	//TO TEST																
 		for(int i=0, u=toFilterVector.size() ; i<u ; i++) {
 			ForecastDataCurrent tmpEle = toFilterVector.get(i);
 			if(controllTimeBand(initialValue, finalValue, unix, tmpEle))
