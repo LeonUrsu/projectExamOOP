@@ -2,6 +2,8 @@ package it.uni.main.statisticsAndFilters;
 
 import java.util.Vector;
 
+import it.uni.main.model.Forecast5Days;
+
 public class Statistics {
 
 	//tutti i metodi presenti in questa classe ricevono un Vector<Object> ,siccome la classe Forecast5Days una volta richiamata 
@@ -10,19 +12,21 @@ public class Statistics {
 	//sarebbe corretto dividere i metodi appartenenti a entrambe le classi e quelli non appartenenti tramite l'Ereditarietà
 	
 	
-	protected double mediaUmiditaTotale(Vector<Object> previsioni)
+	protected double mediaUmiditaTotale(Vector<Forecast5Days> previsioni)
 	{
+		
 		return 0;	
 	}
 	
 	
-	protected double mediaUmiditaMin(Vector<Object> previsioni)
+	protected double UmiditaMinAssoluta(Vector<Forecast5Days> previsioni)
 	{
+
 		return 0;	
 	}
 	
 	
-	protected double mediaUmiditaMax(Vector<Object> previsioni)
+	protected double UmiditaMaxAssoluta(Vector<Forecast5Days> previsioni)
 	{
 		return 0;	
 	}

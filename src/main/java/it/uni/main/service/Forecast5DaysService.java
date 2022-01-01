@@ -10,42 +10,54 @@ import com.google.gson.JsonObject;
 import it.uni.main.model.City;
 import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.Humidity;
+import it.uni.main.model.Stats5Days;
 import it.uni.main.utils.ApiReference;
 
 
 
 @Service
 public class Forecast5DaysService extends OpenWeatherServiceImp {
-	private Vector<Object> forecast5DaysVec = new Vector<Object>();  //riservo spazio statico in memoria per il vettore
+	
+	/**
+	 * Vector interno alla classe
+	 */
+	private Vector<Forecast5Days> forecast5DaysVec = new Vector<Forecast5Days>();  //riservo spazio statico in memoria per il vettore
 	
 	
-	/**metodo che ciama l'api e salva temporanemente mella memoria le previsioni su cui andranno poi fatte le statistiche 
-	 *
+	
+	/**
+	 * Metodo getter del Vector inteno alla classe
+	 * @return
+	 */
+	public Vector<Forecast5Days> getForecast5DaysVec() {
+		return forecast5DaysVec;
+	}
+
+
+	
+	/**
+	 * Metodo che chiama l'api e salva temporanemente mella memoria le previsioni 
 	 *@param nome della citta su cui cercare le previsioni 
 	 */
-	public Vector<Object> forecast5day(String cityName) {
-
-		System.out.println("print name cuty "+ cityName);
+	public Stats5Days forecast5day(String cityName) {
 		JsonObject oggettoJ = callApi(ApiReference.Url5dayP1 + cityName + ApiReference.Url5dayP2);
-		JsonArray forecasts40 = oggettoJ.getAsJsonArray("list");   
-//		JsonObject city = oggettoJ.getAsJsonObject("city");
-//		City città = new City(city.getAsJsonObject("coord").getAsJsonObject("lat"),
-//							  city.getAsJsonObject("coord").getAsJsonObject("lon"),
-//							  city.getAsJsonObject("id"),
-//							  city.getAsJsonObject("name")
-//							 );
-		//carico il vettore vuoto con previsioni ogni 24 ore a partire dall'ora della chiamata all'api
+		JsonArray forecasts40 = oggettoJ.getAsJsonArray("list"); 
+		JsonObject Jcity = oggettoJ.getAsJsonObject("city");	
+		float lat = Jcity.getAsJsonObject("coord").get("lat").getAsFloat();
+		float lon = Jcity.getAsJsonObject("coord").get("lon").getAsFloat();
+		int id =   Jcity.get("id").getAsInt();
+		String name =  Jcity.get("name").getAsString();
+		City city = new City(lat, lon, id, name);
 		for (int i=0, u=forecasts40.size()  ;  i<u  ;  i++) {
 			JsonObject tmpObj = forecasts40.get(i).getAsJsonObject();
-			long tmpDate = Long.parseLong(tmpObj.get("dt").toString());//prendo data e ora della previsione
+			long tmpDate = tmpObj.get("dt").getAsLong();   //prendo data e ora della previsione
 			tmpObj = tmpObj.get("main").getAsJsonObject();
-			Humidity humidity = new Humidity(Integer.parseInt(tmpObj.get("humidity").toString()));
+			Humidity humidity = new Humidity(tmpObj.get("humidity").getAsInt());
 			forecast5DaysVec.add(new Forecast5Days(humidity,tmpDate));	
 		}
-//		forecast5DaysVec.add(city);
-		return forecast5DaysVec; 
+		System.out.println("-->" + forecast5DaysVec.size());
+		return new Stats5Days(city, forecast5DaysVec); 
 	}
-	
 	
 	
 	

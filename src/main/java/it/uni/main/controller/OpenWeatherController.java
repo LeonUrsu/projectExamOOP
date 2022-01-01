@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.uni.main.model.CurrentStats;
 import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.ForecastDataCurrent;
+import it.uni.main.model.Stats5Days;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.service.Forecast5DaysService;
 import it.uni.main.statisticsAndFilters.Filters;
@@ -39,7 +40,7 @@ public class OpenWeatherController
 	 * @return Vector di previsioni
 	 */
 	@GetMapping("/getForecast")
-	public Vector<Object> forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
+	public Stats5Days forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
 		return forecast5Day.forecast5day(cityName);
 	}
 	
