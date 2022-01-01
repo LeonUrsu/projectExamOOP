@@ -3,8 +3,7 @@ package it.uni.main.statisticsAndFilters;
 import java.util.Vector;
 
 import org.springframework.stereotype.Service;
-import java.math.*;
-
+import it.uni.main.model.City;
 import it.uni.main.model.CurrentStats;
 import it.uni.main.model.ForecastDataCurrent;
 
@@ -12,15 +11,23 @@ import it.uni.main.model.ForecastDataCurrent;
 public class StatisticsCurrentForecasts extends Statistics{
 	
 	
-	
+	/**
+	 * Metodo per generare java object che verrà passatto alla classe filters
+	 * @param initialValue tempo d'inizio
+	 * @param finalValue tempo di fine
+	 * @param days quantità giorni da considerare
+	 * @param filteredVector vettore filtrato
+	 * @return CurrentStats object
+	 */
 	public CurrentStats currentStats(long initialValue, long finalValue, int days,Vector<ForecastDataCurrent> filteredVector) { 
-	//	
+	
 		double tempMin = filteredVector.get(0).getTemperature().getTempMin();
 		double tempMax = filteredVector.get(0).getTemperature().getTempMax();
 		double tempMedia = mediaTemp(filteredVector);
-		double
+		double varianzaTempPercepita = varianzaTempPercepita(filteredVector);
+		double varianzaTempReale = varianzaTempReale(filteredVector);
 		
-		return new CurrentStats();
+		return new CurrentStats(initialValue, finalValue, days, filteredVector, tempMin, tempMax, tempMedia, varianzaTempPercepita, varianzaTempReale);
 	}
 	
 	
