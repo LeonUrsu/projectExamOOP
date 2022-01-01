@@ -91,8 +91,8 @@ public class OpenWeatherController
 	 * @return vector di previsioni meteo in base ai parametri passati
 	 */
 	@GetMapping("/filter/weekly/{initialValue}/{finalValue}")
-	public Vector<ForecastDataCurrent> weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue){
-		return null;
+	public CurrentStats weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue){
+		return filters.weeklyFilter(initialValue, finalValue);
 	}
 	
 

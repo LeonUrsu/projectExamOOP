@@ -17,7 +17,7 @@ public class CurrentStats {
 		
 		public CurrentStats(long initialValue, long finalValue, int days, 
 				Vector<ForecastDataCurrent> filteredVector,double tempMin,double tempMax,
-				double tempMedia,double varianzaTempPercepita,double varianzaTempReale,City città){
+				double tempMedia,double varianzaTempPercepita,double varianzaTempReale){
 			
 			this.oraInizio = initialValue;
 			this.oraFine = finalValue;

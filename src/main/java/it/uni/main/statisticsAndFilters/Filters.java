@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.springframework.stereotype.Service;
 
+import it.uni.main.model.City;
 import it.uni.main.model.CurrentStats;
 import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.service.CurrentForecastService;
