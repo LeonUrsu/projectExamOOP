@@ -56,7 +56,4 @@ public class Temperature implements Serializable {
 				+ " Temperatura percepita:" + tempFeel;
 	}
 
-	
-
-
 }

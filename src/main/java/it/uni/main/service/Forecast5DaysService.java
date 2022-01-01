@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
 import it.uni.main.model.City;
 import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.Humidity;
