@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uni.main.model.CurrentStats;
 import it.uni.main.model.Forecast5Days;
-import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.model.Stats5Days;
+import it.uni.main.model.Forecast5DaysHumidity;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.service.Forecast5DaysService;
 import it.uni.main.statisticsAndFilters.Filters;
+import it.uni.main.statisticsAndFilters.Forecasts5DaysStatistics;
 
 
 @RestController
@@ -30,6 +31,10 @@ public class OpenWeatherController
 	private CurrentForecastService currentForecast;
 	@Autowired
 	private Filters filters;
+	@Autowired
+	private Forecasts5DaysStatistics statistics5DaysForecasts;
+	
+	
 	
 	
 	//Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
@@ -39,10 +44,18 @@ public class OpenWeatherController
 	 * @param  nome della città su cui prendere le previsioni
 	 * @return Vector di previsioni
 	 */
-	@GetMapping("/getForecast")
-	public Stats5Days forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
+	@GetMapping("/getCompleteForecast")
+	public Vector<Forecast5Days> forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
 		return forecast5Day.forecast5day(cityName);
 	}
+	
+	
+	
+	@GetMapping("/getHumidityStats")
+	public Stats5Days forecast5day() {
+		return statistics5DaysForecasts.getStats5DaysHumidity();
+	}
+	
 	
 	
 	/**

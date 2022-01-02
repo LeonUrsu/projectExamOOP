@@ -19,14 +19,14 @@ public class Statistics {
 	}
 	
 	
-	protected double UmiditaMinAssoluta(Vector<Forecast5Days> previsioni)
+	protected double umiditaMinAssoluta(Vector<Forecast5Days> previsioni)
 	{
 
 		return 0;	
 	}
 	
 	
-	protected double UmiditaMaxAssoluta(Vector<Forecast5Days> previsioni)
+	protected double umiditaMaxAssoluta(Vector<Forecast5Days> previsioni)
 	{
 		return 0;	
 	}

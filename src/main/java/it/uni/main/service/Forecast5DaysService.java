@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import it.uni.main.model.City;
 import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.Humidity;
-import it.uni.main.model.Stats5Days;
+import it.uni.main.model.Forecast5DaysHumidity;
 import it.uni.main.utils.ApiReference;
 
 
@@ -18,28 +18,26 @@ import it.uni.main.utils.ApiReference;
 @Service
 public class Forecast5DaysService extends OpenWeatherServiceImp {
 	
-	/**
-	 * Vector interno alla classe
-	 */
-	private Vector<Forecast5Days> forecast5DaysVec = new Vector<Forecast5Days>();  //riservo spazio statico in memoria per il vettore
 	
+	private static Forecast5DaysHumidity forecast5DaysHumidity ;  //riservo spazio statico in memoria per il vettore
 	
 	
 	/**
 	 * Metodo getter del Vector inteno alla classe
 	 * @return
 	 */
-	public Vector<Forecast5Days> getForecast5DaysVec() {
-		return forecast5DaysVec;
+	public Forecast5DaysHumidity getForecast5Days() {
+		return forecast5DaysHumidity;
 	}
-
-
+	
+	
 	
 	/**
 	 * Metodo che chiama l'api e salva temporanemente mella memoria le previsioni 
 	 *@param nome della citta su cui cercare le previsioni 
 	 */
-	public Stats5Days forecast5day(String cityName) {
+	public Vector<Forecast5Days> forecast5day(String cityName) {
+		Vector<Forecast5Days> vettore = new Vector<Forecast5Days>();
 		JsonObject oggettoJ = callApi(ApiReference.Url5dayP1 + cityName + ApiReference.Url5dayP2);
 		JsonArray forecasts40 = oggettoJ.getAsJsonArray("list"); 
 		JsonObject Jcity = oggettoJ.getAsJsonObject("city");	
@@ -53,10 +51,10 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 			long tmpDate = tmpObj.get("dt").getAsLong();   //prendo data e ora della previsione
 			tmpObj = tmpObj.get("main").getAsJsonObject();
 			Humidity humidity = new Humidity(tmpObj.get("humidity").getAsInt());
-			forecast5DaysVec.add(new Forecast5Days(humidity,tmpDate));	
+			vettore.add(new Forecast5Days(humidity,tmpDate));	
 		}
-		System.out.println("-->" + forecast5DaysVec.size());
-		return new Stats5Days(city, forecast5DaysVec); 
+		forecast5DaysHumidity = new Forecast5DaysHumidity(city, vettore);
+		return forecast5DaysHumidity.getForecast5DaysVectorHum();
 	}
 	
 	
