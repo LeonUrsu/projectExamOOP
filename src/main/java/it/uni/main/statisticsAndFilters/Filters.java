@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.springframework.stereotype.Service;
 
+import it.uni.main.exception.IllegalTimeException;
 import it.uni.main.model.City;
 import it.uni.main.model.CurrentStats;
 import it.uni.main.model.ForecastDataCurrent;
@@ -21,13 +22,13 @@ public class Filters {
 	
 	
 	//TO TEST
-	public CurrentStats weeklyFilter(long initialValue, long finalValue) throws IllegalArgumentException {
+	public CurrentStats weeklyFilter(long initialValue, long finalValue) throws IllegalArgumentException, IllegalTimeException {
 		return dailyFilter(initialValue, finalValue, 7);
 	}
 	
 
 	
-	public CurrentStats dailyFilter(long initialValue, long finalValue, int days)  throws IllegalArgumentException
+	public CurrentStats dailyFilter(long initialValue, long finalValue, int days)  throws IllegalArgumentException, IllegalTimeException
 	{																							//unix format per gli Value
 		CurrentForecastService currentForecastService = new CurrentForecastService();
 		Vector<ForecastDataCurrent> tmpVec = new Vector<ForecastDataCurrent>();
@@ -135,11 +136,12 @@ public class Filters {
 	 * Metodo che verifica la correttezza dei valori di due parametri rientrino nel intervallo orario 0:00:00 -23:59:59
 	 * @param a primo paramtetro 
 	 * @param b secondo parametro
+	 * @throws IllegalTimeException 
 	 * @throws IllegalArgumentException
 	 */
-	private void verifyBand(long a, long b) { //si puo creare un tipo illegalTimeException
+	private void verifyBand(long a, long b) throws IllegalTimeException {
 		if(a<b && 0<=a && b<= 86399);
-		else throw new IllegalArgumentException();
+		else throw new IllegalTimeException();
 	}
 	
 	

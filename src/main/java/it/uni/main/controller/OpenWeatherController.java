@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.uni.main.exception.IllegalTimeException;
+import it.uni.main.exception.StopNotValidException;
 import it.uni.main.model.CurrentStats;
 import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.ForecastDataCurrent;
@@ -60,10 +62,11 @@ public class OpenWeatherController
 	
 	/**
 	 * Rotta che ferma il salvataggio delle previsioni ogni ora
+	 * @throws StopNotValidException 
 	 * @throws InterruptedException 
 	 */
 	@GetMapping("/stopCurrentService")
-	public void currentForecastStop(Timer timer){
+	public void currentForecastStop(Timer timer) throws StopNotValidException{
 	currentForecast.stopTimer();
 	}
 	
@@ -76,9 +79,11 @@ public class OpenWeatherController
 	 * @param finalValue ora finale del filtraggio
 	 * @param days giorni di  filtraggio, se 0 restituisce un errore ancora da stabilire
 	 * @return vector di previsioni meteo in base ai parametri passati
+	 * @throws IllegalTimeException 
+	 * @throws IllegalArgumentException 
 	 */
 	@GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}")
-	public CurrentStats  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days){
+	public CurrentStats  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days) throws IllegalArgumentException, IllegalTimeException{
 		return filters.dailyFilter(finalValue, finalValue, days);
 	}
 	
@@ -90,9 +95,11 @@ public class OpenWeatherController
 	 * @param initialValue ora iniziale di inizio filtraggio
 	 * @param finalValue ora finale del filtraggio 
 	 * @return vector di previsioni meteo in base ai parametri passati
+	 * @throws IllegalTimeException 
+	 * @throws IllegalArgumentException 
 	 */
 	@GetMapping("/filter/weekly/{initialValue}/{finalValue}")
-	public CurrentStats weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue){
+	public CurrentStats weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue) throws IllegalArgumentException, IllegalTimeException{
 		return filters.weeklyFilter(initialValue, finalValue);
 	}
 	

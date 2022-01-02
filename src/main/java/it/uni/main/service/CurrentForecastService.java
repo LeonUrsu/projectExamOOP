@@ -21,7 +21,7 @@ import com.google.gson.JsonObject;
 
 import org.springframework.stereotype.Service;
 
-import it.uni.main.interfaceToUse.ForecastDataCurr;
+import it.uni.main.exception.StopNotValidException;
 import it.uni.main.model.City;
 import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.model.Humidity;
@@ -29,7 +29,7 @@ import it.uni.main.model.Temperature;
 import it.uni.main.utils.ApiReference;
 
 @Service
-public class CurrentForecastService extends OpenWeatherServiceImp implements ForecastDataCurr{
+public class CurrentForecastService extends OpenWeatherServiceImp{
 	
 	
 	
@@ -74,10 +74,16 @@ public class CurrentForecastService extends OpenWeatherServiceImp implements For
 	
 	/**
 	 * Metodo per fermare il Timer (root)
+	 * @throws StopNotValidException 
 	 */
-	public void stopTimer() {
-		timer.cancel();
-		timer = null;
+	public void stopTimer() throws StopNotValidException {
+		
+		if(timer == null) 
+			throw new StopNotValidException(); 
+		else {
+			timer.cancel();
+			timer = null;
+		}
 	}
 	
 
