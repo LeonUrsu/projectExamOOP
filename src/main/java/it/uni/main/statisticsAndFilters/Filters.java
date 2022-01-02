@@ -32,7 +32,7 @@ public class Filters {
 	{																							//unix format per gli Value
 		CurrentForecastService currentForecastService = new CurrentForecastService();
 		Vector<ForecastDataCurrent> tmpVec = new Vector<ForecastDataCurrent>();
-		tmpVec.addAll(currentForecastService.getForecastDataCurrentVector());					//assegno il vettore presente nella RAM
+		tmpVec.addAll(currentForecastService.forecastDataCurrentVector);					//assegno il vettore presente nella RAM
 		if(tmpVec == null || tmpVec.size() == 0)
 			currentForecastService.apriDaFile(FileReferenceOOPE.myFile, tmpVec );				//IDEA: posso fondere tmpVec con FilteredVec
 		Vector<ForecastDataCurrent> filteredVector = new Vector<ForecastDataCurrent>();
@@ -58,7 +58,6 @@ public class Filters {
 	 */
 	private void daysPeriodFilter(long initialValue, long finalValue, int days, Vector<ForecastDataCurrent> toFilterVector,
 								  Vector<ForecastDataCurrent> filteredVector) throws IllegalArgumentException{
-		
 		//find the biggest dt time in Vector
 		long unixMax = findBiggestValue(toFilterVector);
 		long unixMin = findSmallestValue(toFilterVector);
@@ -102,7 +101,7 @@ public class Filters {
 	 * @param vettore previsioni
 	 * @return long secondi dal "1 gennaio 1970"
 	 */
-	public long findBiggestValue(Vector<ForecastDataCurrent> vettore)
+	private long findBiggestValue(Vector<ForecastDataCurrent> vettore)
 	{
 		long dt = vettore.get(0).getDayTime();
 		for(int i=0, u=vettore.size() ; i<u ; i++) 
@@ -120,7 +119,7 @@ public class Filters {
 	 * @param vettore previsioni
 	 * @return long secondi dal "1 gennaio 1970"
 	 */
-	public long findSmallestValue(Vector<ForecastDataCurrent> vettore)
+	private long findSmallestValue(Vector<ForecastDataCurrent> vettore)
 	{
 		long dt = vettore.get(0).getDayTime();
 		for(int i=0, u=vettore.size() ; i<u ; i++) 

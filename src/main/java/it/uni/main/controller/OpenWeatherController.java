@@ -4,7 +4,6 @@ package it.uni.main.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Timer;
-import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.JsonObject;
+
 import it.uni.main.exception.IllegalTimeException;
 import it.uni.main.exception.StopNotValidException;
 import it.uni.main.model.CurrentStats;
-import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.Stats5Days;
 import it.uni.main.model.Forecast5DaysHumidity;
 import it.uni.main.service.CurrentForecastService;
@@ -47,7 +47,7 @@ public class OpenWeatherController
 	 * @return Vector di previsioni
 	 */
 	@GetMapping("/getCompleteForecast")
-	public Vector<Forecast5Days> forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
+	public Forecast5DaysHumidity forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
 		return forecast5Day.forecast5day(cityName);
 	}
 	
@@ -58,6 +58,18 @@ public class OpenWeatherController
 		return statistics5DaysForecasts.getStats5DaysHumidity();
 	}
 	
+	
+	/**
+	 * Rotta per carivare il Vector forecastDataCurrentVector di oggetti
+	 * @return
+	 */
+	@GetMapping("/loadCurrent")
+	public JsonObject loadVector() {
+		currentForecast.forecastCurrOffline();
+		JsonObject tmp = new JsonObject();
+		tmp.addProperty("Request Status", "Loaded");
+		return tmp;
+	}
 	
 	
 	/**

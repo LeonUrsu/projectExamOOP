@@ -68,7 +68,10 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	}
 	
 	
-	public void apriDaFILE(String nomeFile, JsonObject jObj, JsonArray jArr){
+	/**
+	 * metodo per
+	 */
+	public void apriDaFile(String nomeFile, JsonObject jObj, JsonArray jArr){
 		try{
 			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
 			String inJSON = "";
@@ -85,29 +88,14 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 		}
 	}
 	
-	
-	
-	@Deprecated
-	/**
-	 * metodo che che converte oggetto di tipo String in tipo JsonObject
-	 * @param toConvert oggetto di tipo String
-	 */
-	@Override
-	public JsonObject toJsonObject(String toConvert) 
-	{
-		/*JSONObject tmp = new JSONObject();
-		tmp.put(toConvert, );
-		*/
-		return null;
-	}
 
 	
-	
+	@Deprecated
 	/*
 	 * metodo che converte un file txt con JSON e restituisce un oggetto JSONObject
 	 * @param myFile - file con jSON txt 
 	 */
-	public JsonObject leggiJsondaFile(String myFile)
+	public JsonObject leggiJsonDaFile(String myFile)
 	{
 		JsonObject Jobject = null;
 		String data = "";
@@ -129,27 +117,29 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 			e.printStackTrace();
 		}
 		return Jobject;
-		}
+	}
 	
 	
-	
-		public void CreateTxtFile() {
+	@Deprecated
+	/**
+	 * Metodo per creare un file txt vuoto
+	 */
+	public void CreateTxtFile() {
 		String fileName = "my-file.txt";
 	    String encoding = "UTF-8";
-	    
 	    try{
-	    PrintWriter writer = new PrintWriter(fileName, encoding);
-	    writer.close();
+	    	PrintWriter writer = new PrintWriter(fileName, encoding);
+	    	writer.close();
 	    }
 	    catch (IOException e){
 	      System.out.println("An error occurred.");
 	      e.printStackTrace();
 	    }
-  }
+	}
 
 
 	
-
+	@Deprecated
 	public String CurrentTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 		LocalDateTime now = LocalDateTime.now();  
