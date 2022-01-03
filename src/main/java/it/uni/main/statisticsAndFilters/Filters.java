@@ -5,9 +5,9 @@ import java.util.Vector;
 import org.springframework.stereotype.Service;
 
 import it.uni.main.exception.IllegalTimeException;
-import it.uni.main.model.City;
 import it.uni.main.model.CurrentStats;
 import it.uni.main.model.ForecastDataCurrent;
+import it.uni.main.printsConsole.FiltersPrint;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.utils.FileReferenceOOPE;
 
@@ -34,15 +34,19 @@ public class Filters {
 		Vector<ForecastDataCurrent> tmpVec = new Vector<ForecastDataCurrent>();
 		tmpVec.addAll(currentForecastService.forecastDataCurrentVector);					//assegno il vettore presente nella RAM
 		if(tmpVec == null || tmpVec.size() == 0)
-			currentForecastService.apriDaFile(FileReferenceOOPE.myFile, tmpVec );				//IDEA: posso fondere tmpVec con FilteredVec
+			currentForecastService.readVectorFromFile(FileReferenceOOPE.myFile, tmpVec );				//IDEA: posso fondere tmpVec con FilteredVec
+		verifyBand(initialValue, finalValue);
 		Vector<ForecastDataCurrent> filteredVector = new Vector<ForecastDataCurrent>();
-		verifyBand(finalValue, finalValue);
 		daysPeriodFilter(initialValue, finalValue, days, tmpVec, filteredVector); 				//filtraggio TO-TEST
+		if(filteredVector.size() == 0){
+			FiltersPrint.print1();
+			return null;
+		}
 		StatisticsCurrentForecasts statisticsCurrentForecasts = new StatisticsCurrentForecasts();
 		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, days, filteredVector);
 	}
 	
-	
+	S
 	
 	/**
 	 * Metodo filtro, ci permette di filtrare elementi di un vettore e salvarli in un'altro vettore.
@@ -139,7 +143,7 @@ public class Filters {
 	 * @throws IllegalArgumentException
 	 */
 	private void verifyBand(long a, long b) throws IllegalTimeException {
-		if(a<b && 0<=a && b<= 86399);
+		if(a<b && 0<=a && b<= 86399); 
 		else throw new IllegalTimeException();
 	}
 	

@@ -13,14 +13,17 @@ import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.Vector;
 
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import it.uni.main.interfaceToUse.OpenWeatherService;
+import it.uni.main.model.ForecastDataCurrent;
+
 
 
 
@@ -28,28 +31,25 @@ import it.uni.main.interfaceToUse.OpenWeatherService;
 @Service
 public class OpenWeatherServiceImp implements OpenWeatherService{
 	
+	
 	/**
 	 * metodo per chiamare un API tramite url con return del JSON ricevuto dall'API
 	 * 
-	 * @param myUrl url fonte di previsioni di 5 giorni ogni 3 ore
+	 * @param myUrl API di collegamento
 	 * @return String JSON
 	 */
 	@Override
 	public JsonObject callApi(String myUrl) 
 	{
-		//System.out.println("URL----->" + myUrl);
-		
 		JsonObject Jobject = new JsonObject();
 		try {
 			URLConnection openConnection = new URL(myUrl).openConnection();
 			InputStream in = openConnection.getInputStream();//QUI ECCEZIONE
-			
 			String data = "";
 			String line = "";
 			try {
 			   InputStreamReader inR = new InputStreamReader( in );
 			   BufferedReader buf = new BufferedReader( inR );
-			  
 			   while ( ( line = buf.readLine() ) != null ) {
 				   data+= line;
 			   }
@@ -57,8 +57,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 			   in.close();
 			}
 			Gson gson = new Gson();
-			Jobject = gson.fromJson(data, JsonObject.class);
-				
+			Jobject = gson.fromJson(data, JsonObject.class);		
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -67,30 +66,31 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 		return Jobject;
 	}
 	
-	
-	/**
-	 * metodo per
-	 */
-	public void apriDaFile(String nomeFile, JsonObject jObj, JsonArray jArr){
-		try{
-			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
-			String inJSON = "";
-			while(scr.hasNext())
-				inJSON += scr.nextLine();
-			Gson gson = new Gson();
-			if(jObj == null)
-				jArr = gson.fromJson(inJSON, JsonArray.class);
-			else
-				jObj = gson.fromJson(inJSON, JsonObject.class);
-		}
-		catch(Exception e){
-			System.out.println("file " + nomeFile + "  non aperto o vuoto"  );
-		}
-	}
-	
 
 	
+	/**
+	 * metodo che carica un vettore di oggetti da un file  nomeFile e lo carica su un vettore
+	 * @param nomeFile - file locale
+	 * @param vettore 
+	 */
+	public String readStringFromFile(String nomeFile){
+		String inJSON = "";
+		try{
+			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
+			while(scr.hasNext()) 
+				inJSON += scr.nextLine();
+		}
+		catch(Exception e){
+			System.out.println("apertura file " + nomeFile + " non riuscita"  );
+		}
+	return inJSON;
+	}
+	
+	
+	
+	
 	@Deprecated
+	@Override
 	/*
 	 * metodo che converte un file txt con JSON e restituisce un oggetto JSONObject
 	 * @param myFile - file con jSON txt 
@@ -103,7 +103,6 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 		try {
 		   FileReader FR = new FileReader(myFile);
 		   BufferedReader buf = new BufferedReader( FR );
-		  
 		   while ( ( line = buf.readLine() ) != null ) {
 			   data+= line;
 		   }
@@ -120,6 +119,8 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	}
 	
 	
+	
+	@Override
 	@Deprecated
 	/**
 	 * Metodo per creare un file txt vuoto
@@ -139,12 +140,22 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 
 
 	
-	@Deprecated
+	
+	
+	
+	/**
+	 * Metodo che restituisce la data nel formato desiderato
+	 * @return data
+	 */
 	public String CurrentTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 		LocalDateTime now = LocalDateTime.now();  
 		return dtf.format(now);
 	}
+
+
+
+
 	
 	
 }

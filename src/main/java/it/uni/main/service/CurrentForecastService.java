@@ -40,11 +40,6 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	 */
 	public static Vector<ForecastDataCurrent> forecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 	
-//	public Vector<ForecastDataCurrent> getForecastDataCurrentVector ()
-//	{
-//		return this.forecastDataCurrentVector;
-//	}
-	
 	
 	
 	/**
@@ -98,31 +93,31 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	 */	
 	private void forecastCurr(String cityName) throws ParseException, IOException {
 
-		if(forecastDataCurrentVector.isEmpty())
-			apriDaFile("currentForecastData.json", forecastDataCurrentVector);
+		if(forecastDataCurrentVector.isEmpty()) 
+			readVectorFromFile("currentForecastData.json", forecastDataCurrentVector);
 		else 
-			if(!compareId(cityName, forecastDataCurrentVector)) 
+			if(!compareId(cityName, forecastDataCurrentVector)) { 
 				forecastDataCurrentVector.removeAllElements();			 	
-		
-		//Creazione del JAVA Object dal JSONObject
+			System.out.println("id diversi   ");
+			}
+				
+				//Creazione del JAVA Object dal JSONObject
 		JsonObject oggettoJ = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
 		JsonObject tmp = oggettoJ.getAsJsonObject("main");
-		Temperature temperature = new Temperature(Double.parseDouble(tmp.get("temp").toString()),
-												Double.parseDouble(tmp.get("temp_min").toString()),
-												Double.parseDouble(tmp.get("temp_max").toString()),
-												Double.parseDouble(tmp.get("feels_like").toString()));	
-		Humidity humidity = new Humidity(Integer.parseInt(tmp.get("humidity").toString()));
-		
-		long dt = Long.parseLong(oggettoJ.get("dt").toString());
+		Temperature temperature = new Temperature(tmp.get("temp").getAsDouble(),
+												tmp.get("temp_min").getAsDouble(),
+												tmp.get("temp_max").getAsDouble(),
+												tmp.get("feels_like").getAsDouble());	
+		Humidity humidity = new Humidity(tmp.get("humidity").getAsInt());
+		long dt = oggettoJ.get("dt").getAsLong();
 		tmp = oggettoJ.getAsJsonObject("coord");
-		City city = new City(Float.parseFloat(tmp.get("lon").toString()),
-							 Float.parseFloat(tmp.get("lat").toString()),
-							 Integer.parseInt(oggettoJ.get("id").toString()),
-							 				  oggettoJ.get("name").toString());
-							 ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity,temperature,dt,city);
-		
+		City city = new City(tmp.get("lon").getAsFloat(),
+							 tmp.get("lat").getAsFloat(),
+							 oggettoJ.get("id").getAsInt(),
+							 oggettoJ.get("name").getAsString());
+		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity,temperature,dt,city);
 		//Caricamento dal file delle previsioni Current e posizionamento su ForecastCurrentVector
-		if(forecastDataCurrentVector.size() < 48)    //PARAMETRO PROGRAMMATORE
+		if(forecastDataCurrentVector.size() < 100)    //PARAMETRO PROGRAMMATORE
 			forecastDataCurrentVector.add(javaObj);
 		else {
 			forecastDataCurrentVector.remove(0);
@@ -133,32 +128,27 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	}
 	
 	
+
 	/**
-	 * Metodo che viene attivato da una rotta per caricare il Vector forecastDataCurrentVector
-	 * con elementi di tipo ForecastDataCurrent presetti in un file locale.
-	 * Questo metodo è stato ideato per poter testare la parte di questo programma che riguarda il
-	 * filtraggio di elementi in base a fasce orarie e a giorni
+	 * metodo che carica un vettore di oggetti da un file  nomeFile e lo carica su un vettore
+	 * @param nomeFile - file locale
+	 * @param vettore 
 	 */
-	public void forecastCurrOffline(){
-		apriDaFile("daysHistory.json", forecastDataCurrentVector);	
+	public void readVectorFromFile(String nomeFile, Vector<ForecastDataCurrent> vettore){
+		try{
+			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
+			String inJSON = "";
+			while(scr.hasNext())
+				inJSON += scr.nextLine();
+			Gson gson = new Gson();
+			Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJSON, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
+			if(tmpVec.size() != 0)
+				vettore.addAll(tmpVec);
+		}
+		catch(Exception e){
+			System.out.println("apertura file " + nomeFile + " non riuscita"  );
+		}
 	}
-	
-	
-	
-	/**
-	 * Metodo che viene attivato da una rotta per caricare il Vector forecastDataCurrentVector
-	 * con elementi di tipo ForecastDataCurrent presetti online cjiamando un api
-	 * Questo metodo è stato ideato per poter testare la parte di questo programma che riguarda il
-	 * filtraggio di elementi in base a fasce orarie e a giorni
-	 */
-	public void forecastCurrOnline(){
-		
-	
-	
-	}
-	
-	
-	
 	
 	
 	
@@ -218,29 +208,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	}
 
 	
-	
-	/**
-	 * metodo che carica un vettore di oggetti da un file  nomeFile e lo carica su un vettore
-	 * @param nomeFile - file locale
-	 * @param vettore 
-	 */
-	public void apriDaFile(String nomeFile, Vector<ForecastDataCurrent> vettore){
-		try{
-			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
-			String inJSON = "";
-			while(scr.hasNext())
-				inJSON += scr.nextLine();
-			Gson gson = new Gson();
-			Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJSON, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
-			if(tmpVec.size() != 0)
-				vettore.addAll(tmpVec);
-		}
-		catch(Exception e){
-			System.out.println("apertura file " + nomeFile + " non riuscita"  );
-		}
-	}
-	
-	
+
 	
 	@SuppressWarnings("unused")
 	@Deprecated //in data 30/12/21 dopo modifica a ForecastCurr

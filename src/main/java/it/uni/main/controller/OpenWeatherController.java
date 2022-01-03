@@ -20,6 +20,7 @@ import it.uni.main.model.Stats5Days;
 import it.uni.main.model.Forecast5DaysHumidity;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.service.Forecast5DaysService;
+import it.uni.main.service.ProfTesting;
 import it.uni.main.statisticsAndFilters.Filters;
 import it.uni.main.statisticsAndFilters.Forecasts5DaysStatistics;
 
@@ -35,7 +36,8 @@ public class OpenWeatherController
 	private Filters filters;
 	@Autowired
 	private Forecasts5DaysStatistics statistics5DaysForecasts;
-	
+	@Autowired
+	private ProfTesting profTesting;
 	
 	
 	
@@ -52,24 +54,35 @@ public class OpenWeatherController
 	}
 	
 	
-	
+	/**
+	 * Rotta per le statistiche delle umidità
+	 * @return ritorna al chiamante le statistiche in json
+	 */
 	@GetMapping("/getHumidityStats")
 	public Stats5Days forecast5day() {
 		return statistics5DaysForecasts.getStats5DaysHumidity();
 	}
 	
 	
+	
 	/**
-	 * Rotta per carivare il Vector forecastDataCurrentVector di oggetti
-	 * @return
+	 * Rotta pre caricare in vettore di previsioni degki ultimi 5 giorni
+	 * @return ritorna al chiamante le statistiche in json
 	 */
-	@GetMapping("/loadCurrent")
-	public JsonObject loadVector() {
-		currentForecast.forecastCurrOffline();
-		JsonObject tmp = new JsonObject();
-		tmp.addProperty("Request Status", "Loaded");
-		return tmp;
+	@GetMapping("/loadHistory")
+	public JsonObject writeHistoryWeather() {
+		JsonObject jsonObject = new JsonObject();
+		try {
+			if(profTesting.writeHistoryWeather())
+				jsonObject.addProperty("Load response", 1);
+			else 
+				jsonObject.addProperty("Load response", 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonObject;
 	}
+	
 	
 	
 	/**
@@ -109,7 +122,7 @@ public class OpenWeatherController
 	 */
 	@GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}")
 	public CurrentStats  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days) throws IllegalArgumentException, IllegalTimeException{
-		return filters.dailyFilter(finalValue, finalValue, days);
+		return filters.dailyFilter(initialValue, finalValue, days);
 	}
 	
 	
