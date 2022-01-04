@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.JsonObject;
-
 import it.uni.main.exception.IllegalTimeException;
 import it.uni.main.exception.StopNotValidException;
 import it.uni.main.model.CurrentStats;
@@ -55,8 +53,8 @@ public class OpenWeatherController
 	
 	
 	/**
-	 * Rotta per le statistiche delle umidità
-	 * @return ritorna al chiamante le statistiche in json
+	 * Rotta calcolo statistiche 
+	 * @return ritorna al chiamante le statistiche in json dell'umidità dei prossimi 5 giorni
 	 */
 	@GetMapping("/getHumidityStats")
 	public Stats5Days forecast5day() {
@@ -66,21 +64,19 @@ public class OpenWeatherController
 	
 	
 	/**
-	 * Rotta pre caricare in vettore di previsioni degki ultimi 5 giorni
+	 * Rotta pre caricare in vettore di previsioni degli ultimi 5 giorni
 	 * @return ritorna al chiamante le statistiche in json
 	 */
 	@GetMapping("/loadHistory")
-	public JsonObject writeHistoryWeather() {
-		JsonObject jsonObject = new JsonObject();
+	public boolean writeHistoryWeather() {
+		boolean response = false;
 		try {
 			if(profTesting.writeHistoryWeather())
-				jsonObject.addProperty("Load response", 1);
-			else 
-				jsonObject.addProperty("Load response", 0);
+				response = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return jsonObject;
+		return response;
 	}
 	
 	
@@ -115,16 +111,23 @@ public class OpenWeatherController
 	 * parametri passati
 	 * @param initialValue ora iniziale di inizio filtraggio
 	 * @param finalValue ora finale del filtraggio
-	 * @param days giorni di  filtraggio, se 0 restituisce un errore ancora da stabilire
+	 * @param days giorni di  filtraggio, se 0 restituisce lancia eccezione
 	 * @return vector di previsioni meteo in base ai parametri passati
 	 * @throws IllegalTimeException 
 	 * @throws IllegalArgumentException 
 	 */
 	@GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}")
 	public CurrentStats  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days) throws IllegalArgumentException, IllegalTimeException{
-		return filters.dailyFilter(initialValue, finalValue, days);
+		CurrentStats currentStats = null;
+		try {		
+			currentStats = filters.dailyFilter(initialValue, finalValue, days);
+		}catch(IllegalArgumentException e) {
+			return null;
+		}catch (IllegalTimeException e) {
+			return null;	
+		}
+		return currentStats;
 	}
-	
 	
 	
 	/**
@@ -138,7 +141,15 @@ public class OpenWeatherController
 	 */
 	@GetMapping("/filter/weekly/{initialValue}/{finalValue}")
 	public CurrentStats weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue) throws IllegalArgumentException, IllegalTimeException{
-		return filters.weeklyFilter(initialValue, finalValue);
+		CurrentStats currentStats = null;
+		try {		
+			currentStats = filters.weeklyFilter(initialValue, finalValue);
+		}catch(IllegalArgumentException e) {
+			return null;
+		}catch (IllegalTimeException e) {
+			return null;	
+		}
+		return currentStats;
 	}
 	
 

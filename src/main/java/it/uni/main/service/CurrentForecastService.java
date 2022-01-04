@@ -32,15 +32,13 @@ import it.uni.main.utils.ApiReference;
 public class CurrentForecastService extends OpenWeatherServiceImp{
 	
 	
-	
 	/**
 	 * vettore che aumenterà dimensionalmente ogni 3600s (60 minuti) di un nuovo 
 	 * elemento ForecastDataCurrent fino a raggiungere un valore massimo 
 	 * stabilito dal programmatore tramite il PARAMETRO PROGRAMMATORE
 	 */
 	public static Vector<ForecastDataCurrent> forecastDataCurrentVector = new Vector<ForecastDataCurrent>();
-	
-	
+
 	
 	/**
 	 * metodo che aggiorna il file locale con una nuova previsione (root)

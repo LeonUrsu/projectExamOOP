@@ -17,18 +17,24 @@ import it.uni.main.model.ForecastDataCurrent;
 @Service
 public class ProfTesting extends OpenWeatherServiceImp{
 	
-	//public static Vector<ForecastDataCurrent> forecastDataCurrent = new Vector<ForecastDataCurrent>();
-	
-	//to test Junit5 test
+
+	/**
+	 * Metodo che richiamato, carica un static Vector ForecastDataCurrent di elementi
+	 * con dt aggiornato ma con gli altri parametri lasciati invariati
+	 * @return true se caricato, false se non caricato
+	 * @throws Exception
+	 */
 	public boolean writeHistoryWeather()throws Exception{
-		long stop =  (System.currentTimeMillis() / 1000L)  - (5 * 86400) ;
+		CurrentForecastService currentForecastService = new CurrentForecastService();
+		currentForecastService.forecastDataCurrentVector.removeAllElements();
 		OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();
 		String inJson = openWeatherServiceImp.readStringFromFile("daysHistory.json");
 		JsonArray jsonArray = new JsonArray();
 		Gson gson = new Gson();
 		jsonArray = gson.fromJson(inJson, jsonArray.getClass());
-		changeDtTime(jsonArray);//cambio valore dei 'dt'
-		CurrentForecastService currentForecastService = new CurrentForecastService();
+		if(jsonArray.size() == 0)
+			return false;
+		changeDtTime(jsonArray);											//cambio valore dei 'dt'
 		jsonArray = toForecastDataCurrentJson(jsonArray);
 		toVectorForecastDataCurrent(jsonArray.toString(), currentForecastService.forecastDataCurrentVector);
 		return true;
@@ -42,7 +48,7 @@ public class ProfTesting extends OpenWeatherServiceImp{
 	 */
 	public void changeDtTime(JsonArray jsonArray){
 		int dimArr = jsonArray.size();
-		for(long i=0, u=jsonArray.size(), dt=System.currentTimeMillis()/1000 ; i<dimArr ; i++, dt-=86400)
+		for(long i=0, dt=System.currentTimeMillis()/1000 ; i<dimArr ; i++, dt-=86400)
 			jsonArray.get((int)i).getAsJsonObject().addProperty("dt", dt);
 	}
 	
@@ -75,19 +81,8 @@ public class ProfTesting extends OpenWeatherServiceImp{
 		jsonCity.addProperty("name", "Rome");
 		tmpJson.add("city", jsonCity);
 		tmpJson.addProperty("dt", jsonObject.get("dt").getAsLong());
-		
 		newJsonArray.add(tmpJson);
-//		Temperature temperature = new Temperature(jsonObject.get("temp").getAsDouble(), 111, 333,222);	
-//		Humidity humidity = new Humidity(jsonObject.get("humidity").getAsInt());
-//		long dt = jsonObject.get("dt").getAsLong();
-//		City city = new City(jsonObjectjsonObject.get("lon").getAsFloat(),
-//				 tmp.get("lat").getAsFloat(),
-//				 oggettoJ.get("id").getAsInt(),
-//				 oggettoJ.get("name").getAsString());
-//		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity,temperature,dt,null);
-//		vettore.add(javaObj);
-		}	
-	//System.out.println("jarr "+ newJsonArray);
+		}
 	return newJsonArray;
 	}
 	

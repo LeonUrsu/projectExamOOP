@@ -13,18 +13,13 @@ import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-import java.util.Vector;
 
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import it.uni.main.interfaceToUse.OpenWeatherService;
-import it.uni.main.model.ForecastDataCurrent;
-
-
 
 
 

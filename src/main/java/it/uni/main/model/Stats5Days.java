@@ -8,11 +8,11 @@ public class Stats5Days {
 	private double maxHumidity;
 	//private Vector<Forecast5Days> forecast5days;
 	
-	public Stats5Days(double mediaUmidità_, double umiditaMinimaAssoluta_, double umiditaMassimaAssoluta_, City city_){//,Vector<Forecast5Days> forecast5days ) {
-		this.averageHumidity = mediaUmidità_;
-		this.minHumidity = umiditaMinimaAssoluta_;
-		this.maxHumidity = umiditaMassimaAssoluta_;
-		this.city = city_;
+	public Stats5Days(double averageHumidity, double minHumidity, double maxHumidity, City city){//,Vector<Forecast5Days> forecast5days ) {
+		this.averageHumidity = averageHumidity;
+		this.minHumidity = minHumidity;
+		this.maxHumidity = maxHumidity;
+		this.city = city;
 		//this.forecast5days = forecast5days;
 	}
 

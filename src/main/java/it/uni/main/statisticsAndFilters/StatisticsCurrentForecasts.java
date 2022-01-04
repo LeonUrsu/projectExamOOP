@@ -11,7 +11,7 @@ public class StatisticsCurrentForecasts extends Statistics{
 	
 	
 	/**
-	 * Metodo per generare java object che verrà passatto alla classe filters
+	 * Metodo per generare java object che verrà restiruito al controllerS
 	 * @param initialValue tempo d'inizio
 	 * @param finalValue tempo di fine
 	 * @param days quantità giorni da considerare
@@ -19,14 +19,13 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @return CurrentStats object
 	 */
 	public CurrentStats currentStats(long initialValue, long finalValue, int days,Vector<ForecastDataCurrent> filteredVector) { 
-	
-		double tempMin = filteredVector.get(0).getTemperature().getTempMin();
-		double tempMax = filteredVector.get(0).getTemperature().getTempMax();
+		double tempMin = mediaTempMin(filteredVector);
+		double tempMax = mediaTempMax(filteredVector);
 		double tempMedia = mediaTemp(filteredVector);
-		double varianzaTempPercepita = varianzaTempPercepita(filteredVector);
-		double varianzaTempReale = varianzaTempReale(filteredVector);
+		double feelTemperatureVariance = varianzaTempPercepita(filteredVector);
+		double realTemperatureVariance = varianzaTempReale(filteredVector);
 		
-		return new CurrentStats(initialValue, finalValue, days, filteredVector, tempMin, tempMax, tempMedia, varianzaTempPercepita, varianzaTempReale);
+		return new CurrentStats(initialValue, finalValue, days, filteredVector, tempMin, tempMax, tempMedia, feelTemperatureVariance, realTemperatureVariance);
 	}
 	
 	
