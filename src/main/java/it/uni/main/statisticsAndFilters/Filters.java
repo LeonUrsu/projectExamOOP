@@ -84,7 +84,7 @@ public class Filters {
 			throw new IllegalArgumentException();										
 		for(int i=0, u=toFilterVector.size() ; i<u ; i++) {			//filtering process	
 			ForecastDataCurrent tmpEle = toFilterVector.get(i);
-			if(forecastInTimeBandCheck(unixMin, unixMax, initialValue, finalValue, daysSec , tmpEle))
+			if(inDaysBandCheck(unixMin, unixMax, tmpEle) && inHourBandCheck(initialValue, finalValue, tmpEle))
 				filteredVector.add(tmpEle);
 		}
 	}
@@ -92,23 +92,37 @@ public class Filters {
 	
 	
 	/**
-	 * Metodo che confronta se la previsione passata rietra nell'intervallo desiderato per il suo filtraggio
+	 * Metodo che confronta se la previsione passata rietra nell'intervallo di giorni interessato
 	 * @param finalValueDays giorno fine Meteo
 	 * @param initialValueDays giorno inizio Meteo
-	 * @param initialValue valore mimimo dell'intervallo giornaliero in s
-	 * @param finalValue valore massimo dell'intervallo giornaliero in s
-	 * @param unix valore in secondi della somma dei giorni passati
 	 * @param tmp meteo passato da controllare
 	 * @return true se rienra nell'intervallo
 	 */
-	private boolean forecastInTimeBandCheck(long initialValueDays, long finalValueDays, long initialValue, long finalValue, long unix, ForecastDataCurrent tmp)
+	public boolean inDaysBandCheck(long initialValueDays, long finalValueDays, ForecastDataCurrent tmp)
 	{
 		long dt = tmp.getDayTime();
-		long dt24 = dt % 86400;		//secondi dalle ore 0:00
-		if( initialValueDays <= dt && dt <= finalValueDays && initialValue <= dt24 && dt24 <= finalValue )
+		if(initialValueDays <= dt && dt <= finalValueDays)
 			return true;
 		return false;
 	}
+	
+	
+	
+	/**
+	 * Metodo che confronta se la previsione passata rietra nell'intervallo orario interessato
+	 * @param initialValue valore mimimo dell'intervallo giornaliero in s
+	 * @param finalValue valore massimo dell'intervallo giornaliero in s
+	 * @param tmp meteo passato da controllare
+	 * @return true se rienra nell'intervallo
+	 */
+	public boolean inHourBandCheck(long initialValue, long finalValue, ForecastDataCurrent tmp)
+	{
+		long dt24 = tmp.getDayTime() % 86400;		//secondi dalle ore 0:00 della nostra previsione
+		if(initialValue <= dt24 && dt24 <= finalValue )
+			return true;
+		return false;
+	}
+	
 	
 	
 	

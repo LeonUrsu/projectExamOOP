@@ -64,7 +64,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 
 	
 	/**
-	 * metodo che carica un vettore di oggetti da un file  nomeFile e lo carica su un vettore
+	 * metodo che legge stringa da un file
 	 * @param nomeFile - file locale
 	 * @param vettore 
 	 */
@@ -84,7 +84,7 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	
 	
 	
-	@Deprecated
+
 	@Override
 	/*
 	 * metodo che converte un file txt con JSON e restituisce un oggetto JSONObject

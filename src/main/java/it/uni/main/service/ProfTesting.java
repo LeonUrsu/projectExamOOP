@@ -34,7 +34,7 @@ public class ProfTesting extends OpenWeatherServiceImp{
 		jsonArray = gson.fromJson(inJson, jsonArray.getClass());
 		if(jsonArray.size() == 0)
 			return false;
-		changeDtTime(jsonArray);											//cambio valore dei 'dt'
+		changeDtTime(jsonArray,System.currentTimeMillis());											//cambio valore dei 'dt'
 		jsonArray = toForecastDataCurrentJson(jsonArray);
 		toVectorForecastDataCurrent(jsonArray.toString(), currentForecastService.forecastDataCurrentVector);
 		return true;
@@ -46,9 +46,9 @@ public class ProfTesting extends OpenWeatherServiceImp{
 	 * Metodo che cambia i valori 'dt' degli oggetti caricati dal
 	 * file in modo da andare dal momento corrente fino a 5 giorni prima
 	 */
-	public void changeDtTime(JsonArray jsonArray){
+	public void changeDtTime(JsonArray jsonArray, long millis){
 		int dimArr = jsonArray.size();
-		for(long i=0, dt=System.currentTimeMillis()/1000 ; i<dimArr ; i++, dt-=86400)
+		for(long i=0, dt=millis ; i<dimArr ; i++, dt-=86400)
 			jsonArray.get((int)i).getAsJsonObject().addProperty("dt", dt);
 	}
 	
