@@ -28,16 +28,19 @@ public class ProfTesting extends OpenWeatherServiceImp{
 		//CurrentForecastService currentForecastService = new CurrentForecastService();
 		CurrentForecastService.forecastDataCurrentVector.removeAllElements();
 		OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();
-		String inJson = openWeatherServiceImp.readStringFromFile("daysHistory.json");
+		String inJson = openWeatherServiceImp.readStringFromFile("currentForecastData.json");
 		JsonArray jsonArray = new JsonArray();
 		Gson gson = new Gson();
 		jsonArray = gson.fromJson(inJson, jsonArray.getClass());
 		if(jsonArray.size() == 0)
 			return false;
-		changeDtTime(jsonArray,System.currentTimeMillis());											//cambio valore dei 'dt'
-		jsonArray = toForecastDataCurrentJson(jsonArray);
+		else {
+			changeDtTime(jsonArray,System.currentTimeMillis());	//cambio valore dei 'dt'
+		//jsonArray = toForecastDataCurrentJson(jsonArray);
+		toVectorForecastDataCurrent(jsonArray.toString(), CurrentForecastService.forecastDataCurrentVector);
 		//toVectorForecastDataCurrent(jsonArray.toString(), CurrentForecastService.forecastDataCurrentVector);
 		return true;
+		}
 	}
 	
 	
@@ -66,7 +69,7 @@ public class ProfTesting extends OpenWeatherServiceImp{
 		
 		JsonObject tmpJson = new JsonObject();	
 		JsonObject jsonTemperature = new JsonObject();
-		jsonTemperature.addProperty("temp", jsonObject.get("temp").getAsDouble());  
+		jsonTemperature.addProperty("temp", jsonObject.get("temp").getAsDouble());  	
 		jsonTemperature.addProperty("temp_min", 111);
 		jsonTemperature.addProperty("temp_max", 333);
 		jsonTemperature.addProperty("feels_like", 222);

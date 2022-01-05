@@ -56,6 +56,7 @@ public class Filters {
 			FiltersPrint.print1();
 			return null;
 		}
+		System.out.println(filteredVectorTime.size());
 		StatisticsCurrentForecasts statisticsCurrentForecasts = new StatisticsCurrentForecasts();
 		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, days, filteredVectorTime);
 	}
