@@ -17,8 +17,8 @@ public class ApiReference
 	
 	public static String key = "57b8994a4dd46d6b80a3f810f6882a2f";
 
-	
-	
+	//previsioni passate
+	public static String UrlHistory = "http://history.openweathermap.org/data/2.5/history/city?id=3183087&type=hour&start={start}&end={end}&appid=57b8994a4dd46d6b80a3f810f6882a2f";
 	
 	
 

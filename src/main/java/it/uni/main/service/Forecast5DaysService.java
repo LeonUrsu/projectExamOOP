@@ -19,16 +19,16 @@ import it.uni.main.utils.ApiReference;
 public class Forecast5DaysService extends OpenWeatherServiceImp {
 	
 	
-	private static Forecast5DaysHumidity forecast5DaysHumidity ;  //riservo spazio statico in memoria per il vettore
+	public static Forecast5DaysHumidity forecast5DaysHumidity ;  //riservo spazio statico in memoria per il vettore
 	
 	
-	/**
-	 * Metodo getter del Vector inteno alla classe
-	 * @return
-	 */
-	public Forecast5DaysHumidity getForecast5Days() {
-		return forecast5DaysHumidity;
-	}
+//	/**
+//	 * Metodo getter del Vector inteno alla classe
+//	 * @return
+//	 */
+//	public Forecast5DaysHumidity getForecast5Days() {
+//		return forecast5DaysHumidity;
+//	}
 	
 	
 	
@@ -36,16 +36,25 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	 * Metodo che chiama l'api e salva temporanemente mella memoria le previsioni 
 	 *@param nome della citta su cui cercare le previsioni 
 	 */
-	public Vector<Forecast5Days> forecast5day(String cityName) {
+	public Forecast5DaysHumidity forecast5day(String cityName) {
+		JsonObject Jcity = callApi(ApiReference.Url5dayP1 + cityName + ApiReference.Url5dayP2);
+		JsonArray forecasts40 = Jcity.getAsJsonArray("list"); 
+		Jcity = Jcity.getAsJsonObject("city");	
+		City city = getCity(Jcity);
 		Vector<Forecast5Days> vettore = new Vector<Forecast5Days>();
-		JsonObject oggettoJ = callApi(ApiReference.Url5dayP1 + cityName + ApiReference.Url5dayP2);
-		JsonArray forecasts40 = oggettoJ.getAsJsonArray("list"); 
-		JsonObject Jcity = oggettoJ.getAsJsonObject("city");	
-		float lat = Jcity.getAsJsonObject("coord").get("lat").getAsFloat();
-		float lon = Jcity.getAsJsonObject("coord").get("lon").getAsFloat();
-		int id =   Jcity.get("id").getAsInt();
-		String name =  Jcity.get("name").getAsString();
-		City city = new City(lat, lon, id, name);
+		riempimentoVettore(vettore, forecasts40);
+		forecast5DaysHumidity = new Forecast5DaysHumidity(city, vettore);
+		return forecast5DaysHumidity;
+	}
+	
+	
+	
+	/**
+	 * Metodo che riempie un Vector<Forecast5Days> con oggetti trasformati da JsonArray
+	 * @param vettore da riempire
+	 * @param forecasts40 da cui trasformare
+	 */
+	private void riempimentoVettore(Vector<Forecast5Days> vettore, JsonArray forecasts40 ){
 		for (int i=0, u=forecasts40.size()  ;  i<u  ;  i++) {
 			JsonObject tmpObj = forecasts40.get(i).getAsJsonObject();
 			long tmpDate = tmpObj.get("dt").getAsLong();   //prendo data e ora della previsione
@@ -53,10 +62,22 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 			Humidity humidity = new Humidity(tmpObj.get("humidity").getAsInt());
 			vettore.add(new Forecast5Days(humidity,tmpDate));	
 		}
-		forecast5DaysHumidity = new Forecast5DaysHumidity(city, vettore);
-		return forecast5DaysHumidity.getForecast5DaysVectorHum();
 	}
+
 	
+	
+	/**
+	 * Metodo per estrarre una città da in JsonObject che la contiene
+	 * @param Jcity
+	 * @return City() object
+	 */
+	private City getCity(JsonObject Jcity){
+		float lat = Jcity.getAsJsonObject("coord").get("lat").getAsFloat();
+		float lon = Jcity.getAsJsonObject("coord").get("lon").getAsFloat();
+		int id =   Jcity.get("id").getAsInt();
+		String name =  Jcity.get("name").getAsString();
+		return new City(lat, lon, id, name);
+	}
 	
 	
 	

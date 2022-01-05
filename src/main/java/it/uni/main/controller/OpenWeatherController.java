@@ -4,7 +4,6 @@ package it.uni.main.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Timer;
-import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import it.uni.main.exception.IllegalTimeException;
 import it.uni.main.exception.StopNotValidException;
 import it.uni.main.model.CurrentStats;
-import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.Stats5Days;
 import it.uni.main.model.Forecast5DaysHumidity;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.service.Forecast5DaysService;
+import it.uni.main.service.ProfTesting;
 import it.uni.main.statisticsAndFilters.Filters;
 import it.uni.main.statisticsAndFilters.Forecasts5DaysStatistics;
 
@@ -35,27 +34,61 @@ public class OpenWeatherController
 	private Filters filters;
 	@Autowired
 	private Forecasts5DaysStatistics statistics5DaysForecasts;
+	@Autowired
+	private ProfTesting profTesting;
 	
 	
 	
-	
-	//Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
-	//un parametro nome della citta
+	//IDEA: Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
+	//un parametro nome della citta invece di usare il default
 	/**
 	 * Rotta che ci restituisce un array di oggetti con informazioni sull'umidità degli ultimi 5 giorni
 	 * @param  nome della città su cui prendere le previsioni
 	 * @return Vector di previsioni
 	 */
 	@GetMapping("/getCompleteForecast")
-	public Vector<Forecast5Days> forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
-		return forecast5Day.forecast5day(cityName);
+	public Forecast5DaysHumidity forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
+		Forecast5DaysHumidity forecast5DaysHumidity = null;
+		try {
+			forecast5DaysHumidity = forecast5Day.forecast5day(cityName);
+		}catch(NullPointerException e) {
+			return null;
+		}
+		return forecast5DaysHumidity;
+	}
+	
+	
+	/**
+	 * Rotta calcolo statistiche 
+	 * @return ritorna al chiamante le statistiche in json dell'umidità dei prossimi 5 giorni
+	 */
+	@GetMapping("/getHumidityStats")
+	public Stats5Days forecast5day() {
+		Stats5Days stats5Days = null;
+		try {
+			stats5Days = statistics5DaysForecasts.getStats5DaysHumidity();
+		}catch(NullPointerException e) {
+			return null;
+		}
+		return stats5Days;	
 	}
 	
 	
 	
-	@GetMapping("/getHumidityStats")
-	public Stats5Days forecast5day() {
-		return statistics5DaysForecasts.getStats5DaysHumidity();
+	/**
+	 * Rotta pre caricare in vettore di previsioni degli ultimi 5 giorni
+	 * @return ritorna al chiamante le statistiche in json
+	 */
+	@GetMapping("/loadHistory")
+	public boolean writeHistoryWeather() {
+		boolean response = false;
+		try {
+			if(profTesting.writeHistoryWeather())
+				response = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return response;
 	}
 	
 	
@@ -67,8 +100,13 @@ public class OpenWeatherController
 	 * @throws ParseException
 	 */
 	@GetMapping("/startCurrentService") //si potrebbe aggiungere un periodo di funzionamento
-	public void currentForecast(@RequestParam(value="nome", defaultValue="Rome") String cityName) throws IOException, ParseException{
-	currentForecast.ripetizioneMetodo(cityName);	
+	public boolean currentForecast(@RequestParam(value="nome", defaultValue="Rome") String cityName) {
+		try {
+			currentForecast.ripetizioneMetodo(cityName);	
+		}catch (IOException | ParseException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -79,8 +117,13 @@ public class OpenWeatherController
 	 * @throws InterruptedException 
 	 */
 	@GetMapping("/stopCurrentService")
-	public void currentForecastStop(Timer timer) throws StopNotValidException{
-	currentForecast.stopTimer();
+	public boolean currentForecastStop(Timer timer) {
+		try {
+			currentForecast.stopTimer();	
+		}catch (StopNotValidException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -90,16 +133,23 @@ public class OpenWeatherController
 	 * parametri passati
 	 * @param initialValue ora iniziale di inizio filtraggio
 	 * @param finalValue ora finale del filtraggio
-	 * @param days giorni di  filtraggio, se 0 restituisce un errore ancora da stabilire
+	 * @param days giorni di  filtraggio, se 0 restituisce lancia eccezione
 	 * @return vector di previsioni meteo in base ai parametri passati
 	 * @throws IllegalTimeException 
 	 * @throws IllegalArgumentException 
 	 */
 	@GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}")
 	public CurrentStats  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days) throws IllegalArgumentException, IllegalTimeException{
-		return filters.dailyFilter(finalValue, finalValue, days);
+		CurrentStats currentStats = null;
+		try {		
+			currentStats = filters.dailyFilter(initialValue, finalValue, days);
+		}catch(IllegalArgumentException e) {
+			return null;
+		}catch (IllegalTimeException e) {
+			return null;	
+		}
+		return currentStats;
 	}
-	
 	
 	
 	/**
@@ -113,7 +163,13 @@ public class OpenWeatherController
 	 */
 	@GetMapping("/filter/weekly/{initialValue}/{finalValue}")
 	public CurrentStats weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue) throws IllegalArgumentException, IllegalTimeException{
-		return filters.weeklyFilter(initialValue, finalValue);
+		CurrentStats currentStats = null;
+		try {		
+			currentStats = filters.weeklyFilter(initialValue, finalValue);
+		}catch(IllegalArgumentException | IllegalTimeException e) {
+			return null;
+		}	
+		return currentStats;
 	}
 	
 
