@@ -36,7 +36,7 @@ public class ProfTesting extends OpenWeatherServiceImp{
 			return false;
 		changeDtTime(jsonArray,System.currentTimeMillis());											//cambio valore dei 'dt'
 		jsonArray = toForecastDataCurrentJson(jsonArray);
-		toVectorForecastDataCurrent(jsonArray.toString(), CurrentForecastService.forecastDataCurrentVector);
+		//toVectorForecastDataCurrent(jsonArray.toString(), CurrentForecastService.forecastDataCurrentVector);
 		return true;
 	}
 	
