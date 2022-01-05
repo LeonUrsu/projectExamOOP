@@ -1,11 +1,15 @@
 # Proggetto OOP 
-Lo scopo di questo progetto è di sviluppare un applicazione SpringBoot che data una città cercata a piacimento dall'utente tramite l'utilizzo di due API.Con l'uso della prima si visualizzino tutte le informazioni attuali e future relative all'umidità dei successivi 5 giorni e con la seconda si salvino ogni ora le informazioni relative all'umidità e le temperature(massime, minime, reali e percepite).
+Lo scopo di questo progetto è di sviluppare un applicazione SpringBoot che data una città cercata a piacimento dall'utente tramite l'utilizzo di due API.Con l'uso della prima [5 days weather forecast](https://openweathermap.org/forecast5#name5) si visualizzino tutte le informazioni attuali e future relative all'umidità dei successivi 5 giorni e con la seconda [current weather data](https://openweathermap.org/current) si salvino ogni ora le informazioni relative all'umidità e le temperature(massime, minime, reali e percepite).
 
-L'utente grazie a Postman, puo utilizzare le funzionalità dell'applicazione Spring che con la sua dipendenza "spring-boot-starter-web" riesce ad avviare facilmente un server Tomcat embedded   
+L'utente grazie a [Postman](https://learning.postman.com/docs/getting-started/introduction/), puo utilizzare le funzionalità dell'applicazione Spring che con la sua dipendenza "spring-boot-starter-web" riesce ad avviare facilmente un server Tomcat embedded   
 
 #### INDICE 
+(da fare)
 
 # L'applicazione
+L'applicazione è strutturata in modo che dopo la call all'api 5 days weather forecast prenda i valori restituiti da essa e li salvi su un vettore statico(in modo che siano accessibili anche dall'endpoint /getHumidityStats).
+
+Invece per quanto riguarda la call all'api current weather data , la risposta viene salvata in stringa su file in formato json tramite l'utilizzo di un vettore statico ogni ora (grazie all'utilizzo di un timer). All'avvio dell'endpoint /startCurrentService l'applicazione verificherà se ci siano o meno dei valori nel file, se già esistenti li caricherà in un vettore. In caso ci siano gia valori nel file,l'applicazione verificherà che l'id della città già salvata in precedenza sia lo stesso della città passata come parametro a Postman.Dopodichè si creerà un javaObject contenente i valori correnti delle previsioni(restituiti dall'api) e si salveranno all'interno del vettore. Ora avremo un vettore popolato da javaObject che verrà salvato su un file in formato JSON(grazie all'utilizzo di un metodo che farà il parsing degli elementi del vettore da JavaObject a JSON). 
 
 ### Come funziona: ROTTE DISPONIBILI
 
@@ -396,11 +400,11 @@ In questa rotta è possibile inserire un parametro di tipo "nome" per cercare il
     * **"tempMax"** è la temperatura massima
     * **"tempFeel"** è la temperatura percepita
 
-# /stopCurrentService
+# GET /stopCurrentService
 
 blocca il salvataggio dei dati.
 
-# /getHumidityStats
+# GET /getHumidityStats
 
 Crea statistiche riguardanti l'umidità nei prossimi 5 giorni.
 
@@ -425,10 +429,31 @@ Crea statistiche riguardanti l'umidità nei prossimi 5 giorni.
 
 </details>
 
-# /filter/daily/{initialValue}/{finalValue}/{days} e /filter/weekly/{initialValue}/{finalValue} 
+# GET /filter/daily/{initialValue}/{finalValue}/{days} e /filter/weekly/{initialValue}/{finalValue} 
 
 \\TODO\\
 
+# ECCEZIONI:
+L'applicazione può lanciare diverse eccezioni alcune standard e altre personalizzate:
+
+PERSONALIZZATE:
+
+* **IllegalTimeException**: Eccezione nel caso vengano inseriti parametri sbagliati nei filtri.
+* **NoAPIResponseException**: Eccezione nel caso l'api risponda con "null".
+* **StopNotValidException**: Eccezione nel caso venga lanciata la rotta stopCurrentService prima di StartCurrentService.
+
+STANDARD:
+
+* IOException
+* ParseException
+* Exception
+* NullPointerException
+* IllegalArgumentException
+
+
+
 
 # SOFTWARE UTILIZZATI: 
+
+
 
