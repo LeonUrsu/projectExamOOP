@@ -25,8 +25,8 @@ public class ProfTesting extends OpenWeatherServiceImp{
 	 * @throws Exception
 	 */
 	public boolean writeHistoryWeather()throws Exception{
-		CurrentForecastService currentForecastService = new CurrentForecastService();
-		currentForecastService.forecastDataCurrentVector.removeAllElements();
+		//CurrentForecastService currentForecastService = new CurrentForecastService();
+		CurrentForecastService.forecastDataCurrentVector.removeAllElements();
 		OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();
 		String inJson = openWeatherServiceImp.readStringFromFile("daysHistory.json");
 		JsonArray jsonArray = new JsonArray();
@@ -36,7 +36,7 @@ public class ProfTesting extends OpenWeatherServiceImp{
 			return false;
 		changeDtTime(jsonArray,System.currentTimeMillis());											//cambio valore dei 'dt'
 		jsonArray = toForecastDataCurrentJson(jsonArray);
-		toVectorForecastDataCurrent(jsonArray.toString(), currentForecastService.forecastDataCurrentVector);
+		toVectorForecastDataCurrent(jsonArray.toString(), CurrentForecastService.forecastDataCurrentVector);
 		return true;
 	}
 	

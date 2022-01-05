@@ -39,8 +39,8 @@ public class OpenWeatherController
 	
 	
 	
-	//Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
-	//un parametro nome della citta
+	//IDEA: Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
+	//un parametro nome della citta invece di usare il default
 	/**
 	 * Rotta che ci restituisce un array di oggetti con informazioni sull'umidità degli ultimi 5 giorni
 	 * @param  nome della città su cui prendere le previsioni
@@ -48,7 +48,13 @@ public class OpenWeatherController
 	 */
 	@GetMapping("/getCompleteForecast")
 	public Forecast5DaysHumidity forecast5day(@RequestParam(value="cityName", defaultValue="Rome") String cityName) {
-		return forecast5Day.forecast5day(cityName);
+		Forecast5DaysHumidity forecast5DaysHumidity = null;
+		try {
+			forecast5DaysHumidity = forecast5Day.forecast5day(cityName);
+		}catch(NullPointerException e) {
+			return null;
+		}
+		return forecast5DaysHumidity;
 	}
 	
 	
@@ -58,7 +64,13 @@ public class OpenWeatherController
 	 */
 	@GetMapping("/getHumidityStats")
 	public Stats5Days forecast5day() {
-		return statistics5DaysForecasts.getStats5DaysHumidity();
+		Stats5Days stats5Days = null;
+		try {
+			stats5Days = statistics5DaysForecasts.getStats5DaysHumidity();
+		}catch(NullPointerException e) {
+			return null;
+		}
+		return stats5Days;	
 	}
 	
 	
@@ -88,8 +100,13 @@ public class OpenWeatherController
 	 * @throws ParseException
 	 */
 	@GetMapping("/startCurrentService") //si potrebbe aggiungere un periodo di funzionamento
-	public void currentForecast(@RequestParam(value="nome", defaultValue="Rome") String cityName) throws IOException, ParseException{
-	currentForecast.ripetizioneMetodo(cityName);	
+	public boolean currentForecast(@RequestParam(value="nome", defaultValue="Rome") String cityName) {
+		try {
+			currentForecast.ripetizioneMetodo(cityName);	
+		}catch (IOException | ParseException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -100,8 +117,13 @@ public class OpenWeatherController
 	 * @throws InterruptedException 
 	 */
 	@GetMapping("/stopCurrentService")
-	public void currentForecastStop(Timer timer) throws StopNotValidException{
-	currentForecast.stopTimer();
+	public boolean currentForecastStop(Timer timer) {
+		try {
+			currentForecast.stopTimer();	
+		}catch (StopNotValidException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -144,11 +166,9 @@ public class OpenWeatherController
 		CurrentStats currentStats = null;
 		try {		
 			currentStats = filters.weeklyFilter(initialValue, finalValue);
-		}catch(IllegalArgumentException e) {
+		}catch(IllegalArgumentException | IllegalTimeException e) {
 			return null;
-		}catch (IllegalTimeException e) {
-			return null;	
-		}
+		}	
 		return currentStats;
 	}
 	

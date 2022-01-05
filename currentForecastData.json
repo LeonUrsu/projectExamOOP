@@ -1,1 +1,1 @@
-[{"temperature":{"temp":6.45,"tempMin":4.15,"tempMax":8.39,"tempFeel":6.45},"city":{"ID":4219762,"cityName":"Rome","lat":-85.1647,"lon":34.257},"dt":1641313767,"humidity":{"value":74}}]
+[{"temperature":{"temp":6.45,"tempMin":4.15,"tempMax":8.39,"tempFeel":6.45},"city":{"ID":4219762,"cityName":"Rome","lat":-85.1647,"lon":34.257},"dt":1641313767,"humidity":{"value":74}},{"temperature":{"temp":5.36,"tempMin":4.07,"tempMax":7.25,"tempFeel":5.36},"city":{"ID":4219762,"cityName":"Rome","lat":-85.1647,"lon":34.257},"dt":1641374496,"humidity":{"value":76}}]

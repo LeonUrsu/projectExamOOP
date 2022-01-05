@@ -46,7 +46,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	 * @param name - nome della città
 	 */
 	Timer timer = null;
-	public void ripetizioneMetodo(String name) {
+	public void ripetizioneMetodo(String name)  throws ParseException, IOException {
 		if(timer == null) {
 		    TimerTask task = new TimerTask() {
 		        public void run() {

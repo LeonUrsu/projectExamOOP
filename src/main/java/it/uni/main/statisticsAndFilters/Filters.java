@@ -46,7 +46,7 @@ public class Filters {
 	{																							//unix format per gli Value
 		CurrentForecastService currentForecastService = new CurrentForecastService();
 		Vector<ForecastDataCurrent> tmpVec = new Vector<ForecastDataCurrent>();
-		tmpVec.addAll(currentForecastService.forecastDataCurrentVector);					//assegno il vettore presente nella RAM
+		tmpVec.addAll(CurrentForecastService.forecastDataCurrentVector);					//assegno il vettore presente nella RAM
 		if(tmpVec == null || tmpVec.size() == 0)
 			currentForecastService.readVectorFromFile(FileReferenceOOPE.myFile, tmpVec );				//IDEA: posso fondere tmpVec con FilteredVec
 		verifyBand(initialValue, finalValue);

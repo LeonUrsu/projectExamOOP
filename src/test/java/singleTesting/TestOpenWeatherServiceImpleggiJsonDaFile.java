@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import com.google.gson.JsonObject;
 
 import it.uni.main.service.OpenWeatherServiceImp;
-import it.uni.main.utils.FileReferenceOOPE;
 
 class TestOpenWeatherServiceImpleggiJsonDaFile {
 	OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();; 
