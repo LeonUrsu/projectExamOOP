@@ -6,10 +6,10 @@ public class CurrentStats {
 	//ATTRIBUTI INTERNI------------------------------
 		private long oraInizio = 0;
 		private long oraFine = 0;
-		private long giorniDiFiltraggio = 0;
+		private long filteredDays = 0;
 		private double tempMin = 0;
 		private double tempMax = 0;
-		private double tempMedia = 0;
+		private double averageTemp = 0;
 		private double varianzaTempPercepita = 0;
 		private double varianzaTempReale = 0;
 		private City città = null;
@@ -21,10 +21,10 @@ public class CurrentStats {
 			
 			this.oraInizio = initialValue;
 			this.oraFine = finalValue;
-			this.giorniDiFiltraggio = days;
+			this.filteredDays = days;
 			this.tempMin = tempMin;
 			this.tempMax = tempMax;
-	 		this.tempMedia = tempMedia;
+	 		this.averageTemp = tempMedia;
 			this.varianzaTempPercepita = varianzaTempPercepita;
 			this.varianzaTempReale = varianzaTempReale;	
 			City tmpC = filteredVector.get(0).getCity();
@@ -60,12 +60,12 @@ public class CurrentStats {
 
 
 		public long getGiorniDiFiltraggio() {
-			return giorniDiFiltraggio;
+			return filteredDays;
 		}
 
 
 		public void setGiorniDiFiltraggio(long giorniDiFiltraggio) {
-			this.giorniDiFiltraggio = giorniDiFiltraggio;
+			this.averageTemp = giorniDiFiltraggio;
 		}
 
 
@@ -90,12 +90,12 @@ public class CurrentStats {
 
 
 		public double getTempMedia() {
-			return tempMedia;
+			return averageTemp;
 		}
 
 
 		public void setTempMedia(double tempMedia) {
-			this.tempMedia = tempMedia;
+			this.averageTemp = tempMedia;
 		}
 
 
