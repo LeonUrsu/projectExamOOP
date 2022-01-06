@@ -14,7 +14,11 @@ import it.uni.main.model.Forecast5DaysHumidity;
 import it.uni.main.utils.ApiReference;
 
 
-
+/**
+ * Classe servizio per la rilevazione dei dati delle previsioni con all'interno porenente solamente l'umidità
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 @Service
 public class Forecast5DaysService extends OpenWeatherServiceImp {
 	

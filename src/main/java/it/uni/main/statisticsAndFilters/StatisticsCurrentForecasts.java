@@ -6,6 +6,12 @@ import org.springframework.stereotype.Service;
 import it.uni.main.model.CurrentStats;
 import it.uni.main.model.ForecastDataCurrent;
 
+/**
+ * Classe servizio per il calcolo delle statistiche per la parte del progetto riguardante le previsoni correnti 
+ * aggiornate ogni ora dal timer del programma
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 @Service
 public class StatisticsCurrentForecasts extends Statistics{
 	

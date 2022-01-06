@@ -2,6 +2,12 @@ package it.uni.main.model;
 
 import java.io.Serializable;
 
+
+/**
+ * Classe modello per la rappresentazione della temperatura
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 public class Temperature implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

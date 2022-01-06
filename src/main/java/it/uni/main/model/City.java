@@ -1,6 +1,10 @@
 package it.uni.main.model;
 
-
+/**
+ * Classe modello identificare la città di provenienza delle previsioni meteo
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 public class City extends GeoLocation {
 	
 	private String country;

@@ -2,6 +2,11 @@ package it.uni.main.model;
 
 import java.util.Vector;
 
+/**
+ * Classe modello per le statistiche delle previsoni rigardanti solo l'umidità
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 public class Forecast5DaysHumidity {
 	
 	private City city;

@@ -1,5 +1,11 @@
 package it.uni.main.model;
 
+
+/**
+ * Classe modello per le statistiche delle previsioni CurrentDataForecast
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 public class Stats5Days {
 
 	private City city;

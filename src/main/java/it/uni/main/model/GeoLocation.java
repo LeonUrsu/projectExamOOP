@@ -1,5 +1,10 @@
 package it.uni.main.model;
 
+/**
+ * Classe modello per le coordinate geografiche
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 public class GeoLocation {
 
 	private float lat;

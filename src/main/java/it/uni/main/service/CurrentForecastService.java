@@ -27,7 +27,15 @@ import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.model.Humidity;
 import it.uni.main.model.Temperature;
 import it.uni.main.utils.ApiReference;
+import it.uni.main.utils.ParamVariable;
 
+
+/**
+ * Classe servizio della parte del progetto che riguarda il salvataggio ogni ora delle previsioni meteo su 
+ * un file locale e il loro aggiornamento una volta che hanno superato il valore ParamVariable.currentVectorSize
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 @Service
 public class CurrentForecastService extends OpenWeatherServiceImp{
 	
@@ -117,7 +125,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 							 oggettoJ.get("name").getAsString());
 		ForecastDataCurrent javaObj = new ForecastDataCurrent(humidity,temperature,dt,city);
 		//Caricamento dal file delle previsioni Current e posizionamento su ForecastCurrentVector
-		if(forecastDataCurrentVector.size() < 100)    //PARAMETRO PROGRAMMATORE
+		if(forecastDataCurrentVector.size() < ParamVariable.currentVectorSize)    //PARAMETRO PROGRAMMATORE
 			forecastDataCurrentVector.add(javaObj);
 		else {
 			forecastDataCurrentVector.remove(0);
@@ -141,7 +149,6 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 				inJSON += scr.nextLine();
 			Gson gson = new Gson();
 			Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJSON, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
-			System.out.println("size of readed " + tmpVec.size());
 			if(tmpVec.size() != 0)
 				vettore.addAll(tmpVec);
 		}

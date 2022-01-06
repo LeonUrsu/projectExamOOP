@@ -11,17 +11,18 @@ import it.uni.main.printsConsole.FiltersPrint;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.utils.FileReferenceOOPE;
 
-
+/**
+ * Classe servizio per filtraggio delgi elementi presenti nel Vector CurrentForecastService.forecastDataCurrentVector.
+ * filtra gli elementi e li carica sul Vector filteredVectorTime(vedere sotto esempi)
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 @Service
 public class Filters {
 	/**
 	 * 	Filtra il vettore ForecastDataCurrentVector presente nella classe CurrentForecastService in 
 	 * base ai parametri passati nel controller sulle rotte:@GetMapping("/filter/weekly/{initialValue}/{finalValue}") 
-	 * @GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}") 
-	 * e con il vettore filtrato restituisce un oggetto CurrentStats
-	 */
 	
-
 	
 	/**
 	 * Vector filteredVectorTime filtrato. il fatto che è settato static e posizionato qui ci permette di 
@@ -61,9 +62,9 @@ public class Filters {
 	{																							//unix format per gli Value
 		CurrentForecastService currentForecastService = new CurrentForecastService();
 		Vector<ForecastDataCurrent> tmpVec = new Vector<ForecastDataCurrent>();
-		tmpVec.addAll(CurrentForecastService.forecastDataCurrentVector);					//assegno il vettore presente nella RAM
+		tmpVec.addAll(CurrentForecastService.forecastDataCurrentVector);							//assegno il vettore presente nella RAM
 		if(tmpVec == null || tmpVec.size() == 0)
-			currentForecastService.readVectorFromFile(FileReferenceOOPE.myFile, tmpVec );				//IDEA: posso fondere tmpVec con FilteredVec
+			currentForecastService.readVectorFromFile(FileReferenceOOPE.myFileCurrent, tmpVec );	//IDEA: posso fondere tmpVec con FilteredVec
 		verifyBand(initialValue, finalValue);
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
 		daysPeriodFilter(initialValue, finalValue, days, tmpVec, filteredVectorTime); 				//filtraggio 

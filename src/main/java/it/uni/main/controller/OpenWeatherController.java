@@ -22,7 +22,11 @@ import it.uni.main.service.ProfTesting;
 import it.uni.main.statisticsAndFilters.Filters;
 import it.uni.main.statisticsAndFilters.Forecasts5DaysStatistics;
 
-
+/**
+ * Classe che contiene tutte le rotte disponibile del servizio
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 @RestController
 public class OpenWeatherController 
 {
@@ -143,10 +147,10 @@ public class OpenWeatherController
 		CurrentStats currentStats = null;
 		try {		
 			currentStats = filters.dailyFilter(initialValue, finalValue, days);
-		}catch(IllegalArgumentException e) {
+		}catch(IllegalArgumentException | IllegalTimeException e) {
 			return null;
-		}catch (IllegalTimeException e) {
-			return null;	
+		}catch (Exception e){
+			return null;
 		}
 		return currentStats;
 	}
@@ -168,7 +172,9 @@ public class OpenWeatherController
 			currentStats = filters.weeklyFilter(initialValue, finalValue);
 		}catch(IllegalArgumentException | IllegalTimeException e) {
 			return null;
-		}	
+		}catch(Exception e) {
+			return null;
+		}
 		return currentStats;
 	}
 	

@@ -22,7 +22,11 @@ import com.google.gson.JsonObject;
 import it.uni.main.interfaceToUse.OpenWeatherService;
 
 
-
+/**
+ * Super Classe servizio per la derivazione di ulteriori classi serivizio
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 @Service
 public class OpenWeatherServiceImp implements OpenWeatherService{
 	

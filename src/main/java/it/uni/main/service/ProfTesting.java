@@ -4,16 +4,23 @@ import java.util.Vector;
 
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 
 import it.uni.main.model.ForecastDataCurrent;
 
 
-
+/**
+ * Classe servizio pre il caricamento di elementi da un file locale  sul 
+ * CurrentForecastService.forecastDataCurrentVector per poter effettuare una prova di filtraggio
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 @Service
 public class ProfTesting extends OpenWeatherServiceImp{
 	
@@ -24,7 +31,7 @@ public class ProfTesting extends OpenWeatherServiceImp{
 	 * @return true se caricato, false se non caricato
 	 * @throws Exception
 	 */
-	public boolean writeHistoryWeather()throws Exception{
+	public boolean writeHistoryWeather()throws Exception, JsonSyntaxException{
 		CurrentForecastService.forecastDataCurrentVector.removeAllElements();
 		OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();
 		String inJson = openWeatherServiceImp.readStringFromFile("daysHistory.json");

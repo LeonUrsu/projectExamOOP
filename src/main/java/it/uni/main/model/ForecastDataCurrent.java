@@ -2,6 +2,11 @@ package it.uni.main.model;
 
 import java.io.Serializable;
 
+/**
+ * Classe modello per le previsioni meteo ForecastDataCurrent
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 public class ForecastDataCurrent extends Forecast5Days implements Serializable {
 	
 	

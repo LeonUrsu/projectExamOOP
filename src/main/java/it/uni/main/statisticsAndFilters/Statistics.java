@@ -4,6 +4,11 @@ import java.util.Vector;
 
 import it.uni.main.model.Forecast5Days;
 
+/**
+ * super classe pre le statistiche da cui derivano altri tipi di classi a seconda dei modelli disponibili  
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 public class Statistics {
 
 	//tutti i metodi presenti in questa classe ricevono un Vector<Object> ,siccome la classe Forecast5Days una volta richiamata 

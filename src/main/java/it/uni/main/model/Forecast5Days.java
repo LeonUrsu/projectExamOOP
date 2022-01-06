@@ -5,6 +5,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+/**
+ * Classe modello per le previsioni Forecast5Days
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 public class Forecast5Days implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

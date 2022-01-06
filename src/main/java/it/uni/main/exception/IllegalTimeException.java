@@ -1,4 +1,5 @@
 package it.uni.main.exception;
+
 /**
  * Eccezione nel caso vengano inseriti parametri sbagliati nei filtri
  */

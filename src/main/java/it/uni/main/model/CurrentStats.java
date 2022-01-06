@@ -2,6 +2,12 @@ package it.uni.main.model;
 
 import java.util.Vector;
 
+
+/**
+ * Classe modello per le statistiche CurrentDataForecast
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 public class CurrentStats {
 	//ATTRIBUTI INTERNI------------------------------
 		private long oraInizio = 0;

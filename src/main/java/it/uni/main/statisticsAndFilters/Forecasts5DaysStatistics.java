@@ -9,7 +9,11 @@ import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.Stats5Days;
 import it.uni.main.service.Forecast5DaysService;
 
-
+/**
+ * Classe servizio per il calcolo delle statistiche per la parte del progetto riguardante l'umidità
+ * @author Perazzoli Leonardo 
+ * @author Ursu Leon 
+ */
 @Service
 public class Forecasts5DaysStatistics extends Statistics{
 //forecast5DaysHumidity

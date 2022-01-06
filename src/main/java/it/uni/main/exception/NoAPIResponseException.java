@@ -1,5 +1,9 @@
 package it.uni.main.exception;
 
+
+/**
+ *Eccezione api non riponde
+ */
 public class NoAPIResponseException extends Exception {
 	
 	
