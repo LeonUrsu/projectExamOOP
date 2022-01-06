@@ -32,7 +32,7 @@ public class Filters {
 	public static Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
 	//public static Vector<ForecastDataCurrent> filteredVectorTemperature = new Vector<ForecastDataCurrent>();
 	//public static Vector<ForecastDataCurrent> filteredVectorCountry = new Vector<ForecastDataCurrent>();
-<<<<<<< HEAD
+
 	
 	
 	
@@ -44,12 +44,6 @@ public class Filters {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalTimeException
 	 */
-=======
-	
-	
-	
-	
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 	public CurrentStats weeklyFilter(long initialValue, long finalValue) throws IllegalArgumentException, IllegalTimeException {
 		return dailyFilter(initialValue, finalValue, 7);
 	}
@@ -67,26 +61,16 @@ public class Filters {
 	{																							//unix format per gli Value
 		CurrentForecastService currentForecastService = new CurrentForecastService();
 		Vector<ForecastDataCurrent> tmpVec = new Vector<ForecastDataCurrent>();
-<<<<<<< HEAD
-		tmpVec.addAll(CurrentForecastService.forecastDataCurrentVector);	
-		if(tmpVec == null || tmpVec.size() == 0)
-			currentForecastService.readVectorFromFile(FileReferenceOOPE.myFile, tmpVec );		//IDEA: posso fondere tmpVec con FilteredVec
-		verifyBand(initialValue, finalValue);
-		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
-		daysPeriodFilter(initialValue, finalValue, days, tmpVec, filteredVectorTime); 			//filtraggio 
-=======
 		tmpVec.addAll(CurrentForecastService.forecastDataCurrentVector);					//assegno il vettore presente nella RAM
 		if(tmpVec == null || tmpVec.size() == 0)
 			currentForecastService.readVectorFromFile(FileReferenceOOPE.myFile, tmpVec );				//IDEA: posso fondere tmpVec con FilteredVec
 		verifyBand(initialValue, finalValue);
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
 		daysPeriodFilter(initialValue, finalValue, days, tmpVec, filteredVectorTime); 				//filtraggio 
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 		if(filteredVectorTime.size() == 0){
 			FiltersPrint.print1();
 			return null;
 		}
-		System.out.println(filteredVectorTime.size());
 		StatisticsCurrentForecasts statisticsCurrentForecasts = new StatisticsCurrentForecasts();
 		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, days, filteredVectorTime);
 	}
@@ -111,18 +95,12 @@ public class Filters {
 		long unixMax = findBiggestValue(toFilterVector);
 		long unixMin = findSmallestValue(toFilterVector);
 		long diff = unixMax - unixMin;
-<<<<<<< HEAD
-		if ( diff >= daysSec || days == 0 ) 
-			throw new IllegalArgumentException();	
-=======
 		if ( diff <= daysSec || days == 0 ) 
 			throw new IllegalArgumentException();										
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 		for(int i=0, u=toFilterVector.size() ; i<u ; i++) {			//filtering process	
 			ForecastDataCurrent tmpEle = toFilterVector.get(i);
 			if(inDaysBandCheck(unixMin, unixMax, tmpEle) && inHourBandCheck(initialValue, finalValue, tmpEle))
 				filteredVector.add(tmpEle);
-			//System.out.println("filtering" + filteredVector.size());
 		}
 	}
 	
@@ -162,10 +140,6 @@ public class Filters {
 	
 	
 	
-<<<<<<< HEAD
-=======
-	
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 	/**
 	 * Trova nel vettore delle previsoni non filtrate il valore unix chiamato 'dt'
 	 * piu grande, quindi quello più recente

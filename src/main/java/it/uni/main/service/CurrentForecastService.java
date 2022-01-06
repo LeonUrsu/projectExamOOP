@@ -32,6 +32,7 @@ import it.uni.main.utils.ApiReference;
 public class CurrentForecastService extends OpenWeatherServiceImp{
 	
 	
+	
 	/**
 	 * vettore che aumenterà dimensionalmente ogni 3600s (60 minuti) di un nuovo 
 	 * elemento ForecastDataCurrent fino a raggiungere un valore massimo 
@@ -39,6 +40,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	 */
 	public static Vector<ForecastDataCurrent> forecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 
+	
 	
 	/**
 	 * metodo che aggiorna il file locale con una nuova previsione (root)
@@ -121,9 +123,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 			forecastDataCurrentVector.remove(0);
 			forecastDataCurrentVector.add(javaObj);
 		}	//Salvataggio degli elementi dalla memoria volatile sulla memoria di massa
-		
 		salvaSuFile("currentForecastData.json",forecastDataCurrentVector);
-<<<<<<< HEAD
 	}
 	
 	
@@ -206,95 +206,9 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 			System.out.println("salvati " + forecastDataCurrentVector.size() + " elementi su file: " + nomeFile + "   " + super.CurrentTime());
 		}			
 	}
-
-	
-
-=======
-	}
-	
-	
-
-	/**
-	 * metodo che carica un vettore di oggetti da un file  nomeFile e lo carica su un vettore
-	 * @param nomeFile - file locale
-	 * @param vettore 
-	 */
-	public void readVectorFromFile(String nomeFile, Vector<ForecastDataCurrent> vettore){
-		try{
-			Scanner scr = new Scanner(new BufferedReader(new FileReader(nomeFile)));
-			String inJSON = "";
-			while(scr.hasNext())
-				inJSON += scr.nextLine();
-			Gson gson = new Gson();
-			Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJSON, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
-			if(tmpVec.size() != 0)
-				vettore.addAll(tmpVec);
-		}
-		catch(Exception e){
-			System.out.println("apertura file " + nomeFile + " non riuscita"  );
-		}
-	}
-	
-	
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
-	
-	/**
-	 * metodo per comparare gli ID di due città, una presente nel vettore e la seconda nel cityName
-	 * @param cityName - da cui estrarre l'ID
-	 * @param vettore - da cui estrarre l'ID2
-	 * @return
-	 */
-	private boolean compareId(String cityName,Vector<ForecastDataCurrent> vettore ) {
-		JsonObject compare1 = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
-		int ID = Integer.parseInt(compare1.get("id").toString());
-		int ID2 = vettore.lastElement().getCity().getID();
-		if(ID == ID2)
-			return true;
-		else
-			return false;
-	}
 	
 	
 	
-	@SuppressWarnings("unused")
-	/**
-	 * metodo che svuota file locale
-	 * @param nomeFile parametro formale
-	 */
-	private void clearFileLocale(String nomeFile) {
-		try{
-			FileWriter FW = new FileWriter(nomeFile);
-			FW.write("");
-			FW.close();
-	}catch(IOException e){
-		e.printStackTrace();
-		}
-	}
-
-		
-	/**
-	 * Metodo che passando un oggetto Vector come parametro locale lo salva su un file di nome nomeFile
-	 * @param nomeFile - file locale
-	 * @param vettore
-	 * @throws IOException
-	 */
-	 private void salvaSuFile(String nomeFile,Vector<ForecastDataCurrent> vettore) throws IOException{
-		PrintWriter oss = null;
-		try{
-			oss = new PrintWriter(new BufferedWriter(new FileWriter(nomeFile)));
-			Gson gson = new Gson();
-			String inJSON = gson.toJson(vettore);
-			oss.print(inJSON);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally {
-			oss.close();
-			System.out.println("salvati " + forecastDataCurrentVector.size() + " elementi su file: " + nomeFile + "   " + super.CurrentTime());
-		}			
-	}
-
-	
-
 	
 	@SuppressWarnings("unused")
 	@Deprecated //in data 30/12/21 dopo modifica a ForecastCurr
