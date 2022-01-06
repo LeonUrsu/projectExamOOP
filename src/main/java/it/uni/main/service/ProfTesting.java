@@ -11,10 +11,6 @@ import com.google.gson.reflect.TypeToken;
 
 
 import it.uni.main.model.ForecastDataCurrent;
-<<<<<<< HEAD
-import it.uni.main.statisticsAndFilters.Filters;
-=======
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 
 
 
@@ -23,71 +19,40 @@ public class ProfTesting extends OpenWeatherServiceImp{
 	
 
 	/**
-<<<<<<< HEAD
 	 * Metodo che richiamato, carica un static Vector ForecastDataCurrent di elementi dal file
 	 *  'daysHistory,json' con dt aggiornato, 
-=======
-	 * Metodo che richiamato, carica un static Vector ForecastDataCurrent di elementi
-	 * con dt aggiornato ma con gli altri parametri lasciati invariati
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 	 * @return true se caricato, false se non caricato
 	 * @throws Exception
 	 */
 	public boolean writeHistoryWeather()throws Exception{
-<<<<<<< HEAD
 		CurrentForecastService.forecastDataCurrentVector.removeAllElements();
 		OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();
 		String inJson = openWeatherServiceImp.readStringFromFile("daysHistory.json");
 		if(inJson.isEmpty())
 			return false;
-=======
-		//CurrentForecastService currentForecastService = new CurrentForecastService();
-		CurrentForecastService.forecastDataCurrentVector.removeAllElements();
-		OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();
-		String inJson = openWeatherServiceImp.readStringFromFile("currentForecastData.json");
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 		JsonArray jsonArray = new JsonArray();
 		Gson gson = new Gson();
 		jsonArray = gson.fromJson(inJson, jsonArray.getClass());
 		if(jsonArray.size() == 0)
 			return false;
-<<<<<<< HEAD
 		changeDtTime(jsonArray,System.currentTimeMillis()/1000); //cambio valore dei 'dt'		
 		toVectorForecastDataCurrent(jsonArray.toString(), CurrentForecastService.forecastDataCurrentVector);	
 		return true; // se true, sono stati caricati 89 elementi sul Vector
 	}
 
-=======
-		else {
-			changeDtTime(jsonArray,System.currentTimeMillis());	//cambio valore dei 'dt'
-		//jsonArray = toForecastDataCurrentJson(jsonArray);
-		toVectorForecastDataCurrent(jsonArray.toString(), CurrentForecastService.forecastDataCurrentVector);
-		//toVectorForecastDataCurrent(jsonArray.toString(), CurrentForecastService.forecastDataCurrentVector);
-		return true;
-		}
-	}
-	
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 	
 	
 	/*
 	 * Metodo che cambia i valori 'dt' degli oggetti caricati dal
 	 * file in modo da andare dal momento corrente fino a 5 giorni prima
 	 */
-<<<<<<< HEAD
 	public void changeDtTime(JsonArray jsonArray, long seconds){
 		int dimArr = jsonArray.size();
 		for(long i=0, dt=seconds ; i<dimArr ; i++, dt-=3600)
-=======
-	public void changeDtTime(JsonArray jsonArray, long millis){
-		int dimArr = jsonArray.size();
-		for(long i=0, dt=millis ; i<dimArr ; i++, dt-=86400)
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 			jsonArray.get((int)i).getAsJsonObject().addProperty("dt", dt);
 	}
 	
 	
-<<<<<<< HEAD
 	
 	
 	@Deprecated
@@ -97,14 +62,6 @@ public class ProfTesting extends OpenWeatherServiceImp{
 	 * @return
 	 */
 	public void toJsonForecastDataCurrent(JsonArray jsonArray){
-=======
-	/**
-	 * Metodo che crea un Vector<ForecastDataCurrent> da un file json non compatibile
-	 * @param str
-	 * @return
-	 */
-	public JsonArray toForecastDataCurrentJson(JsonArray jsonArray){
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 		JsonArray newJsonArray = new JsonArray();
 		
 		for(int i=0, u=jsonArray.size() ; i<u ; i++) {
@@ -129,12 +86,8 @@ public class ProfTesting extends OpenWeatherServiceImp{
 		tmpJson.addProperty("dt", jsonObject.get("dt").getAsLong());
 		newJsonArray.add(tmpJson);
 		}
-<<<<<<< HEAD
 		jsonArray= new JsonArray();
 		jsonArray.add(newJsonArray.getAsJsonArray());
-=======
-	return newJsonArray;
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 	}
 	
 	
@@ -144,12 +97,7 @@ public class ProfTesting extends OpenWeatherServiceImp{
 	 * @param inJson
 	 * @param vettore
 	 */
-<<<<<<< HEAD
 	private void toVectorForecastDataCurrent(String inJson, Vector<ForecastDataCurrent> vettore){
-=======
-	@SuppressWarnings("unused")
-	private void toVectorForecastDataCurrent(String inJson,Vector<ForecastDataCurrent> vettore){
->>>>>>> ca74f5d261deb9eeefb76ab750fa7fe2d2f9fbeb
 		Gson gson = new Gson();
 		Vector<ForecastDataCurrent> tmpVec = (gson.fromJson(inJson, new TypeToken<Vector<ForecastDataCurrent>>(){}.getType()));
 		if(tmpVec.size() != 0)
