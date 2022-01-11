@@ -4,7 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Classe che contiene il metodo main del servizio
+ * OopExamApplication 1.0.0
+ * 
  * @author Perazzoli Leonardo 
  * @author Ursu Leon 
  */
