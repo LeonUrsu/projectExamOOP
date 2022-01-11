@@ -19,22 +19,17 @@ import it.uni.main.utils.FileReferenceOOPE;
  */
 @Service
 public class Filters {
-	/**
-	 * 	Filtra il vettore ForecastDataCurrentVector presente nella classe CurrentForecastService in 
-	 * base ai parametri passati nel controller sulle rotte:@GetMapping("/filter/weekly/{initialValue}/{finalValue}") 
-	
 	
 	/**
 	 * Vector filteredVectorTime filtrato. il fatto che è settato static e posizionato qui ci permette di 
-	 * applicare altri filtri in futuro in base ad altri valori, e assegnare ad altri Vector 
+	 * applicare altri filtri in futuro in base ad altri valori
 	 * es:filteredVectorTemperature, filteredVectorCountry e fare un ulteriore filtraggio degli elementi in 
-	 * comuni tra tutti i Vector presenti e non vuoti 
+	 * comuni tra tutti i Vector presenti con il metodo equals() o altri
 	 */
 	public static Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
 	//public static Vector<ForecastDataCurrent> filteredVectorTemperature = new Vector<ForecastDataCurrent>();
 	//public static Vector<ForecastDataCurrent> filteredVectorCountry = new Vector<ForecastDataCurrent>();
 
-	
 	
 	
 	/**
@@ -49,6 +44,7 @@ public class Filters {
 		return dailyFilter(initialValue, finalValue, 7);
 	}
 	
+	
 
 	/**
 	 * metodo per il filtraggio su base giorni delle nostre previsioni
@@ -60,6 +56,7 @@ public class Filters {
 	 */
 	public CurrentStats dailyFilter(long initialValue, long finalValue, int days)  throws IllegalArgumentException, IllegalTimeException
 	{																							//unix format per gli Value
+		FiltersPrint filtersPrint = new FiltersPrint();
 		CurrentForecastService currentForecastService = new CurrentForecastService();
 		Vector<ForecastDataCurrent> tmpVec = new Vector<ForecastDataCurrent>();
 		tmpVec.addAll(CurrentForecastService.forecastDataCurrentVector);							//assegno il vettore presente nella RAM
@@ -69,9 +66,10 @@ public class Filters {
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
 		daysPeriodFilter(initialValue, finalValue, days, tmpVec, filteredVectorTime); 				//filtraggio 
 		if(filteredVectorTime.size() == 0){
-			FiltersPrint.print1();
+			filtersPrint.print1();
 			return null;
-		}
+		}else
+			filtersPrint.print2(filteredVectorTime.size());
 		StatisticsCurrentForecasts statisticsCurrentForecasts = new StatisticsCurrentForecasts();
 		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, days, filteredVectorTime);
 	}

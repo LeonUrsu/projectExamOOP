@@ -7,10 +7,22 @@ package it.uni.main.printsConsole;
  */
 public class FiltersPrint {
 	
-	
-	public static void print1() {
+	/**
+	 * Metodo void per eseguire una stampa a console messaggio: 
+	 * Filtrati tutti gli elementi, impossibile fare le statistiche! 
+	 */
+	public void print1() {
 	System.out.println(">>>Filtrati tutti gli elementi, impossibile fare le statistiche!<<<	");
 	}
 	
+	
+	/**
+	 * Metodo void per eseguire una stampa a console messaggio: 
+	 * Filtrati  " + ele + "  elementi!!!
+	 * @param ele il parametro di elementi filtrati
+	 */
+	public void print2(int ele){
+	System.out.println(">>>Filtrati  " + ele + "  elementi!!!<<<");	
+	}
 	
 }

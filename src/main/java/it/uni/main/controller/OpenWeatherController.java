@@ -109,6 +109,8 @@ public class OpenWeatherController
 			currentForecast.ripetizioneMetodo(cityName);	
 		}catch (IOException | ParseException e) {
 			return false;
+		}catch(Exception e) {
+			return false;
 		}
 		return true;
 	}
@@ -125,6 +127,8 @@ public class OpenWeatherController
 		try {
 			currentForecast.stopTimer();	
 		}catch (StopNotValidException e) {
+			return false;
+		}catch(Exception e) {
 			return false;
 		}
 		return true;
