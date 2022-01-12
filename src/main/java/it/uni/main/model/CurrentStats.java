@@ -9,70 +9,84 @@ import java.util.Vector;
  * @author Ursu Leon 
  */
 public class CurrentStats {
-	//ATTRIBUTI INTERNI------------------------------
-		private long oraInizio = 0;
-		private long oraFine = 0;
+		//ATTRIBUTI INTERNI------------------------------
+		private long startTime = 0;
+		private long stopTime = 0;
 		private long filteredDays = 0;
+		private int filteredElements;
 		private double tempMin = 0;
 		private double tempMax = 0;
 		private double averageTemp = 0;
-		private double varianzaTempPercepita = 0;
-		private double varianzaTempReale = 0;
-		private City città = null;
+		private double PerceivedTemperatureVariance  = 0;
+		private double realTemperatureVariance = 0;
+		private City city = null;
+		
 		
 		
 		public CurrentStats(long initialValue, long finalValue, int days, 
 				Vector<ForecastDataCurrent> filteredVector,double tempMin,double tempMax,
 				double tempMedia,double varianzaTempPercepita,double varianzaTempReale){
-			
-			this.oraInizio = initialValue;
-			this.oraFine = finalValue;
+			this.startTime = initialValue;
+			this.stopTime = finalValue;
 			this.filteredDays = days;
+			this.filteredElements = filteredVector.size(); 
 			this.tempMin = tempMin;
 			this.tempMax = tempMax;
 	 		this.averageTemp = tempMedia;
-			this.varianzaTempPercepita = varianzaTempPercepita;
-			this.varianzaTempReale = varianzaTempReale;	
+			this.PerceivedTemperatureVariance = varianzaTempPercepita;
+			this.realTemperatureVariance = varianzaTempReale;	
 			City tmpC = filteredVector.get(0).getCity();
-			this.città = new City(tmpC.getLat(), tmpC.getLon(), tmpC.getID(), tmpC.getCityName());
-		}
-		
-		public CurrentStats(long initialValue, long finalValue, Vector<ForecastDataCurrent> filteredVector)
-		{
-		
-		}
-
-		
-		
-
-		public long getOraInizio() {
-			return oraInizio;
+			this.city = new City(tmpC.getLat(), tmpC.getLon(), tmpC.getID(), tmpC.getCityName());
 		}
 
 
-		public void setOraInizio(long oraInizio) {
-			this.oraInizio = oraInizio;
+
+		public long getStartTime() {
+			return startTime;
 		}
 
 
-		public long getOraFine() {
-			return oraFine;
+
+		public void setStartTime(long startTime) {
+			this.startTime = startTime;
 		}
 
 
-		public void setOraFine(long oraFine) {
-			this.oraFine = oraFine;
+
+		public long getStopTime() {
+			return stopTime;
 		}
 
 
-		public long getGiorniDiFiltraggio() {
+
+		public void setStopTime(long stopTime) {
+			this.stopTime = stopTime;
+		}
+
+
+
+		public long getFilteredDays() {
 			return filteredDays;
 		}
 
 
-		public void setGiorniDiFiltraggio(long giorniDiFiltraggio) {
-			this.averageTemp = giorniDiFiltraggio;
+
+		public void setFilteredDays(long filteredDays) {
+			this.filteredDays = filteredDays;
 		}
+
+
+
+		public int getFilteredElements() {
+			return filteredElements;
+		}
+
+
+
+		public void setFilteredElements(int filteredElements) {
+			this.filteredElements = filteredElements;
+		}
+
 
 
 		public double getTempMin() {
@@ -80,9 +94,11 @@ public class CurrentStats {
 		}
 
 
+
 		public void setTempMin(double tempMin) {
 			this.tempMin = tempMin;
 		}
+
 
 
 		public double getTempMax() {
@@ -90,52 +106,61 @@ public class CurrentStats {
 		}
 
 
+
 		public void setTempMax(double tempMax) {
 			this.tempMax = tempMax;
 		}
 
 
-		public double getTempMedia() {
+
+		public double getAverageTemp() {
 			return averageTemp;
 		}
 
 
-		public void setTempMedia(double tempMedia) {
-			this.averageTemp = tempMedia;
+
+		public void setAverageTemp(double averageTemp) {
+			this.averageTemp = averageTemp;
 		}
 
 
-		public double getVarianzaTempPercepita() {
-			return varianzaTempPercepita;
+
+		public double getPerceivedTemperatureVariance() {
+			return PerceivedTemperatureVariance;
 		}
 
 
-		public void setVarianzaTempPercepita(double varianzaTempPercepita) {
-			this.varianzaTempPercepita = varianzaTempPercepita;
+
+		public void setPerceivedTemperatureVariance(double perceivedTemperatureVariance) {
+			PerceivedTemperatureVariance = perceivedTemperatureVariance;
 		}
 
 
-		public double getVarianzaTempReale() {
-			return varianzaTempReale;
+
+		public double getRealTemperatureVariance() {
+			return realTemperatureVariance;
 		}
 
 
-		public void setVarianzaTempReale(double varianzaTempReale) {
-			this.varianzaTempReale = varianzaTempReale;
+
+		public void setRealTemperatureVariance(double realTemperatureVariance) {
+			this.realTemperatureVariance = realTemperatureVariance;
 		}
 
 
-		public City getCittà() {
-			return città;
+
+		public City getCity() {
+			return city;
 		}
 
 
-		public void setCittà(City città) {
-			this.città = città;
+
+		public void setCity(City città) {
+			this.city = città;
 		}
 		
-		
-		
+
+
 		
 		
 	

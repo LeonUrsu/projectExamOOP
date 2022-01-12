@@ -45,7 +45,7 @@ public class Filters {
 	}
 	
 	
-
+	
 	/**
 	 * metodo per il filtraggio su base giorni delle nostre previsioni
 	 * @param initialValue valore iniziale in secondi dalle 0:00
@@ -57,14 +57,11 @@ public class Filters {
 	public CurrentStats dailyFilter(long initialValue, long finalValue, int days)  throws IllegalArgumentException, IllegalTimeException
 	{																							//unix format per gli Value
 		FiltersPrint filtersPrint = new FiltersPrint();
-		CurrentForecastService currentForecastService = new CurrentForecastService();
-		Vector<ForecastDataCurrent> tmpVec = new Vector<ForecastDataCurrent>();
-		tmpVec.addAll(CurrentForecastService.forecastDataCurrentVector);							//assegno il vettore presente nella RAM
-		if(tmpVec == null || tmpVec.size() == 0)
-			currentForecastService.readVectorFromFile(FileReferenceOOPE.myFileCurrent, tmpVec );	//IDEA: posso fondere tmpVec con FilteredVec
+		if(CurrentForecastService.forecastDataCurrentVector == null || CurrentForecastService.forecastDataCurrentVector.size() == 0)
+			return null;
 		verifyBand(initialValue, finalValue);
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
-		daysPeriodFilter(initialValue, finalValue, days, tmpVec, filteredVectorTime); 				//filtraggio 
+		daysPeriodFiltering(initialValue, finalValue, days, CurrentForecastService.forecastDataCurrentVector, filteredVectorTime); 	
 		if(filteredVectorTime.size() == 0){
 			filtersPrint.print1();
 			return null;
@@ -74,7 +71,8 @@ public class Filters {
 		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, days, filteredVectorTime);
 	}
 	
-
+	
+	
 	
 	/**
 	 * Metodo filtro, ci permette di filtrare elementi di un vettore e salvarli in un'altro vettore.
@@ -88,7 +86,7 @@ public class Filters {
 	 * @param filteredVector vettore di elementi filtrati
 	 * @throws IllegalArgumentException
 	 */
-	private void daysPeriodFilter(long initialValue, long finalValue, int days, Vector<ForecastDataCurrent> toFilterVector,
+	private void daysPeriodFiltering(long initialValue, long finalValue, int days, Vector<ForecastDataCurrent> toFilterVector,
 								  Vector<ForecastDataCurrent> filteredVector) throws IllegalArgumentException{
 		long daysSec = days * 86400;
 		long unixMax = findBiggestValue(toFilterVector);
@@ -98,7 +96,7 @@ public class Filters {
 			throw new IllegalArgumentException();										
 		for(int i=0, u=toFilterVector.size() ; i<u ; i++) {			//filtering process	
 			ForecastDataCurrent tmpEle = toFilterVector.get(i);
-			if(inDaysBandCheck(unixMin, unixMax, tmpEle) && inHourBandCheck(initialValue, finalValue, tmpEle))
+			if(inDaysBandCheck(unixMax, tmpEle, days) && inHourBandCheck(initialValue, finalValue, tmpEle))
 				filteredVector.add(tmpEle);
 		}
 	}
@@ -112,10 +110,11 @@ public class Filters {
 	 * @param tmp meteo passato da controllare
 	 * @return true se rienra nell'intervallo
 	 */
-	public boolean inDaysBandCheck(long initialValueDays, long finalValueDays, ForecastDataCurrent tmp)
+	public boolean inDaysBandCheck(long finalValueDays, ForecastDataCurrent tmp, int days)
 	{
+		long initialValue = finalValueDays - (days*84600);
 		long dt = tmp.getDayTime();
-		if(initialValueDays <= dt && dt <= finalValueDays)
+		if(initialValue <= dt && dt <= finalValueDays)
 			return true;
 		return false;
 	}
@@ -187,4 +186,34 @@ public class Filters {
 		else throw new IllegalTimeException();
 	}
 	
+	
+	
+	
+	@Deprecated
+	/**
+	 * Metodo che filtra gli elementi, si passa un vettore di elementi e vvengono filtrati i giorni che rientrano 
+	 * nell'intervallo dei gioni che si vuole filtrare
+	 */
+	public void dayFilter(Vector<ForecastDataCurrent> toFilterVector,Vector<ForecastDataCurrent> filteredVector, int days){
+		long daysSec = days * 86400;
+		long unixMin = findSmallestValue(toFilterVector);
+		long unixMax = findBiggestValue(toFilterVector);
+		long diff = unixMax - unixMin;
+		if ( diff <= daysSec || days == 0 ) 
+			throw new IllegalArgumentException();		
+		for(int i=0, u=toFilterVector.size(); i<u ; i++)
+			if(inDaysBandCheck(unixMax, toFilterVector.get(i), days))
+				filteredVector.add(toFilterVector.get(i));
+	}
+	
+	
+	@Deprecated
+	/**
+	 * Metoodo che filtra gli elementi in base alle ore passate
+	 */
+	public void hourFilter(Vector<ForecastDataCurrent> toFilterVector, Vector<ForecastDataCurrent> filteredVector,
+						   long initialValue, long finalValue){
+		
+	}
+
 }

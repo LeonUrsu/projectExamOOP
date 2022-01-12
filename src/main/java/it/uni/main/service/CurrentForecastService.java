@@ -3,6 +3,7 @@ package it.uni.main.service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.JsonObject;
 
+import org.springframework.beans.factory.support.ReplaceOverride;
 import org.springframework.stereotype.Service;
 
 import it.uni.main.exception.StopNotValidException;
@@ -70,7 +72,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 		        }
 		   };
 		   timer = new Timer("Timer");
-		   timer.scheduleAtFixedRate(task,1000,1000 * 60 * 60);
+		   timer.scheduleAtFixedRate(task,1000,1000 * 3);//0 * 60);
 	   }
 	}
 	
@@ -100,16 +102,10 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	 * @throws IOException
 	 */	
 	private void forecastCurr(String cityName) throws ParseException, IOException {
-
-		if(forecastDataCurrentVector.isEmpty()) 
-			readVectorFromFile("currentForecastData.json", forecastDataCurrentVector);
-		else 
-			if(!compareId(cityName, forecastDataCurrentVector)) { 
-				forecastDataCurrentVector.removeAllElements();			 	
-			System.out.println("id diversi   ");
-			}
-				
-				//Creazione del JAVA Object dal JSONObject
+		String fileName = "currentForecastData{City}.json";
+		fileName = fileName.replaceAll("\\{City\\}", cityName);
+		checkVector(cityName, fileName, forecastDataCurrentVector);
+		//Creazione del JAVA Object dal JSONObject
 		JsonObject oggettoJ = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
 		JsonObject tmp = oggettoJ.getAsJsonObject("main");
 		Temperature temperature = new Temperature(tmp.get("temp").getAsDouble(),
@@ -131,7 +127,28 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 			forecastDataCurrentVector.remove(0);
 			forecastDataCurrentVector.add(javaObj);
 		}	//Salvataggio degli elementi dalla memoria volatile sulla memoria di massa
-		salvaSuFile("currentForecastData.json",forecastDataCurrentVector);
+		salvaSuFile(fileName, forecastDataCurrentVector);
+	}
+	
+	
+	
+	/**
+	 * Metodo che controllase il vettore è pieno oppure vuoto e crea file a seconda se è pieno
+	 * @param fileName
+	 * @param forecastDataCurrentVector
+	 * @throws IOException
+	 */
+	public void checkVector(String cityName, String fileName, Vector<ForecastDataCurrent> forecastDataCurrentVector) throws IOException {
+		if(forecastDataCurrentVector.isEmpty()){
+			if(checkOrCreateFile(fileName)) return;//false se file esistente 
+			else readVectorFromFile(fileName, forecastDataCurrentVector);
+		}
+		else if(compareId(cityName, forecastDataCurrentVector))return;//false se id diversi
+			 else {
+				 forecastDataCurrentVector.removeAllElements();
+				 if(checkOrCreateFile(fileName)) return;//false se file esistente 
+				 else readVectorFromFile(fileName, forecastDataCurrentVector);
+			 }  
 	}
 	
 	
@@ -158,16 +175,16 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	}
 	
 	
-	
+
 	/**
 	 * metodo per comparare gli ID di due città, una presente nel vettore e la seconda nel cityName
 	 * @param cityName - da cui estrarre l'ID
 	 * @param vettore - da cui estrarre l'ID2
 	 * @return
 	 */
-	private boolean compareId(String cityName,Vector<ForecastDataCurrent> vettore ) {
-		JsonObject compare1 = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
-		int ID = Integer.parseInt(compare1.get("id").toString());
+	private boolean compareId(String cityName, Vector<ForecastDataCurrent> vettore ) {
+		JsonObject oggettoJ = callApi(ApiReference.UrlCurrP1 + cityName + ApiReference.UrlCurrP2);
+		int ID = oggettoJ.get("id").getAsInt();
 		int ID2 = vettore.lastElement().getCity().getID();
 		if(ID == ID2)
 			return true;
@@ -214,7 +231,24 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 		}			
 	}
 	
-	
+	 
+	 
+	 /**
+	  * Metodo per creare un nuovo fle con il nome della città
+	  */
+	 private boolean checkOrCreateFile(String nomeNuovoFile) throws IOException{
+	      File myObj = new File(nomeNuovoFile);
+	      if (myObj.createNewFile()) {
+	    	  System.out.println("File creato: " + myObj.getName());
+	    	  return true;
+	      } 
+	      else {
+	    	  System.out.println("il File esiste già");
+	    	  return false;
+	      }
+	}
+ 
+
 	
 	
 	@SuppressWarnings("unused")
