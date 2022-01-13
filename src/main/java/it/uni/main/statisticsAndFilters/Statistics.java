@@ -17,25 +17,51 @@ public class Statistics {
 	//sarebbe corretto dividere i metodi appartenenti a entrambe le classi e quelli non appartenenti tramite l'Ereditarietà
 	
 	
+	
+	/**
+	 * metodo che trova il valore medio dell'umidita nelle previsioni
+	 * @param previsioni array di oggetti 	 
+	 */
 	protected double mediaUmiditaTotale(Vector<Forecast5Days> previsioni)
 	{
-		
-		return 0;	
+		double somma = 0;
+		for(Forecast5Days e : previsioni)
+			somma += e.getHumidity().getValue();
+		int size = previsioni.size();
+		if(size == 0) throw new IllegalArgumentException();
+		return somma/size;	
 	}
 	
 	
+		
+	/**
+	 * metodo che trova il valore minimo dell'umidita nelle previsioni
+	 * @param previsioni array di oggetti 	 
+	 */
 	protected double umiditaMinAssoluta(Vector<Forecast5Days> previsioni)
 	{
-
-		return 0;	
+		int valueOf = previsioni.get(0).getHumidity().getValue(); 
+		for(Forecast5Days e : previsioni)
+			if(e.getHumidity().getValue() < valueOf )
+				valueOf = e.getHumidity().getValue();
+		return valueOf;	
 	}
 	
 	
+
+	/**
+	 * metodo che trova il valore massimo dell'umidita nelle previsioni
+	 * @param previsioni array di oggetti 	 
+	 */
 	protected double umiditaMaxAssoluta(Vector<Forecast5Days> previsioni)
 	{
-		return 0;	
+		int valueOf = previsioni.get(0).getHumidity().getValue();
+		for(Forecast5Days e : previsioni)
+			if(e.getHumidity().getValue() > valueOf )
+				valueOf = e.getHumidity().getValue();	
+		return valueOf;	
 	}
-	
+
 	
 	
 	
