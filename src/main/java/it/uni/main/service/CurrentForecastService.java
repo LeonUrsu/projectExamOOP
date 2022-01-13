@@ -48,7 +48,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	 * elemento ForecastDataCurrent fino a raggiungere un valore massimo 
 	 * stabilito dal programmatore tramite il PARAMETRO PROGRAMMATORE
 	 */
-	public static Vector<ForecastDataCurrent> forecastDataCurrentVector = new Vector<ForecastDataCurrent>();
+	private static Vector<ForecastDataCurrent> forecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 
 	
 	
@@ -102,7 +102,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	 * @throws IOException
 	 */	
 	private void forecastCurr(String cityName) throws ParseException, IOException {
-		String fileName = "currentForecastData{City}.json";
+		String fileName = ParamVariable.filePath;
 		fileName = fileName.replaceAll("\\{City\\}", cityName);
 		checkVector(cityName, fileName, forecastDataCurrentVector);
 		//Creazione del JAVA Object dal JSONObject
