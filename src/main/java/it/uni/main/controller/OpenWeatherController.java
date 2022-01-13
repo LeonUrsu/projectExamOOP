@@ -18,7 +18,7 @@ import it.uni.main.model.Stats5Days;
 import it.uni.main.model.Forecast5DaysHumidity;
 import it.uni.main.service.CurrentForecastService;
 import it.uni.main.service.Forecast5DaysService;
-import it.uni.main.service.ProfTesting;
+import it.uni.main.service.Loader;
 import it.uni.main.statisticsAndFilters.Filters;
 import it.uni.main.statisticsAndFilters.Forecasts5DaysStatistics;
 
@@ -39,7 +39,7 @@ public class OpenWeatherController
 	@Autowired
 	private Forecasts5DaysStatistics statistics5DaysForecasts;
 	@Autowired
-	private ProfTesting profTesting;
+	private Loader loader;
 	
 	
 	
@@ -83,11 +83,11 @@ public class OpenWeatherController
 	 * Rotta pre caricare in vettore di previsioni degli ultimi 5 giorni
 	 * @return ritorna al chiamante le statistiche in json
 	 */
-	@GetMapping("/loadHistory")
-	public boolean writeHistoryWeather() {
+	@GetMapping("/load/{cityName}")
+	public boolean writeHistoryWeather(@PathVariable String cityName) {
 		boolean response = false;
 		try {
-			if(profTesting.writeHistoryWeather())
+			if(loader.writeHistoryWeather(cityName))
 				response = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -147,7 +147,7 @@ public class OpenWeatherController
 	 * @throws IllegalArgumentException 
 	 */
 	@GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}")
-	public CurrentStats  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days) throws IllegalArgumentException, IllegalTimeException{
+	public CurrentStats  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days) {
 		CurrentStats currentStats = null;
 		try {		
 			currentStats = filters.dailyFilter(initialValue, finalValue, days);
@@ -170,7 +170,7 @@ public class OpenWeatherController
 	 * @throws IllegalArgumentException 
 	 */
 	@GetMapping("/filter/weekly/{initialValue}/{finalValue}")
-	public CurrentStats weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue) throws IllegalArgumentException, IllegalTimeException{
+	public CurrentStats weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue){
 		CurrentStats currentStats = null;
 		try {		
 			currentStats = filters.weeklyFilter(initialValue, finalValue);

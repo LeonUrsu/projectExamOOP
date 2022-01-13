@@ -12,6 +12,8 @@ import com.google.gson.reflect.TypeToken;
 
 
 import it.uni.main.model.ForecastDataCurrent;
+import it.uni.main.statisticsAndFilters.Filters;
+import it.uni.main.utils.ParamVariable;
 
 
 /**
@@ -21,7 +23,7 @@ import it.uni.main.model.ForecastDataCurrent;
  * @author Ursu Leon 
  */
 @Service
-public class ProfTesting extends OpenWeatherServiceImp{
+public class Loader extends OpenWeatherServiceImp{
 	
 
 	/**
@@ -30,10 +32,12 @@ public class ProfTesting extends OpenWeatherServiceImp{
 	 * @return true se caricato, false se non caricato
 	 * @throws Exception
 	 */
-	public boolean writeHistoryWeather()throws Exception, JsonSyntaxException{
-		CurrentForecastService.forecastDataCurrentVector.removeAllElements();
+	public boolean writeHistoryWeather(String cityName)throws Exception, JsonSyntaxException{
+		Filters.toFilterVector.removeAllElements();
 		OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();
-		String inJson = openWeatherServiceImp.readStringFromFile("daysHistory.json");
+		String fileName = ParamVariable.filePath;
+		fileName = fileName.replaceAll("\\{City\\}", cityName);
+		String inJson = openWeatherServiceImp.readStringFromFile(fileName);
 		if(inJson.isEmpty())
 			return false;
 		JsonArray jsonArray = new JsonArray();
@@ -42,7 +46,7 @@ public class ProfTesting extends OpenWeatherServiceImp{
 		if(jsonArray.size() == 0)
 			return false;
 		changeDtTime(jsonArray,System.currentTimeMillis()/1000); //cambio valore dei 'dt'		
-		toVectorForecastDataCurrent(jsonArray.toString(), CurrentForecastService.forecastDataCurrentVector);	
+		toVectorForecastDataCurrent(jsonArray.toString(), Filters.toFilterVector);	
 		return true; // se true, sono stati caricati 89 elementi sul Vector
 	}
 

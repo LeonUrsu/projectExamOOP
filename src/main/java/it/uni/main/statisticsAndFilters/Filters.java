@@ -20,6 +20,9 @@ import it.uni.main.utils.FileReferenceOOPE;
 @Service
 public class Filters {
 	
+	public static Vector<ForecastDataCurrent> toFilterVector = new Vector<ForecastDataCurrent>();
+	
+	
 	/**
 	 * Vector filteredVectorTime filtrato. il fatto che è settato static e posizionato qui ci permette di 
 	 * applicare altri filtri in futuro in base ad altri valori
@@ -57,11 +60,11 @@ public class Filters {
 	public CurrentStats dailyFilter(long initialValue, long finalValue, int days)  throws IllegalArgumentException, IllegalTimeException
 	{																							//unix format per gli Value
 		FiltersPrint filtersPrint = new FiltersPrint();
-		if(CurrentForecastService.forecastDataCurrentVector == null || CurrentForecastService.forecastDataCurrentVector.size() == 0)
+		if(toFilterVector == null || toFilterVector.size() == 0)
 			return null;
 		verifyBand(initialValue, finalValue);
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
-		daysPeriodFiltering(initialValue, finalValue, days, CurrentForecastService.forecastDataCurrentVector, filteredVectorTime); 	
+		daysPeriodFiltering(initialValue, finalValue, days, toFilterVector, filteredVectorTime); 	
 		if(filteredVectorTime.size() == 0){
 			filtersPrint.print1();
 			return null;
@@ -92,8 +95,12 @@ public class Filters {
 		long unixMax = findBiggestValue(toFilterVector);
 		long unixMin = findSmallestValue(toFilterVector);
 		long diff = unixMax - unixMin;
-		if ( diff <= daysSec || days == 0 ) 
-			throw new IllegalArgumentException();										
+		if ( diff <= daysSec || days == 0 ) {
+			FiltersPrint filtersPrint = new FiltersPrint();
+			filtersPrint.print3(toFilterVector.size());
+			throw new IllegalArgumentException();	
+		}
+												
 		for(int i=0, u=toFilterVector.size() ; i<u ; i++) {			//filtering process	
 			ForecastDataCurrent tmpEle = toFilterVector.get(i);
 			if(inDaysBandCheck(unixMax, tmpEle, days) && inHourBandCheck(initialValue, finalValue, tmpEle))

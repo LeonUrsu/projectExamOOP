@@ -25,4 +25,8 @@ public class FiltersPrint {
 	System.out.println(">>>Filtrati  " + ele + "  elementi!!!<<<");	
 	}
 	
+	
+	public void print3(int ele){
+		System.out.println(">>>Intervallo richiesto troppo grande, il file contiene solo " + ele + " elementi<<<");	
+		}
 }

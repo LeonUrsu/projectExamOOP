@@ -3,7 +3,10 @@ package it.uni.main.model;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
+
+
 
 /**
  * Classe modello per le previsioni Forecast5Days
@@ -14,7 +17,7 @@ public class Forecast5Days implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private long dt ;
+	private long dt;
 	private Humidity humidity;
 	
 	public Forecast5Days(Humidity humidity, long dt){
@@ -55,8 +58,9 @@ public class Forecast5Days implements Serializable{
 	 * @return UTC in stringa
 	 */
 	public String EpochConverter(long unixTime) {
-		java.util.Date dateTime = new java.util.Date((long) Double.valueOf(unixTime).longValue() * 1000);
+		Date dateTime = new java.util.Date((long) Double.valueOf(unixTime).longValue() * 1000);
 		String fromTimeZone = "GMT+1";
+		
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		df.setTimeZone(TimeZone.getTimeZone(fromTimeZone));
 		String reportDate = df.format(dateTime);
