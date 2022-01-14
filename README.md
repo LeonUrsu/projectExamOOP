@@ -19,8 +19,8 @@ Invece per quanto riguarda la call all'api current weather data , la risposta vi
 | /startCurrentService| GET      | Avvia il salvataggio dei dati correnti ogni ora     |
 | /stopCurrentService         | GET          | Ferma il salvataggio dei dati correnti        |
 | /getHumidityStats  | GET          | Crea statistiche relative all'umidità con i dati già presenti   |
-| /filter/daily/{initialValue}/{finalValue}/{days}  | GET          | Filtra le statistiche dei dati salvati ogni ora giornalmente|
-| /filter/weekly/{initialValue}/{finalValue}    | GET       |  Filtra le statistiche dei dati salvati ogni ora settimanalmente    |
+| /filter/daily/{initialValue}/{finalValue}  | GET          | Filtra le statistiche dei dati salvati ogni ora giornalmente|
+
 
 
 # GET /getCompleteForecast
@@ -351,12 +351,12 @@ I campi del JSON sopraindicato rappresentano.
 # GET /startCurrentService 
 Salva localmente in un file ".json" la risposta di Postman ogni ora grazie ad un timer.
 
-In questa rotta è possibile inserire un parametro di tipo "nome" per cercare il nome della città scelta. Di default il "nome" è impostato su "Roma".
+In questa rotta è possibile utilizzare un query params di tipo "nome" per cercare il nome della città scelta. Di default il "nome" è impostato su "Roma".
 
 #### ESEMPIO: 
 | KEY       |    VALUE    | 
 |---------------|--------------|
-|nome  | Milan  |
+|nome  | Ancona |
 
 <details>
 <summary>MODEL</summary>
@@ -429,9 +429,48 @@ Crea statistiche riguardanti l'umidità nei prossimi 5 giorni.
 
 </details>
 
-# GET /filter/daily/{initialValue}/{finalValue}/{days} e /filter/weekly/{initialValue}/{finalValue} 
+# GET /load/{City}
+Popola un vettore di dati letti da file, con possibilità di caricare dati da una città specifica(Inserire il nome della città al posto di {City}).
 
-\\TODO\\
+#### ESEMPIO:
+GET localhost:8080/load/Ancona
+
+Su postman restituirà un valore boolean true se il processo è andato a buon fine
+
+# GET /filter/daily/{initialValue}/{finalValue}
+Questa rotta va utilizzata **esclusivamente** dopo aver chiamato l'endpoint [/load/{cityName}].... .
+
+Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss"
+
+<details>
+<summary>MODEL</summary>
+<br>
+
+ ```
+ {
+    "initialDay": 1642032000,
+    "finalDay": 1642118400,
+    "startTime": 3600,
+    "stopTime": 50400,
+    "filteredDays": 86400,
+    "filteredElements": 26,
+    "tempMin": 5.27,
+    "tempMax": 18.92,
+    "averageTemp": 15.27,
+    "realTemperatureVariance": 78.04,
+    "city": {
+       "lat": 13.1667,
+       "lon": 43.2,
+       "country": null,
+       "cityName": "Provincia di Macerata",
+       "id": 3174379
+    },
+    "perceivedTemperatureVariance": 33.54
+ }
+```
+
+</details>
+
 
 # ECCEZIONI:
 L'applicazione può lanciare diverse eccezioni alcune standard e altre personalizzate:
