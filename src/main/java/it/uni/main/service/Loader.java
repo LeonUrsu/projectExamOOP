@@ -45,7 +45,7 @@ public class Loader extends OpenWeatherServiceImp{
 		jsonArray = gson.fromJson(inJson, jsonArray.getClass());
 		if(jsonArray.size() == 0)
 			return false;
-		changeDtTime(jsonArray,System.currentTimeMillis()/1000); //cambio valore dei 'dt'		
+		changeDtTime(jsonArray,System.currentTimeMillis()/1000);//cambio valore dei 'dt'		
 		toVectorForecastDataCurrent(jsonArray.toString(), Filters.toFilterVector);	
 		return true; // se true, sono stati caricati 89 elementi sul Vector
 	}
@@ -58,8 +58,13 @@ public class Loader extends OpenWeatherServiceImp{
 	 */
 	public void changeDtTime(JsonArray jsonArray, long seconds){
 		int dimArr = jsonArray.size();
-		for(long i=0, dt=seconds ; i<dimArr ; i++, dt-=3600)
+		Filters data = new Filters();
+		
+		for(long i=0, dt=seconds ; i<dimArr ; i++, dt-=3600) {
 			jsonArray.get((int)i).getAsJsonObject().addProperty("dt", dt);
+			jsonArray.get((int)i).getAsJsonObject().addProperty("dtString", data.secToData(dt));
+			
+		}
 	}
 	
 	

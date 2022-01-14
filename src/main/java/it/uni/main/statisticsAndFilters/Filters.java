@@ -1,7 +1,15 @@
 package it.uni.main.statisticsAndFilters;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 import java.util.Vector;
 
+import org.springframework.format.datetime.DateTimeFormatAnnotationFormatterFactory;
 import org.springframework.stereotype.Service;
 
 import it.uni.main.exception.IllegalTimeException;
@@ -34,7 +42,7 @@ public class Filters {
 	//public static Vector<ForecastDataCurrent> filteredVectorCountry = new Vector<ForecastDataCurrent>();
 
 	
-	
+	@Deprecated
 	/**
 	 * metodo per il filtraggio settimanale delle nostre previsioni
 	 * @param initialValue valore iniziale in secondi dalle 0:00
@@ -42,9 +50,11 @@ public class Filters {
 	 * @return oggetto previsioni
 	 * @throws IllegalArgumentException
 	 * @throws IllegalTimeException
+	 * @throws ParseException 
 	 */
-	public CurrentStats weeklyFilter(long initialValue, long finalValue) throws IllegalArgumentException, IllegalTimeException {
-		return dailyFilter(initialValue, finalValue, 7);
+	public CurrentStats weeklyFilter(String start, String stop) throws IllegalArgumentException, IllegalTimeException, ParseException {
+		
+		return dailyFilter(start,stop);
 	}
 	
 	
@@ -56,22 +66,27 @@ public class Filters {
 	 * @return oggetto previsioni
 	 * @throws IllegalArgumentException
 	 * @throws IllegalTimeException
+	 * @throws ParseException 
 	 */
-	public CurrentStats dailyFilter(long initialValue, long finalValue, int days)  throws IllegalArgumentException, IllegalTimeException
-	{																							//unix format per gli Value
+	public CurrentStats dailyFilter(String start, String stop,String startDay,String stopDay)  throws IllegalArgumentException, IllegalTimeException, ParseException
+	{	
+		long initalDay = 0;
+		long finalDay=0;
+		long initialValue = dataToSec(start); 
+		long finalValue = dataToSec(stop);
 		FiltersPrint filtersPrint = new FiltersPrint();
 		if(toFilterVector == null || toFilterVector.size() == 0)
 			return null;
-		verifyBand(initialValue, finalValue);
+		verifyBand(initialValue, finalValue,initialDay,finalDay);
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
-		daysPeriodFiltering(initialValue, finalValue, days, toFilterVector, filteredVectorTime); 	
+		daysPeriodFiltering(initialValue,finalValue,initialDay,finalDay, toFilterVector, filteredVectorTime); 	
 		if(filteredVectorTime.size() == 0){
 			filtersPrint.print1();
 			return null;
 		}else
 			filtersPrint.print2(filteredVectorTime.size());
 		StatisticsCurrentForecasts statisticsCurrentForecasts = new StatisticsCurrentForecasts();
-		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, days, filteredVectorTime);
+		return statisticsCurrentForecasts.currentStats(initialValue,finalValue,initalDay,finalDay, filteredVectorTime);
 	}
 	
 	
@@ -89,7 +104,7 @@ public class Filters {
 	 * @param filteredVector vettore di elementi filtrati
 	 * @throws IllegalArgumentException
 	 */
-	private void daysPeriodFiltering(long initialValue, long finalValue, int days, Vector<ForecastDataCurrent> toFilterVector,
+	private void daysPeriodFiltering(long initialValue, long finalValue, long initialDay, long finalDay, Vector<ForecastDataCurrent> toFilterVector,
 								  Vector<ForecastDataCurrent> filteredVector) throws IllegalArgumentException{
 		long daysSec = days * 86400;
 		long unixMax = findBiggestValue(toFilterVector);
@@ -188,7 +203,9 @@ public class Filters {
 	 * @param b secondo parametro
 	 * @throws IllegalTimeException 
 	 */
-	private void verifyBand(long a, long b) throws IllegalTimeException {
+	private void verifyBand(long a, long b , long c,long d) throws IllegalTimeException {
+		
+		
 		if(a<b && 0<=a && b<= 86399); 
 		else throw new IllegalTimeException();
 	}
@@ -223,4 +240,38 @@ public class Filters {
 		
 	}
 
+	/**
+	 * 
+	 * @param dtTxt
+	 * @return
+	 * @throws ParseException
+	 */
+	public long dataToSec(String dtString ,String format) throws ParseException{
+		  DateFormat df = new SimpleDateFormat();
+		  changeDataFormat(format);
+		  Date dt = df.parse(dtString);
+		  long epoch = dt.getTime();
+		  epoch += TimeZone.getDefault().getOffset(0);
+		  return (epoch/1000);
+	 }
+	
+	/**
+	 * Metodo che ci restitusce formato GMT+1 in stringa di un formato unix del tempo
+	 * @param unixTime tempo in unix
+	 * @return UTC in stringa
+	 */
+	public String secToData(long unixTime) {
+		unixTime += TimeZone.getDefault().getOffset(0)/1000;//Settato il GMT+1
+		Date dateTime = new java.util.Date((long) Double.valueOf(unixTime).longValue() * 1000);
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		String reportDate = df.format(dateTime);
+		return reportDate;
+	}
+	
+	public DateFormat changeDataFormat(String format){
+		DateFormat df = new SimpleDateFormat(format);
+		return df;
+		
+	}
+	
 }

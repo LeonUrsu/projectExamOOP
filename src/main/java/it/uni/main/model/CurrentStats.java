@@ -10,6 +10,8 @@ import java.util.Vector;
  */
 public class CurrentStats {
 		//ATTRIBUTI INTERNI------------------------------
+		private long initialDay = 0;
+		private long finalDay = 0;
 		private long startTime = 0;
 		private long stopTime = 0;
 		private long filteredDays = 0;
@@ -23,12 +25,12 @@ public class CurrentStats {
 		
 		
 		
-		public CurrentStats(long initialValue, long finalValue, int days, 
+		public CurrentStats(long initialValue, long finalValue, long initialDay,long finalDay,
 				Vector<ForecastDataCurrent> filteredVector,double tempMin,double tempMax,
 				double tempMedia,double varianzaTempPercepita,double varianzaTempReale){
 			this.startTime = initialValue;
 			this.stopTime = finalValue;
-			this.filteredDays = days;
+			this.filteredDays = finalDay - initialDay;
 			this.filteredElements = filteredVector.size(); 
 			this.tempMin = tempMin;
 			this.tempMax = tempMax;

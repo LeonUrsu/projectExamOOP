@@ -24,14 +24,14 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @param filteredVector vettore filtrato
 	 * @return CurrentStats object
 	 */
-	public CurrentStats currentStats(long initialValue, long finalValue, int days,Vector<ForecastDataCurrent> filteredVector) { 
+	public CurrentStats currentStats(long initialValue, long finalValue, long initalDay,long finalDay,Vector<ForecastDataCurrent> filteredVector) { 
 		double tempMin = mediaTempMin(filteredVector);
 		double tempMax = mediaTempMax(filteredVector);
 		double tempMedia = mediaTemp(filteredVector);
 		double feelTemperatureVariance = varianzaTempPercepita(filteredVector);
 		double realTemperatureVariance = varianzaTempReale(filteredVector);
 		
-		return new CurrentStats(initialValue, finalValue, days, filteredVector, tempMin, tempMax, tempMedia, feelTemperatureVariance, realTemperatureVariance);
+		return new CurrentStats(initialValue, finalValue,initialDay,finalDay, filteredVector, tempMin, tempMax, tempMedia, feelTemperatureVariance, realTemperatureVariance);
 	}
 	
 	

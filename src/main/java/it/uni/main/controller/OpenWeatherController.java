@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.uni.main.exception.IllegalTimeException;
 import it.uni.main.exception.StopNotValidException;
 import it.uni.main.model.CurrentStats;
+import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.Stats5Days;
 import it.uni.main.model.Forecast5DaysHumidity;
 import it.uni.main.service.CurrentForecastService;
@@ -146,11 +147,12 @@ public class OpenWeatherController
 	 * @throws IllegalTimeException 
 	 * @throws IllegalArgumentException 
 	 */
-	@GetMapping("/filter/daily/{initialValue}/{finalValue}/{days}")
-	public CurrentStats  dailyBand(@PathVariable long initialValue, @PathVariable long finalValue, @PathVariable int days) {
+	@GetMapping("/filter/daily/{initialValue}/{finalValue}")
+	public CurrentStats dailyBand(@PathVariable String initialValue, @PathVariable String finalValue,
+											@PathVariable String InitialValueDay, @PathVariable String FinalValueDay) {
 		CurrentStats currentStats = null;
 		try {		
-			currentStats = filters.dailyFilter(initialValue, finalValue, days);
+			currentStats = filters.dailyFilter(initialValue,finalValue);
 		}catch(IllegalArgumentException | IllegalTimeException e) {
 			return null;
 		}catch (Exception e){
@@ -159,7 +161,7 @@ public class OpenWeatherController
 		return currentStats;
 	}
 	
-	
+	@Deprecated
 	/**
 	 * Rotta per il filtraggio delle previsioni su una banda passante per l'intervallo orario giornaliero in base ai 
 	 * parametri passati
@@ -170,7 +172,7 @@ public class OpenWeatherController
 	 * @throws IllegalArgumentException 
 	 */
 	@GetMapping("/filter/weekly/{initialValue}/{finalValue}")
-	public CurrentStats weeklyBand(@PathVariable long initialValue, @PathVariable long finalValue){
+	public CurrentStats weeklyBand(@PathVariable String initialValue, @PathVariable String finalValue){
 		CurrentStats currentStats = null;
 		try {		
 			currentStats = filters.weeklyFilter(initialValue, finalValue);
