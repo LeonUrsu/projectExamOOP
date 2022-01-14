@@ -77,7 +77,7 @@ public class Filters {
 		FiltersPrint filtersPrint = new FiltersPrint();
 		if(toFilterVector == null || toFilterVector.size() == 0)
 			return null;
-		verifyBand(initialValue, finalValue,initialDay,finalDay);
+		verifyBand(initialValue, finalValue, initialDay, finalDay);
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
 		daysPeriodFiltering(initialValue,finalValue,initialDay,finalDay, toFilterVector, filteredVectorTime); 	
 		if(filteredVectorTime.size() == 0){
@@ -106,19 +106,16 @@ public class Filters {
 	 */
 	private void daysPeriodFiltering(long initialValue, long finalValue, long initialDay, long finalDay, Vector<ForecastDataCurrent> toFilterVector,
 								  Vector<ForecastDataCurrent> filteredVector) throws IllegalArgumentException{
-		long daysSec = days * 86400;
 		long unixMax = findBiggestValue(toFilterVector);
 		long unixMin = findSmallestValue(toFilterVector);
-		long diff = unixMax - unixMin;
-		if ( diff <= daysSec || days == 0 ) {
+		if (unixMin > initialDay || finalDay > unixMax) {
 			FiltersPrint filtersPrint = new FiltersPrint();
 			filtersPrint.print3(toFilterVector.size());
 			throw new IllegalArgumentException();	
-		}
-												
-		for(int i=0, u=toFilterVector.size() ; i<u ; i++) {			//filtering process	
+		}								
+		for(int i=0, u=toFilterVector.size() ; i<u ; i++) {	//filtering process	
 			ForecastDataCurrent tmpEle = toFilterVector.get(i);
-			if(inDaysBandCheck(unixMax, tmpEle, days) && inHourBandCheck(initialValue, finalValue, tmpEle))
+			if(inDaysBandCheck(initialDay, finalDay, tmpEle) && inHourBandCheck(initialDay, finalDay, tmpEle))
 				filteredVector.add(tmpEle);
 		}
 	}
@@ -127,16 +124,15 @@ public class Filters {
 	
 	/**
 	 * Metodo che confronta se la previsione passata rietra nell'intervallo di giorni interessato
+	 * ad esempio: 14/01/2022 <= X <= 16/01/2022 (tutto in long)
 	 * @param finalValueDays giorno fine Meteo
 	 * @param initialValueDays giorno inizio Meteo
 	 * @param tmp meteo passato da controllare
 	 * @return true se rienra nell'intervallo
 	 */
-	public boolean inDaysBandCheck(long finalValueDays, ForecastDataCurrent tmp, int days)
-	{
-		long initialValue = finalValueDays - (days*84600);
+	public boolean inDaysBandCheck(long initialDay, long finalDay, ForecastDataCurrent tmp){
 		long dt = tmp.getDayTime();
-		if(initialValue <= dt && dt <= finalValueDays)
+		if(initialDay <= dt && dt <= finalDay)
 			return true;
 		return false;
 	}
@@ -145,13 +141,13 @@ public class Filters {
 	
 	/**
 	 * Metodo che confronta se la previsione passata rietra nell'intervallo orario interessato
+	 * ad esempio 15:00 <= X <= 21:30 (tutto in long)
 	 * @param initialValue valore mimimo dell'intervallo giornaliero in s
 	 * @param finalValue valore massimo dell'intervallo giornaliero in s
 	 * @param tmp meteo passato da controllare
 	 * @return true se rienra nell'intervallo
 	 */
-	public boolean inHourBandCheck(long initialValue, long finalValue, ForecastDataCurrent tmp)
-	{
+	public boolean inHourBandCheck(long initialValue, long finalValue, ForecastDataCurrent tmp){
 		long dt24 = tmp.getDayTime() % 86400;		//secondi dalle ore 0:00 della nostra previsione
 		if(initialValue <= dt24 && dt24 <= finalValue )
 			return true;
@@ -166,8 +162,7 @@ public class Filters {
 	 * @param vettore previsioni
 	 * @return long secondi dal "1 gennaio 1970"
 	 */
-	private long findBiggestValue(Vector<ForecastDataCurrent> vettore)
-	{
+	private long findBiggestValue(Vector<ForecastDataCurrent> vettore){
 		long dt = vettore.get(0).getDayTime();
 		for(int i=0, u=vettore.size() ; i<u ; i++) 
 			if(dt < vettore.get(i).getDayTime())
@@ -185,8 +180,7 @@ public class Filters {
 	 * @return long secondi dal "1 gennaio 1970"
 	 * @throws IllegalArgumentException
 	 */
-	private long findSmallestValue(Vector<ForecastDataCurrent> vettore)
-	{
+	private long findSmallestValue(Vector<ForecastDataCurrent> vettore){
 		long dt = vettore.get(0).getDayTime();
 		for(int i=0, u=vettore.size() ; i<u ; i++) 
 			if(dt > vettore.get(i).getDayTime())
@@ -204,9 +198,7 @@ public class Filters {
 	 * @throws IllegalTimeException 
 	 */
 	private void verifyBand(long a, long b , long c,long d) throws IllegalTimeException {
-		
-		
-		if(a<b && 0<=a && b<= 86399); 
+		if(a<b && 0<=a && b<= 86399 && c < d); 
 		else throw new IllegalTimeException();
 	}
 	
