@@ -3,21 +3,20 @@ package it.uni.main.statisticsAndFilters;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.SimpleTimeZone;
+
 import java.util.TimeZone;
 import java.util.Vector;
 
-import org.springframework.format.datetime.DateTimeFormatAnnotationFormatterFactory;
 import org.springframework.stereotype.Service;
 
 import it.uni.main.exception.IllegalTimeException;
 import it.uni.main.model.CurrentStats;
 import it.uni.main.model.ForecastDataCurrent;
 import it.uni.main.printsConsole.FiltersPrint;
-import it.uni.main.service.CurrentForecastService;
-import it.uni.main.utils.FileReferenceOOPE;
+import it.uni.main.utils.ParamVariable;
 
 /**
  * Classe servizio per filtraggio delgi elementi presenti nel Vector CurrentForecastService.forecastDataCurrentVector.
@@ -41,22 +40,7 @@ public class Filters {
 	//public static Vector<ForecastDataCurrent> filteredVectorTemperature = new Vector<ForecastDataCurrent>();
 	//public static Vector<ForecastDataCurrent> filteredVectorCountry = new Vector<ForecastDataCurrent>();
 
-	
-	@Deprecated
-	/**
-	 * metodo per il filtraggio settimanale delle nostre previsioni
-	 * @param initialValue valore iniziale in secondi dalle 0:00
-	 * @param finalValue valore finale in secondi dalle 0:00
-	 * @return oggetto previsioni
-	 * @throws IllegalArgumentException
-	 * @throws IllegalTimeException
-	 * @throws ParseException 
-	 */
-	public CurrentStats weeklyFilter(String start, String stop) throws IllegalArgumentException, IllegalTimeException, ParseException {
-		
-		return dailyFilter(start,stop);
-	}
-	
+
 	
 	
 	/**
@@ -68,15 +52,15 @@ public class Filters {
 	 * @throws IllegalTimeException
 	 * @throws ParseException 
 	 */
-	public CurrentStats dailyFilter(String start, String stop,String startDay,String stopDay)  throws IllegalArgumentException, IllegalTimeException, ParseException
+	public CurrentStats dailyFilter(String start, String stop)  throws IllegalArgumentException, IllegalTimeException, ParseException
 	{	
-		long initalDay = dataToSec(start);
-		long finalDay= dataToSec(stop);
-		long initialValue = ; 
-		long finalValue = ;
-		FiltersPrint filtersPrint = new FiltersPrint();
 		if(toFilterVector == null || toFilterVector.size() == 0)
 			return null;
+		long initialValue = timeConverterTime(start); 
+		long finalValue = timeConverterTime(stop);
+		long initialDay = timeConverterDate(start);
+		long finalDay= timeConverterDate(stop);
+		FiltersPrint filtersPrint = new FiltersPrint();
 		verifyBand(initialValue, finalValue, initialDay, finalDay);
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
 		daysPeriodFiltering(initialValue,finalValue,initialDay,finalDay, toFilterVector, filteredVectorTime); 	
@@ -86,9 +70,8 @@ public class Filters {
 		}else
 			filtersPrint.print2(filteredVectorTime.size());
 		StatisticsCurrentForecasts statisticsCurrentForecasts = new StatisticsCurrentForecasts();
-		return statisticsCurrentForecasts.currentStats(initialValue,finalValue,initalDay,finalDay, filteredVectorTime);
+		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, initialDay, finalDay, filteredVectorTime);
 	}
-	
 	
 	
 	
@@ -114,11 +97,12 @@ public class Filters {
 		}								
 		for(int i=0, u=toFilterVector.size() ; i<u ; i++) {	//filtering process	
 			ForecastDataCurrent tmpEle = toFilterVector.get(i);
-			if(inDaysBandCheck(initialDay, finalDay, tmpEle) && inHourBandCheck(initialDay, finalDay, tmpEle))
+			if(inDaysBandCheck(initialDay+initialValue, finalDay+finalValue, tmpEle) && inHourBandCheck(initialValue, finalValue, tmpEle))
 				filteredVector.add(tmpEle);
 		}
 	}
 	
+        
 	
 	
 	/**
@@ -135,6 +119,7 @@ public class Filters {
 			return true;
 		return false;
 	}
+	
 	
 	
 	/**
@@ -198,31 +183,11 @@ public class Filters {
 	 * @throws IllegalTimeException 
 	 */
 	private void verifyBand(long a, long b , long c,long d) throws IllegalTimeException {
-		if(a >= 0 && b <= 86399 )
-		if((a < b && c == d) || (a > b && c < d)); 
+		if(a<b && a >= 0 && b <= 86399 && c <= d);
 		else throw new IllegalTimeException();
-		
 	}
-	
-	
-	
-	
-	@Deprecated
-	/**
-	 * Metodo che filtra gli elementi, si passa un vettore di elementi e vvengono filtrati i giorni che rientrano 
-	 * nell'intervallo dei gioni che si vuole filtrare
-	 */
-	public void dayFilter(Vector<ForecastDataCurrent> toFilterVector,Vector<ForecastDataCurrent> filteredVector, int days){
-		long daysSec = days * 86400;
-		long unixMin = findSmallestValue(toFilterVector);
-		long unixMax = findBiggestValue(toFilterVector);
-		long diff = unixMax - unixMin;
-		if ( diff <= daysSec || days == 0 ) 
-			throw new IllegalArgumentException();		
-		for(int i=0, u=toFilterVector.size(); i<u ; i++)
-			if(inDaysBandCheck(unixMax, toFilterVector.get(i), days))
-				filteredVector.add(toFilterVector.get(i));
-	}
+
+
 	
 	
 	@Deprecated
@@ -241,8 +206,7 @@ public class Filters {
 	 * @throws ParseException
 	 */
 	public long dataToSec(String dtString ,String format) throws ParseException{
-		  DateFormat df = new SimpleDateFormat();
-		  df = changeDataFormat(format);
+		  DateFormat df = new SimpleDateFormat(ParamVariable.dataFormat);
 		  Date dt = df.parse(dtString);
 		  long epoch = dt.getTime();
 		  epoch += TimeZone.getDefault().getOffset(0);
@@ -257,15 +221,27 @@ public class Filters {
 	public String secToData(long unixTime) {
 		unixTime += TimeZone.getDefault().getOffset(0)/1000;//Settato il GMT+1
 		Date dateTime = new java.util.Date((long) Double.valueOf(unixTime).longValue() * 1000);
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		DateFormat df = new SimpleDateFormat(ParamVariable.dataFormat);
 		String reportDate = df.format(dateTime);
 		return reportDate;
 	}
 	
-	public DateFormat changeDataFormat(String format){
-		DateFormat df = new SimpleDateFormat(format);
-		return df;
-		
+
+	
+	public long timeConverterTime(String myDate) {
+		LocalDateTime localDateTime = LocalDateTime.parse(myDate, DateTimeFormatter.ofPattern(ParamVariable.dataFormat) );
+		long millis = localDateTime.toLocalTime().toSecondOfDay();
+		return millis;
 	}
+	
+	
+	
+	public long timeConverterDate(String myDate) {
+		LocalDateTime localDateTime = LocalDateTime.parse(myDate, DateTimeFormatter.ofPattern(ParamVariable.dataFormat) );
+		long millis = localDateTime.toLocalDate().toEpochDay()*86400;
+		return millis;
+	}
+	
+	
 	
 }

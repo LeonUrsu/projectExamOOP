@@ -140,45 +140,23 @@ public class OpenWeatherController
 	/**
 	 * Rotta per il filtraggio delle previsioni su una banda passante per l'intervallo orario giornaliero in base ai 
 	 * parametri passati
-	 * @param initialValue ora iniziale di inizio filtraggio
-	 * @param finalValue ora finale del filtraggio
-	 * @param days giorni di  filtraggio, se 0 restituisce lancia eccezione
+	 * @param initialValue ora iniziale di inizio filtraggio "HH:mm:ss"
+	 * @param finalValue ora finale del filtraggio "HH:mm:ss"
+	 * @param initialValueDay data di inizio filtraggio in formato "dd-MM-yyyy"
+	 * @param finalValueDay data di fine filtraggio in formato "dd-MM-yyyy"
+"dd-MM-yyyy HH:mm:ss"
 	 * @return vector di previsioni meteo in base ai parametri passati
 	 * @throws IllegalTimeException 
 	 * @throws IllegalArgumentException 
 	 */
 	@GetMapping("/filter/daily/{initialValue}/{finalValue}")
-	public CurrentStats dailyBand(@PathVariable String initialValue, @PathVariable String finalValue,
-											@PathVariable String InitialValueDay, @PathVariable String FinalValueDay) {
+	public CurrentStats dailyBand(@PathVariable String initialValue, @PathVariable String finalValue) {
 		CurrentStats currentStats = null;
 		try {		
-			currentStats = filters.dailyFilter(initialValue,finalValue);
+			currentStats = filters.dailyFilter(initialValue, finalValue);
 		}catch(IllegalArgumentException | IllegalTimeException e) {
 			return null;
 		}catch (Exception e){
-			return null;
-		}
-		return currentStats;
-	}
-	
-	@Deprecated
-	/**
-	 * Rotta per il filtraggio delle previsioni su una banda passante per l'intervallo orario giornaliero in base ai 
-	 * parametri passati
-	 * @param initialValue ora iniziale di inizio filtraggio
-	 * @param finalValue ora finale del filtraggio 
-	 * @return vector di previsioni meteo in base ai parametri passati
-	 * @throws IllegalTimeException 
-	 * @throws IllegalArgumentException 
-	 */
-	@GetMapping("/filter/weekly/{initialValue}/{finalValue}")
-	public CurrentStats weeklyBand(@PathVariable String initialValue, @PathVariable String finalValue){
-		CurrentStats currentStats = null;
-		try {		
-			currentStats = filters.weeklyFilter(initialValue, finalValue);
-		}catch(IllegalArgumentException | IllegalTimeException e) {
-			return null;
-		}catch(Exception e) {
 			return null;
 		}
 		return currentStats;

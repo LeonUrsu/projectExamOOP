@@ -11,4 +11,7 @@ public class ParamVariable {
 	 * Percorso del file  
 	 */
 	public static String filePath = "temp\\currentForecastData{City}.json";
+	
+	
+	public static String dataFormat = "dd-MM-yyyy HH:mm:ss";
 }
