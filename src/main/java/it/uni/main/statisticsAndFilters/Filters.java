@@ -70,10 +70,10 @@ public class Filters {
 	 */
 	public CurrentStats dailyFilter(String start, String stop,String startDay,String stopDay)  throws IllegalArgumentException, IllegalTimeException, ParseException
 	{	
-		long initalDay = 0;
-		long finalDay=0;
-		long initialValue = dataToSec(start); 
-		long finalValue = dataToSec(stop);
+		long initalDay = dataToSec(start);
+		long finalDay= dataToSec(stop);
+		long initialValue = ; 
+		long finalValue = ;
 		FiltersPrint filtersPrint = new FiltersPrint();
 		if(toFilterVector == null || toFilterVector.size() == 0)
 			return null;
@@ -96,7 +96,6 @@ public class Filters {
 	 * Metodo filtro, ci permette di filtrare elementi di un vettore e salvarli in un'altro vettore.
 	 * Il filtraggio avviene per fascia oraria, ad esempio 15:00-18:00 scitti in secondi quindi 15*60*60s-18*60*60s 
 	 * intesi come initialValue e finalValue, vengono filtrati 'n' giorni desiderati
-	 * 
 	 * @param initialValue tempo iniziale is secondi(s) dalle 0:00
 	 * @param finalValue tempo finale is secondi(s) dalle 0:00
 	 * @param days giorni di filtraggio dalla data piu recente che si trova nel tmpVec
@@ -136,7 +135,6 @@ public class Filters {
 			return true;
 		return false;
 	}
-	
 	
 	
 	/**
