@@ -24,6 +24,7 @@ import it.uni.main.interfaceToUse.OpenWeatherService;
 
 /**
  * Super Classe servizio per la derivazione di ulteriori classi serivizio
+ * con alcuni metodi comuni
  * @author Perazzoli Leonardo 
  * @author Ursu Leon 
  */

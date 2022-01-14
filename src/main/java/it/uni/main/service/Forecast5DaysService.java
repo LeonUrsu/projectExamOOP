@@ -25,20 +25,11 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	
 	public static Forecast5DaysHumidity forecast5DaysHumidity ;  //riservo spazio statico in memoria per il vettore
 	
-	
-//	/**
-//	 * Metodo getter del Vector inteno alla classe
-//	 * @return
-//	 */
-//	public Forecast5DaysHumidity getForecast5Days() {
-//		return forecast5DaysHumidity;
-//	}
-	
-	
-	
+		
 	/**
 	 * Metodo che chiama l'api e salva temporanemente mella memoria le previsioni 
-	 *@param nome della citta su cui cercare le previsioni 
+	 * per poter richiamare una rotta per le statistiche
+	 * @param nome della citta su cui cercare le previsioni 
 	 */
 	public Forecast5DaysHumidity forecast5day(String cityName) {
 		JsonObject Jcity = callApi(ApiReference.Url5dayP1 + cityName + ApiReference.Url5dayP2);
@@ -71,7 +62,7 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	
 	
 	/**
-	 * Metodo per estrarre una città da in JsonObject che la contiene
+	 * Metodo per estrarre una città da un JsonObject che la contiene
 	 * @param Jcity
 	 * @return City() object
 	 */

@@ -4,11 +4,9 @@ package it.uni.main.service;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.Scanner;
@@ -20,7 +18,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.JsonObject;
 
-import org.springframework.beans.factory.support.ReplaceOverride;
 import org.springframework.stereotype.Service;
 
 import it.uni.main.exception.StopNotValidException;
@@ -33,28 +30,24 @@ import it.uni.main.utils.ParamVariable;
 
 
 /**
- * Classe servizio della parte del progetto che riguarda il salvataggio ogni ora delle previsioni meteo su 
+ * Classe servizio che riguarda il salvataggio ogni ora delle previsioni meteo su 
  * un file locale e il loro aggiornamento una volta che hanno superato il valore ParamVariable.currentVectorSize
  * @author Perazzoli Leonardo 
  * @author Ursu Leon 
  */
 @Service
 public class CurrentForecastService extends OpenWeatherServiceImp{
-	
-	
-	
 	/**
 	 * vettore che aumenterà dimensionalmente ogni 3600s (60 minuti) di un nuovo 
 	 * elemento ForecastDataCurrent fino a raggiungere un valore massimo 
-	 * stabilito dal programmatore tramite il PARAMETRO PROGRAMMATORE
+	 * stabilito dal programmatore tramite il PARMvaraible
 	 */
 	private static Vector<ForecastDataCurrent> forecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 
 	
 	
 	/**
-	 * metodo che aggiorna il file locale con una nuova previsione (root)
-	 * 
+	 * metodo che aggiorna il file locale con una nuova previsione
 	 * @param name - nome della città
 	 */
 	Timer timer = null;
@@ -72,14 +65,14 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 		        }
 		   };
 		   timer = new Timer("Timer");
-		   timer.scheduleAtFixedRate(task,1000,1000 * 3);//0 * 60);
+		   timer.scheduleAtFixedRate(task, 1000, ParamVariable.updateTime);
 	   }
 	}
 	
 	
 	
 	/**
-	 * Metodo per fermare il Timer (root)
+	 * Metodo per fermare il Timer
 	 * @throws StopNotValidException 
 	 */
 	public void stopTimer() throws StopNotValidException {
@@ -133,9 +126,10 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	
 	
 	/**
-	 * Metodo che controllase il vettore è pieno oppure vuoto e crea file a seconda se è pieno
-	 * @param fileName
-	 * @param forecastDataCurrentVector
+	 * Metodo che controllase se abbiamo file presenti nella nostra cartella /temp della cartella principale se 
+	 * non ci sono file riguardante la città passata per parametro crea il file per lei
+	 * @param fileName 
+	 * @param forecastDataCurrentVector vettore 
 	 * @throws IOException
 	 */
 	public void checkVector(String cityName, String fileName, Vector<ForecastDataCurrent> forecastDataCurrentVector) throws IOException {
@@ -196,7 +190,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	
 	@SuppressWarnings("unused")
 	/**
-	 * metodo che svuota file locale
+	 * metodo che svuota un file locale
 	 * @param nomeFile parametro formale
 	 */
 	private void clearFileLocale(String nomeFile) {
@@ -246,7 +240,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	    	  System.out.println("il File esiste già");
 	    	  return false;
 	      }
-	}
+	 }
  
 
 	
@@ -280,16 +274,5 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	 }
 	}
 	
-	
-	/**
-	 * sei inutile
-	 * @param fileOutputStream
-	 * @return
-	 */
-	@SuppressWarnings("unused")
-	private ObjectOutputStream BufferedOutputStream(FileOutputStream fileOutputStream) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 		
 }

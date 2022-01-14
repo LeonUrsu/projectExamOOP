@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import it.uni.main.exception.IllegalTimeException;
 import it.uni.main.exception.StopNotValidException;
 import it.uni.main.model.CurrentStats;
-import it.uni.main.model.Forecast5Days;
 import it.uni.main.model.Stats5Days;
 import it.uni.main.model.Forecast5DaysHumidity;
 import it.uni.main.service.CurrentForecastService;
@@ -24,7 +23,7 @@ import it.uni.main.statisticsAndFilters.Filters;
 import it.uni.main.statisticsAndFilters.Forecasts5DaysStatistics;
 
 /**
- * Classe che contiene tutte le rotte disponibile del servizio
+ * Classe che contiene tutte le rotte disponibile del servizio meteo
  * @author Perazzoli Leonardo 
  * @author Ursu Leon 
  */
@@ -45,7 +44,7 @@ public class OpenWeatherController
 	
 	
 	//IDEA: Si puo aggiungere qui la rilevazione dell'IP per la previsione se non si passa 
-	//un parametro nome della citta invece di usare il default
+	//un parametro nome della città invece di usare il default
 	/**
 	 * Rotta che ci restituisce un array di oggetti con informazioni sull'umidità degli ultimi 5 giorni
 	 * @param  nome della città su cui prendere le previsioni
@@ -63,8 +62,9 @@ public class OpenWeatherController
 	}
 	
 	
+	
 	/**
-	 * Rotta calcolo statistiche 
+	 * Rotta calcolo statistiche riguardanti le umidità 
 	 * @return ritorna al chiamante le statistiche in json dell'umidità dei prossimi 5 giorni
 	 */
 	@GetMapping("/getHumidityStats")
@@ -81,14 +81,32 @@ public class OpenWeatherController
 	
 	
 	/**
-	 * Rotta pre caricare in vettore di previsioni degli ultimi 5 giorni
-	 * @return ritorna al chiamante le statistiche in json
+	 * Rotta pre caricare in vettore di previsioni posizionato nella classe Filters chiamato toFileterVector 
+	 * @return ritorna al chiamante true se è stato caricato
 	 */
 	@GetMapping("/load/{cityName}")
 	public boolean writeHistoryWeather(@PathVariable String cityName) {
 		boolean response = false;
 		try {
-			if(loader.writeHistoryWeather(cityName))
+			if(loader.load(cityName))
+				response = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	
+	
+	/**
+	 * Rotta che carica il Vettore per testare i filtri
+	 * @return ritorna al chiamante true se è stato caricato
+	 */
+	@GetMapping("/loadFilterTest")
+	public boolean loadTest() {
+		boolean response = false;
+		try {
+			if(loader.loadTest())
 				response = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -138,14 +156,11 @@ public class OpenWeatherController
 	
 	
 	/**
-	 * Rotta per il filtraggio delle previsioni su una banda passante per l'intervallo orario giornaliero in base ai 
-	 * parametri passati
+	 * Rotta per il filtraggio delle previsioni su una fascia oraria (es: 15:00 <= X <= 20:00) negli giorni compresi 
+	 * delle date passate (es: 14/01/2022 <= X <= 17/01/2022)
 	 * @param initialValue ora iniziale di inizio filtraggio "HH:mm:ss"
 	 * @param finalValue ora finale del filtraggio "HH:mm:ss"
-	 * @param initialValueDay data di inizio filtraggio in formato "dd-MM-yyyy"
-	 * @param finalValueDay data di fine filtraggio in formato "dd-MM-yyyy"
-"dd-MM-yyyy HH:mm:ss"
-	 * @return vector di previsioni meteo in base ai parametri passati
+	 * @return oggetto Statistiche degli elementi filtrati
 	 * @throws IllegalTimeException 
 	 * @throws IllegalArgumentException 
 	 */

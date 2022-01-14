@@ -1,5 +1,7 @@
 package it.uni.main.statisticsAndFilters;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Vector;
 
 import it.uni.main.model.Forecast5Days;
@@ -63,7 +65,19 @@ public class Statistics {
 	}
 
 	
-	
+	/**
+	 * Metodo che lascia due cifre dopo la virgiola
+	 * @param value
+	 * @param places
+	 * @return
+	 */
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = BigDecimal.valueOf(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
+	}
 	
 	
 	

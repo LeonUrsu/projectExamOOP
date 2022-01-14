@@ -2,6 +2,8 @@ package it.uni.main.model;
 
 import java.util.Vector;
 
+import it.uni.main.statisticsAndFilters.Filters;
+
 
 /**
  * Classe modello per le statistiche CurrentDataForecast
@@ -10,160 +12,154 @@ import java.util.Vector;
  */
 public class CurrentStats {
 		//ATTRIBUTI INTERNI------------------------------
-		private long initialDay = 0;
-		private long finalDay = 0;
-		private long startTime = 0;
-		private long stopTime = 0;
-		private long filteredDays = 0;
+		private String initialDayInUTC;
+		private String finalDayInUTC;
+		private long initialValueInUnix = 0;
+		private long finalValueInUnix = 0;
+		private long initialValueDayInUnix = 0;
+		private long finalValueInDayInUnix = 0;
 		private int filteredElements;
-		private double tempMin = 0;
-		private double tempMax = 0;
-		private double averageTemp = 0;
-		private double PerceivedTemperatureVariance  = 0;
+		private double temperatureMin = 0;
+		private double temperatureMax = 0;
+		private double averageTemperature = 0;
+		private double perceivedTemperatureVariance  = 0;
 		private double realTemperatureVariance = 0;
 		private City city = null;
 		
-		
-		
-		public CurrentStats(long initialValue, long finalValue, long initialDay,long finalDay,
-				Vector<ForecastDataCurrent> filteredVector,double tempMin,double tempMax,
-				double tempMedia,double varianzaTempPercepita,double varianzaTempReale){
-			this.startTime = initialValue;
-			this.stopTime = finalValue;
-			this.filteredDays = finalDay - initialDay;
+		//COSTRUTTORE---------------------------------------------
+		public CurrentStats(long initialValueInUnix, long finalValueInUnix, long initialValueDayInUnix,long finalValueInDayInUnix,
+			Vector<ForecastDataCurrent> filteredVector,double temperatureMin,double temperatureMax,
+			double tempMedia,double varianzaTempPercepita,double varianzaTempReale){
+			Filters filter = new Filters();
+			this.initialDayInUTC= filter.secToData(initialValueDayInUnix + initialValueInUnix);
+			this.finalDayInUTC = filter.secToData(finalValueInDayInUnix + finalValueInUnix);
+			this.initialValueInUnix = initialValueInUnix;
+			this.finalValueInUnix = finalValueInUnix;
+			this.initialValueDayInUnix = initialValueDayInUnix;
+			this.finalValueInDayInUnix = finalValueInDayInUnix;
 			this.filteredElements = filteredVector.size(); 
-			this.tempMin = tempMin;
-			this.tempMax = tempMax;
-	 		this.averageTemp = tempMedia;
-			this.PerceivedTemperatureVariance = varianzaTempPercepita;
+			this.temperatureMin = temperatureMin;
+			this.temperatureMax = temperatureMax;
+	 		this.averageTemperature = tempMedia;
+			this.perceivedTemperatureVariance = varianzaTempPercepita;
 			this.realTemperatureVariance = varianzaTempReale;	
 			City tmpC = filteredVector.get(0).getCity();
 			this.city = new City(tmpC.getLat(), tmpC.getLon(), tmpC.getID(), tmpC.getCityName());
 		}
 
-
-
-		public long getStartTime() {
-			return startTime;
+		
+		public String getInitialDayInUTC() {
+			return initialDayInUTC;
 		}
 
-
-
-		public void setStartTime(long startTime) {
-			this.startTime = startTime;
+		public void setInitialDayInUTC(String initialDayInUTC) {
+			this.initialDayInUTC = initialDayInUTC;
 		}
 
-
-
-		public long getStopTime() {
-			return stopTime;
+		public String getFinalDayInUTC() {
+			return finalDayInUTC;
 		}
 
-
-
-		public void setStopTime(long stopTime) {
-			this.stopTime = stopTime;
+		public void setFinalDayInUTC(String finalDayInUTC) {
+			this.finalDayInUTC = finalDayInUTC;
 		}
 
-
-
-		public long getFilteredDays() {
-			return filteredDays;
+		public long getInitialValueInUnix() {
+			return initialValueInUnix;
 		}
 
-
-
-		public void setFilteredDays(long filteredDays) {
-			this.filteredDays = filteredDays;
+		public void setInitialValueInUnix(long initialValueInUnix) {
+			this.initialValueInUnix = initialValueInUnix;
 		}
 
+		public long getFinalValueInUnix() {
+			return finalValueInUnix;
+		}
 
+		public void setFinalValueInUnix(long finalValueInUnix) {
+			this.finalValueInUnix = finalValueInUnix;
+		}
+
+		public long getInitialValueDayInUnix() {
+			return initialValueDayInUnix;
+		}
+
+		public void setInitialValueDayInUnix(long initialValueDayInUnix) {
+			this.initialValueDayInUnix = initialValueDayInUnix;
+		}
+
+		public long getFinalValueInDayInUnix() {
+			return finalValueInDayInUnix;
+		}
+
+		public void setFinalValueInDayInUnix(long finalValueInDayInUnix) {
+			this.finalValueInDayInUnix = finalValueInDayInUnix;
+		}
 
 		public int getFilteredElements() {
 			return filteredElements;
 		}
 
-
-
 		public void setFilteredElements(int filteredElements) {
 			this.filteredElements = filteredElements;
 		}
 
-
-
-		public double getTempMin() {
-			return tempMin;
+		public double getTemperatureMin() {
+			return temperatureMin;
 		}
 
-
-
-		public void setTempMin(double tempMin) {
-			this.tempMin = tempMin;
+		public void setTemperatureMin(double temperatureMin) {
+			this.temperatureMin = temperatureMin;
 		}
 
-
-
-		public double getTempMax() {
-			return tempMax;
+		public double getTemperatureMax() {
+			return temperatureMax;
 		}
 
-
-
-		public void setTempMax(double tempMax) {
-			this.tempMax = tempMax;
+		public void setTemperatureMax(double temperatureMax) {
+			this.temperatureMax = temperatureMax;
 		}
 
-
-
-		public double getAverageTemp() {
-			return averageTemp;
+		public double getAverageTemperature() {
+			return averageTemperature;
 		}
 
-
-
-		public void setAverageTemp(double averageTemp) {
-			this.averageTemp = averageTemp;
+		public void setAverageTemperature(double averageTemperature) {
+			this.averageTemperature = averageTemperature;
 		}
-
-
 
 		public double getPerceivedTemperatureVariance() {
-			return PerceivedTemperatureVariance;
+			return perceivedTemperatureVariance;
 		}
-
-
 
 		public void setPerceivedTemperatureVariance(double perceivedTemperatureVariance) {
-			PerceivedTemperatureVariance = perceivedTemperatureVariance;
+			this.perceivedTemperatureVariance = perceivedTemperatureVariance;
 		}
-
-
 
 		public double getRealTemperatureVariance() {
 			return realTemperatureVariance;
 		}
 
-
-
 		public void setRealTemperatureVariance(double realTemperatureVariance) {
 			this.realTemperatureVariance = realTemperatureVariance;
 		}
-
-
 
 		public City getCity() {
 			return city;
 		}
 
-
-
-		public void setCity(City città) {
-			this.city = città;
+		public void setCity(City city) {
+			this.city = city;
 		}
-		
-
 
 		
 		
-	
+		
+		
+		
+		
+		
+		
+		
 }
+

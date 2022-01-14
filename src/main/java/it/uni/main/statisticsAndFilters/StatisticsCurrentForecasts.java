@@ -17,20 +17,20 @@ public class StatisticsCurrentForecasts extends Statistics{
 	
 	
 	/**
-	 * Metodo per generare java object che verrà restiruito al controllerS
+	 * Metodo per generare java object che verrà restiruito al controller
 	 * @param initialValue tempo d'inizio
 	 * @param finalValue tempo di fine
-	 * @param days quantità giorni da considerare
+	 * @param initial data di inizio
+	 * @param finalDay data di fine
 	 * @param filteredVector vettore filtrato
 	 * @return CurrentStats object
 	 */
 	public CurrentStats currentStats(long initialValue, long finalValue, long initialDay,long finalDay,Vector<ForecastDataCurrent> filteredVector) { 
-		double tempMin = mediaTempMin(filteredVector);
-		double tempMax = mediaTempMax(filteredVector);
-		double tempMedia = mediaTemp(filteredVector);
-		double feelTemperatureVariance = varianzaTempPercepita(filteredVector);
-		double realTemperatureVariance = varianzaTempReale(filteredVector);
-		
+		double tempMin = round(mediaTempMin(filteredVector),2);
+		double tempMax = round(mediaTempMax(filteredVector),2);
+		double tempMedia = round(mediaTemp(filteredVector),2);
+		double feelTemperatureVariance = round(varianzaTempPercepita(filteredVector),2);
+		double realTemperatureVariance = round(varianzaTempReale(filteredVector),2);
 		return new CurrentStats(initialValue, finalValue, initialDay, finalDay, filteredVector, tempMin, tempMax, tempMedia, feelTemperatureVariance, realTemperatureVariance);
 	}
 	
@@ -126,7 +126,6 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @param previsioni previsioni di tipo Vector di previsioni con possibile filtraggio
 	 * @return valore double
 	 */
-	@SuppressWarnings("unused")
 	private double mediaTempMax(Vector<ForecastDataCurrent> previsioni)
 	{
 		double media = 0;
@@ -147,7 +146,6 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * @param previsioni previsioni di tipo Vector di previsioni con possibile filtraggio
 	 * @return valore double
 	 */
-	@SuppressWarnings("unused")
 	private double mediaTempMin(Vector<ForecastDataCurrent> previsioni)
 	{
 		double media = 0;

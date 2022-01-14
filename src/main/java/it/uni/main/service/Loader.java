@@ -1,5 +1,6 @@
 package it.uni.main.service;
 
+import java.util.Random;
 import java.util.Vector;
 
 import org.springframework.stereotype.Service;
@@ -18,21 +19,19 @@ import it.uni.main.utils.ParamVariable;
 
 /**
  * Classe servizio pre il caricamento di elementi da un file locale  sul 
- * CurrentForecastService.forecastDataCurrentVector per poter effettuare una prova di filtraggio
+ * CurrentForecastService.toFilerVector in Filters per poter effettuare il filtraggio
  * @author Perazzoli Leonardo 
  * @author Ursu Leon 
  */
 @Service
 public class Loader extends OpenWeatherServiceImp{
-	
-
 	/**
 	 * Metodo che richiamato, carica un static Vector ForecastDataCurrent di elementi dal file
-	 *  'daysHistory,json' con dt aggiornato, 
+	 * temp\\currentForecastData{City}.json 
 	 * @return true se caricato, false se non caricato
 	 * @throws Exception
 	 */
-	public boolean writeHistoryWeather(String cityName)throws Exception, JsonSyntaxException{
+	public boolean load(String cityName)throws Exception, JsonSyntaxException{
 		Filters.toFilterVector.removeAllElements();
 		OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();
 		String fileName = ParamVariable.filePath;
@@ -45,28 +44,55 @@ public class Loader extends OpenWeatherServiceImp{
 		jsonArray = gson.fromJson(inJson, jsonArray.getClass());
 		if(jsonArray.size() == 0)
 			return false;
-		//changeDtTime(jsonArray,System.currentTimeMillis()/1000);//cambio valore dei 'dt'		
 		toVectorForecastDataCurrent(jsonArray.toString(), Filters.toFilterVector);	
 		return true;
 	}
-
+	
+	
+	
+	/**
+	 * Metodo che richiamato, carica un static Vector ForecastDataCurrent di elementi dal file
+	 * emp\\currentForecastDataTesting.json con dt e altri parametri aggiornati fino agli ultimi 5gg, 
+	 * @return true se caricato, false se non caricato
+	 * @throws Exception
+	 */
+	public boolean loadTest()throws Exception, JsonSyntaxException{
+		Filters.toFilterVector.removeAllElements();
+		OpenWeatherServiceImp openWeatherServiceImp = new OpenWeatherServiceImp();
+		String fileName = "temp\\currentForecastDataTesting.json";
+		String inJson = openWeatherServiceImp.readStringFromFile(fileName);
+		if(inJson.isEmpty())
+			return false;
+		JsonArray jsonArray = new JsonArray();
+		Gson gson = new Gson();
+		jsonArray = gson.fromJson(inJson, jsonArray.getClass());
+		if(jsonArray.size() == 0)
+			return false;
+		changeInternalValue(jsonArray,System.currentTimeMillis()/1000);//cambio valore dei 'dt'
+		toVectorForecastDataCurrent(jsonArray.toString(), Filters.toFilterVector);	
+		return true;
+	}
+	
 	
 	
 	/*
-	 * Metodo che cambia i valori 'dt' degli oggetti caricati dal
-	 * file in modo da andare dal momento corrente fino a 5 giorni prima
+	 * Metodo che cambia i valori  degli oggetti caricati dal
+	 * file in modo da andare, dal momento corrente, fino a 5 giorni prima
 	 */
-	public void changeDtTime(JsonArray jsonArray, long seconds){
+	public void changeInternalValue(JsonArray jsonArray, long seconds){
 		int dimArr = jsonArray.size();
+		Random random = new Random(System.currentTimeMillis());
 		Filters data = new Filters();
-		
 		for(long i=0, dt=seconds ; i<dimArr ; i++, dt-=3600) {
 			jsonArray.get((int)i).getAsJsonObject().addProperty("dt", dt);
 			jsonArray.get((int)i).getAsJsonObject().addProperty("dtString", data.secToData(dt));
-			
+			JsonObject jsonObject = jsonArray.get((int)i).getAsJsonObject().get("temperature").getAsJsonObject();
+			jsonObject.addProperty("temp", Math.abs(random.nextInt()%30));
+			jsonObject.addProperty("tempMax", Math.abs(random.nextInt()%40));
+			jsonObject.addProperty("tempMin", Math.abs(random.nextInt()%10));
+			jsonObject.addProperty("tempFeel", Math.abs(random.nextInt()%20));
 		}
 	}
-	
 	
 	
 	
@@ -108,7 +134,7 @@ public class Loader extends OpenWeatherServiceImp{
 	
 	
 	/**
-	 * Metodo che trasforma una Stringa in oggetto Java
+	 * Metodo che trasforma una Stringa in oggetto Java Vector<ForecastDataCurrent>
 	 * @param inJson
 	 * @param vettore
 	 */
