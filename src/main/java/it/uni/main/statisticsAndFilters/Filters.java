@@ -148,7 +148,7 @@ public class Filters {
 	 * @return true se rienra nell'intervallo
 	 */
 	public boolean inHourBandCheck(long initialValue, long finalValue, ForecastDataCurrent tmp){
-		long dt24 = tmp.getDayTime() % 86400;		//secondi dalle ore 0:00 della nostra previsione
+		long dt24 = tmp.getDayTime()%86400;	//secondi dalle ore 0:00 della nostra previsione
 		if(initialValue <= dt24 && dt24 <= finalValue )
 			return true;
 		return false;
@@ -192,14 +192,18 @@ public class Filters {
 	
 	
 	/**
-	 * Metodo che verifica la correttezza dei valori di due parametri rientrino nel intervallo orario 0:00:00 -23:59:59
-	 * @param a primo paramtetro 
-	 * @param b secondo parametro
+	 * Metodo che verifica se la correttezza dei valori di 4 parametri rientrino nel intervallo orario 0:00:00 -23:59:59 e confronta l
+	 * @param a primo paramtetro orario
+	 * @param b secondo parametro orario
+	 * @param c primo parametro giorno
+	 * @param d secondo parametro giorno
 	 * @throws IllegalTimeException 
 	 */
 	private void verifyBand(long a, long b , long c,long d) throws IllegalTimeException {
-		if(a<b && 0<=a && b<= 86399 && c < d); 
+		if(a >= 0 && b <= 86399 )
+		if((a < b && c == d) || (a > b && c < d)); 
 		else throw new IllegalTimeException();
+		
 	}
 	
 	
@@ -240,7 +244,7 @@ public class Filters {
 	 */
 	public long dataToSec(String dtString ,String format) throws ParseException{
 		  DateFormat df = new SimpleDateFormat();
-		  changeDataFormat(format);
+		  df = changeDataFormat(format);
 		  Date dt = df.parse(dtString);
 		  long epoch = dt.getTime();
 		  epoch += TimeZone.getDefault().getOffset(0);
