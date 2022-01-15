@@ -3,27 +3,32 @@ Lo scopo di questo progetto è di sviluppare un applicazione SpringBoot che data
 
 L'utente grazie a [Postman](https://learning.postman.com/docs/getting-started/introduction/), puo utilizzare le funzionalità dell'applicazione Spring che con la sua dipendenza "spring-boot-starter-web" riesce ad avviare facilmente un server Tomcat embedded   
 
-#### INDICE 
-(da fare)
+#### INDICE
+<p>
+     • <a href="#1">L'Applicazione</a><br>
+     • <a href="#2">Rotte Disponibili</a><br>
+     • <a href="#3">Eccezioni</a><br> 
+</p>
 
-# L'applicazione
+# L'applicazione <a name="1"></a>
 L'applicazione è strutturata in modo che dopo la call all'api 5 days weather forecast prenda i valori restituiti da essa e li salvi su un vettore statico(in modo che siano accessibili anche dall'endpoint /getHumidityStats).
 
 Invece per quanto riguarda la call all'api current weather data , la risposta viene salvata in stringa su file in formato json tramite l'utilizzo di un vettore statico ogni ora (grazie all'utilizzo di un timer). All'avvio dell'endpoint /startCurrentService l'applicazione verificherà se ci siano o meno dei valori nel file, se già esistenti li caricherà in un vettore. In caso ci siano gia valori nel file,l'applicazione verificherà che l'id della città già salvata in precedenza sia lo stesso della città passata come parametro a Postman.Dopodichè si creerà un javaObject contenente i valori correnti delle previsioni(restituiti dall'api) e si salveranno all'interno del vettore. Ora avremo un vettore popolato da javaObject che verrà salvato su un file in formato JSON(grazie all'utilizzo di un metodo che farà il parsing degli elementi del vettore da JavaObject a JSON). 
 
-### Come funziona: ROTTE DISPONIBILI
+### Come funziona: ROTTE DISPONIBILI <a name="2"></a>
 
 | Rotta         |    Metodo    |        Funzione                        |
 |---------------|--------------|----------------------------------------|
-| /getCompleteForecast    | GET        | Avvia ricerca e mostra dati per i prossimi 5 giorni ogni 3 ore |
-| /startCurrentService| GET      | Avvia il salvataggio dei dati correnti ogni ora     |
-| /stopCurrentService         | GET          | Ferma il salvataggio dei dati correnti        |
-| /getHumidityStats  | GET          | Crea statistiche relative all'umidità con i dati già presenti   |
-| /filter/daily/{initialValue}/{finalValue}  | GET          | Filtra le statistiche dei dati salvati ogni ora giornalmente|
+| <a href="#4">/getCompleteForecast</a>   | GET        | Avvia ricerca e mostra dati per i prossimi 5 giorni ogni 3 ore |
+| <a href="#5">/startCurrentService</a> | GET      | Avvia il salvataggio dei dati correnti ogni ora     |
+| <a href="#6">/stopCurrentService </a>   | GET          | Ferma il salvataggio dei dati correnti        |
+| <a href="#7">/getHumidityStats </a>  | GET          | Crea statistiche relative all'umidità con i dati già presenti   |
+| <a href="#8">/load/{City}</a> | GET  | Carica su un vettore i dati salvati in precedenza a seconda della città passata|
+| <a href="#9">/filter/daily/{initialValue}/{finalValue} </a>    | GET          | Filtra le statistiche dei dati salvati ogni ora giornalmente|
 
 
 
-# GET /getCompleteForecast
+# GET /getCompleteForecast  <a name="4"></a>
 
 In questa rotta è possibile inserire un parametro di tipo "nome" per cercare il nome della città scelta. Di default il "nome" è impostato su "Roma".
 
@@ -348,7 +353,7 @@ I campi del JSON sopraindicato rappresentano.
      * **"unit"** è l'unità di misura
     * **"dt"** è l'orario del giorno della previsione
 
-# GET /startCurrentService 
+# GET /startCurrentService <a name="5"></a>
 Salva localmente in un file ".json" la risposta di Postman ogni ora grazie ad un timer.
 
 In questa rotta è possibile utilizzare un query params di tipo "nome" per cercare il nome della città scelta. Di default il "nome" è impostato su "Roma".
@@ -400,11 +405,11 @@ In questa rotta è possibile utilizzare un query params di tipo "nome" per cerca
     * **"tempMax"** è la temperatura massima
     * **"tempFeel"** è la temperatura percepita
 
-# GET /stopCurrentService
+# GET /stopCurrentService <a name="6"></a>
 
 blocca il salvataggio dei dati.
 
-# GET /getHumidityStats
+# GET /getHumidityStats <a name="7"></a>
 
 Crea statistiche riguardanti l'umidità nei prossimi 5 giorni.
 
@@ -429,7 +434,7 @@ Crea statistiche riguardanti l'umidità nei prossimi 5 giorni.
 
 </details>
 
-# GET /load/{City}
+# GET /load/{City} <a name="8"></a>
 Popola un vettore di dati letti da file, con possibilità di caricare dati da una città specifica(Inserire il nome della città al posto di {City}).
 
 #### ESEMPIO:
@@ -437,7 +442,7 @@ GET localhost:8080/load/Ancona
 
 Su postman restituirà un valore boolean true se il processo è andato a buon fine
 
-# GET /filter/daily/{initialValue}/{finalValue}
+# GET /filter/daily/{initialValue}/{finalValue} <a name="9"></a>
 Questa rotta va utilizzata **esclusivamente** dopo aver chiamato l'endpoint [/load/{cityName}].... .
 
 Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss"
@@ -472,7 +477,7 @@ Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss"
 </details>
 
 
-# ECCEZIONI:
+# ECCEZIONI: <a name="3"></a>
 L'applicazione può lanciare diverse eccezioni alcune standard e altre personalizzate:
 
 PERSONALIZZATE:
@@ -488,11 +493,3 @@ STANDARD:
 * Exception
 * NullPointerException
 * IllegalArgumentException
-
-
-
-
-# SOFTWARE UTILIZZATI: 
-
-
-
