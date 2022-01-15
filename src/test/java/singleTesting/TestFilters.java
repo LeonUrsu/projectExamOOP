@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.uni.main.statisticsAndFilters.Filters;
+import it.uni.main.utils.ParamVariable;
 
 class TestFilters {
 	
@@ -21,7 +22,7 @@ class TestFilters {
 	void setUp() throws Exception {
 		data = "15-01-2022 16:21:11";
 		sec = 1642260071;
-		format = "dd-MM-yyyy HH:mm:ss";
+
 	}
 
 	@AfterEach
@@ -31,7 +32,7 @@ class TestFilters {
 	
 	@Test
 	void test1() {
-		assertEquals(1642260071, filters.dataToSecV2(data,format) );
+		assertEquals(1642260071, filters.dataToSecV2(data));
 	}
 
 	@Test
