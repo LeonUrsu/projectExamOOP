@@ -31,5 +31,20 @@ class TestFiltersInHourBandCheck {
 	void test() {
 		assertEquals(true, filters.inHourBandCheck(initialValue, finalValue, forecastDataCurrent));
 	}
+	
+	
+	
+	@Test
+	void test2() {
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 
 }
