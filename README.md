@@ -1,3 +1,4 @@
+
 # Proggetto OOP 
 Lo scopo di questo progetto è di sviluppare un applicazione SpringBoot che data una città cercata a piacimento dall'utente tramite l'utilizzo di due API.Con l'uso della prima [5 days weather forecast](https://openweathermap.org/forecast5#name5) si visualizzino tutte le informazioni attuali e future relative all'umidità dei successivi 5 giorni e con la seconda [current weather data](https://openweathermap.org/current) si salvino ogni ora le informazioni relative all'umidità e le temperature(massime, minime, reali e percepite).
 
@@ -29,310 +30,351 @@ Invece per quanto riguarda la call all'api current weather data , la risposta vi
 
 
 # GET /getCompleteForecast  <a name="4"></a>
+L'API restituisce valori per i prossimi 5 giorni ogni 3 ore. Questi valori vengono modellati a JavaObject di tipo ForecastData5Days. Quando la rotta verrà chiamata oltre a restituire i valori a POSTMAN(convertiti in JSON) verranno trattenuti nella memoria RAM grazie ad un vettore statico per poterne creare statistiche successivamente.
 
-In questa rotta è possibile inserire un parametro di tipo "nome" per cercare il nome della città scelta. Di default il "nome" è impostato su "Roma".
-
+In questa rotta è possibile inserire un parametro di tipo "nome" per cercare il nome della città scelta. Di default il "nome" è impostato su "Roma". 
 #### ESEMPIO: 
 | KEY       |    VALUE    | 
 |---------------|--------------|
-|nome  | Milan  
+|nome  | Milan  |
 
 
 <details>
 <summary>MODEL</summary>
 <br>
 
+
+    
 ```
-{
 "city": {
-"lat": 45.4643,
-"lon": 9.1895,
-"country": null,
-"cityName": "Milan",
-"id": 3173435
-},
-"forecast5DaysVectorHum": [
-{
-"humidity": {
-"value": 84,
-"unit": "%"
-},
-"dayTime": 1641146400
-},
-{
-"humidity": {
-"value": 78,
-"unit": "%"
-},
-"dayTime": 1641157200
-},
-{
-"humidity": {
-"value": 80,
-"unit": "%"
-},
-"dayTime": 1641168000
-},
-{
-"humidity": {
-"value": 89,
-"unit": "%"
-},
-"dayTime": 1641178800
-},
-{
-"humidity": {
-"value": 94,
-"unit": "%"
-},
-"dayTime": 1641189600
-},
-{
-"humidity": {
-"value": 82,
-"unit": "%"
-},
-"dayTime": 1641200400
-},
-{
-"humidity": {
-"value": 65,
-"unit": "%"
-},
-"dayTime": 1641211200
-},
-{
-"humidity": {
-"value": 71,
-"unit": "%"
-},
-"dayTime": 1641222000
-},
-{
-"humidity": {
-"value": 89,
-"unit": "%"
-},
-"dayTime": 1641232800
-},
-{
-"humidity": {
-"value": 96,
-"unit": "%"
-},
-"dayTime": 1641243600
-},
-{
-"humidity": {
-"value": 94,
-"unit": "%"
-},
-"dayTime": 1641254400
-},
-{
-"humidity": {
-"value": 90,
-"unit": "%"
-},
-"dayTime": 1641265200
-},
-{
-"humidity": {
-"value": 87,
-"unit": "%"
-},
-"dayTime": 1641276000
-},
-{
-"humidity": {
-"value": 83,
-"unit": "%"
-},
-"dayTime": 1641286800
-},
-{
-"humidity": {
-"value": 82,
-"unit": "%"
-},
-"dayTime": 1641297600
-},
-{
-"humidity": {
-"value": 83,
-"unit": "%"
-},
-"dayTime": 1641308400
-},
-{
-"humidity": {
-"value": 83,
-"unit": "%"
-},
-"dayTime": 1641319200
-},
-{
-"humidity": {
-"value": 88,
-"unit": "%"
-},
-"dayTime": 1641330000
-},
-{
-"humidity": {
-"value": 94,
-"unit": "%"
-},
-"dayTime": 1641340800
-},
-{
-"humidity": {
-"value": 97,
-"unit": "%"
-},
-"dayTime": 1641351600
-},
-{
-"humidity": {
-"value": 97,
-"unit": "%"
-},
-"dayTime": 1641362400
-},
-{
-"humidity": {
-"value": 91,
-"unit": "%"
-},
-"dayTime": 1641373200
-},
-{
-"humidity": {
-"value": 84,
-"unit": "%"
-},
-"dayTime": 1641384000
-},
-{
-"humidity": {
-"value": 87,
-"unit": "%"
-},
-"dayTime": 1641394800
-},
-{
-"humidity": {
-"value": 89,
-"unit": "%"
-},
-"dayTime": 1641405600
-},
-{
-"humidity": {
-"value": 90,
-"unit": "%"
-},
-"dayTime": 1641416400
-},
-{
-"humidity": {
-"value": 79,
-"unit": "%"
-},
-"dayTime": 1641427200
-},
-{
-"humidity": {
-"value": 74,
-"unit": "%"
-},
-"dayTime": 1641438000
-},
-{
-"humidity": {
-"value": 68,
-"unit": "%"
-},
-"dayTime": 1641448800
-},
-{
-"humidity": {
-"value": 66,
-"unit": "%"
-},
-"dayTime": 1641459600
-},
-{
-"humidity": {
-"value": 50,
-"unit": "%"
-},
-"dayTime": 1641470400
-},
-{
-"humidity": {
-"value": 47,
-"unit": "%"
-},
-"dayTime": 1641481200
-},
-{
-"humidity": {
-"value": 67,
-"unit": "%"
-},
-"dayTime": 1641492000
-},
-{
-"humidity": {
-"value": 71,
-"unit": "%"
-},
-"dayTime": 1641502800
-},
-{
-"humidity": {
-"value": 68,
-"unit": "%"
-},
-"dayTime": 1641513600
-},
-{
-"humidity": {
-"value": 66,
-"unit": "%"
-},
-"dayTime": 1641524400
-},
-{
-"humidity": {
-"value": 68,
-"unit": "%"
-},
-"dayTime": 1641535200
-},
-{
-"humidity": {
-"value": 65,
-"unit": "%"
-},
-"dayTime": 1641546000
-},
-{
-"humidity": {
-"value": 63,
-"unit": "%"
-},
-"dayTime": 1641556800
-},
-{
-"humidity": {
-"value": 64,
-"unit": "%"
-},
-"dayTime": 1641567600
-}
-]
+        "lat": 34.257,
+        "lon": -85.1647,
+        "country": null,
+        "cityName": "Rome",
+        "id": 4219762
+    },
+    "forecast5DaysVectorHum": [
+        {
+            "dtString": "15-01-2022 19:00:00",
+            "humidity": {
+                "value": 82,
+                "unit": "%"
+            },
+            "dayTime": 1642269600
+        },
+        {
+            "dtString": "15-01-2022 22:00:00",
+            "humidity": {
+                "value": 75,
+                "unit": "%"
+            },
+            "dayTime": 1642280400
+        },
+        {
+            "dtString": "16-01-2022 01:00:00",
+            "humidity": {
+                "value": 76,
+                "unit": "%"
+            },
+            "dayTime": 1642291200
+        },
+        {
+            "dtString": "16-01-2022 04:00:00",
+            "humidity": {
+                "value": 88,
+                "unit": "%"
+            },
+            "dayTime": 1642302000
+        },
+        {
+            "dtString": "16-01-2022 07:00:00",
+            "humidity": {
+                "value": 93,
+                "unit": "%"
+            },
+            "dayTime": 1642312800
+        },
+        {
+            "dtString": "16-01-2022 10:00:00",
+            "humidity": {
+                "value": 90,
+                "unit": "%"
+            },
+            "dayTime": 1642323600
+        },
+        {
+            "dtString": "16-01-2022 13:00:00",
+            "humidity": {
+                "value": 88,
+                "unit": "%"
+            },
+            "dayTime": 1642334400
+        },
+        {
+            "dtString": "16-01-2022 16:00:00",
+            "humidity": {
+                "value": 94,
+                "unit": "%"
+            },
+            "dayTime": 1642345200
+        },
+        {
+            "dtString": "16-01-2022 19:00:00",
+            "humidity": {
+                "value": 99,
+                "unit": "%"
+            },
+            "dayTime": 1642356000
+        },
+        {
+            "dtString": "16-01-2022 22:00:00",
+            "humidity": {
+                "value": 99,
+                "unit": "%"
+            },
+            "dayTime": 1642366800
+        },
+        {
+            "dtString": "17-01-2022 01:00:00",
+            "humidity": {
+                "value": 97,
+                "unit": "%"
+            },
+            "dayTime": 1642377600
+        },
+        {
+            "dtString": "17-01-2022 04:00:00",
+            "humidity": {
+                "value": 90,
+                "unit": "%"
+            },
+            "dayTime": 1642388400
+        },
+        {
+            "dtString": "17-01-2022 07:00:00",
+            "humidity": {
+                "value": 90,
+                "unit": "%"
+            },
+            "dayTime": 1642399200
+        },
+        {
+            "dtString": "17-01-2022 10:00:00",
+            "humidity": {
+                "value": 92,
+                "unit": "%"
+            },
+            "dayTime": 1642410000
+        },
+        {
+            "dtString": "17-01-2022 13:00:00",
+            "humidity": {
+                "value": 89,
+                "unit": "%"
+            },
+            "dayTime": 1642420800
+        },
+        {
+            "dtString": "17-01-2022 16:00:00",
+            "humidity": {
+                "value": 88,
+                "unit": "%"
+            },
+            "dayTime": 1642431600
+        },
+        {
+            "dtString": "17-01-2022 19:00:00",
+            "humidity": {
+                "value": 79,
+                "unit": "%"
+            },
+            "dayTime": 1642442400
+        },
+        {
+            "dtString": "17-01-2022 22:00:00",
+            "humidity": {
+                "value": 76,
+                "unit": "%"
+            },
+            "dayTime": 1642453200
+        },
+        {
+            "dtString": "18-01-2022 01:00:00",
+            "humidity": {
+                "value": 79,
+                "unit": "%"
+            },
+            "dayTime": 1642464000
+        },
+        {
+            "dtString": "18-01-2022 04:00:00",
+            "humidity": {
+                "value": 78,
+                "unit": "%"
+            },
+            "dayTime": 1642474800
+        },
+        {
+            "dtString": "18-01-2022 07:00:00",
+            "humidity": {
+                "value": 93,
+                "unit": "%"
+            },
+            "dayTime": 1642485600
+        },
+        {
+            "dtString": "18-01-2022 10:00:00",
+            "humidity": {
+                "value": 94,
+                "unit": "%"
+            },
+            "dayTime": 1642496400
+        },
+        {
+            "dtString": "18-01-2022 13:00:00",
+            "humidity": {
+                "value": 92,
+                "unit": "%"
+            },
+            "dayTime": 1642507200
+        },
+        {
+            "dtString": "18-01-2022 16:00:00",
+            "humidity": {
+                "value": 71,
+                "unit": "%"
+            },
+            "dayTime": 1642518000
+        },
+        {
+            "dtString": "18-01-2022 19:00:00",
+            "humidity": {
+                "value": 56,
+                "unit": "%"
+            },
+            "dayTime": 1642528800
+        },
+        {
+            "dtString": "18-01-2022 22:00:00",
+            "humidity": {
+                "value": 54,
+                "unit": "%"
+            },
+            "dayTime": 1642539600
+        },
+        {
+            "dtString": "19-01-2022 01:00:00",
+            "humidity": {
+                "value": 79,
+                "unit": "%"
+            },
+            "dayTime": 1642550400
+        },
+        {
+            "dtString": "19-01-2022 04:00:00",
+            "humidity": {
+                "value": 87,
+                "unit": "%"
+            },
+            "dayTime": 1642561200
+        },
+        {
+            "dtString": "19-01-2022 07:00:00",
+            "humidity": {
+                "value": 88,
+                "unit": "%"
+            },
+            "dayTime": 1642572000
+        },
+        {
+            "dtString": "19-01-2022 10:00:00",
+            "humidity": {
+                "value": 88,
+                "unit": "%"
+            },
+            "dayTime": 1642582800
+        },
+        {
+            "dtString": "19-01-2022 13:00:00",
+            "humidity": {
+                "value": 92,
+                "unit": "%"
+            },
+            "dayTime": 1642593600
+        },
+        {
+            "dtString": "19-01-2022 16:00:00",
+            "humidity": {
+                "value": 72,
+                "unit": "%"
+            },
+            "dayTime": 1642604400
+        },
+        {
+            "dtString": "19-01-2022 19:00:00",
+            "humidity": {
+                "value": 76,
+                "unit": "%"
+            },
+            "dayTime": 1642615200
+        },
+        {
+            "dtString": "19-01-2022 22:00:00",
+            "humidity": {
+                "value": 92,
+                "unit": "%"
+            },
+            "dayTime": 1642626000
+        },
+        {
+            "dtString": "20-01-2022 01:00:00",
+            "humidity": {
+                "value": 96,
+                "unit": "%"
+            },
+            "dayTime": 1642636800
+        },
+        {
+            "dtString": "20-01-2022 04:00:00",
+            "humidity": {
+                "value": 98,
+                "unit": "%"
+            },
+            "dayTime": 1642647600
+        },
+        {
+            "dtString": "20-01-2022 07:00:00",
+            "humidity": {
+                "value": 93,
+                "unit": "%"
+            },
+            "dayTime": 1642658400
+        },
+        {
+            "dtString": "20-01-2022 10:00:00",
+            "humidity": {
+                "value": 90,
+                "unit": "%"
+            },
+            "dayTime": 1642669200
+        },
+        {
+            "dtString": "20-01-2022 13:00:00",
+            "humidity": {
+                "value": 82,
+                "unit": "%"
+            },
+            "dayTime": 1642680000
+        },
+        {
+            "dtString": "20-01-2022 16:00:00",
+            "humidity": {
+                "value": 69,
+                "unit": "%"
+            },
+            "dayTime": 1642690800
+        }
+    ]
 }
 ```
 
@@ -351,41 +393,42 @@ I campi del JSON sopraindicato rappresentano.
    * **"humidity"** è il JSONObject che contiene le informazioni riguardanti l'umidità
      * **"value"** è il valore dell'umiditià
      * **"unit"** è l'unità di misura
-    * **"dt"** è l'orario del giorno della previsione
+    * **"dayTime"** è l'orario del giorno della previsione espresso in UnixTime
+    *  **"dtString"** è la data e l'ora del giorno della previsione espresso in GMT+1
 
 # GET /startCurrentService <a name="5"></a>
-Salva localmente in un file ".json" la risposta di Postman ogni ora grazie ad un timer.
+Salva localmente in un file ".json" la risposta di Postman ogni ora grazie ad un timer. Definito l'intervallo del timer, quando la rotta verrà chiamata creerà un JavaObject che verrà passato ad un vettore statico. Quindi tutti i valori verranno memorizzati nella memoria RAM . Successivamente verrà convertito in JSONArray contenente tutti i JSONobject relativi alle previsioni del meteo salvati quando l'intervallo terminerà.
 
-In questa rotta è possibile utilizzare un query params di tipo "nome" per cercare il nome della città scelta. Di default il "nome" è impostato su "Roma".
+In questa rotta è possibile utilizzare un query params con KEY:"nome" e VALUE:"nome della città" per cercare il nome della città scelta. Di default il "nome" è impostato su "Roma".
 
 #### ESEMPIO: 
 | KEY       |    VALUE    | 
 |---------------|--------------|
-|nome  | Ancona |
+|nome  | Macerata |
 
 <details>
 <summary>MODEL</summary>
 <br>
 
 ```
-[
-    {
-        "city": {
-            "ID": 3183087,
-            "cityName": "\"Provincia di Ancona\"",
-            "lat": 13.1667,
-            "lon": 43.55
-        },
-        "dt": 1641124445,
-        "humidity": { "value": 100 },
+ {
         "temperature": {
-            "temp": 7.78,
-            "tempMin": 5.1,
-            "tempMax": 10.22,
-            "tempFeel": 7.78
-        }
-    },
-] 
+            "temp": 2.7,
+            "tempMin": -1.79,
+            "tempMax": 4.92,
+            "tempFeel": 2.7
+        },
+        "city": {
+            "ID": 3174379,
+            "cityName": "Provincia di Macerata",
+            "lat": 13.1667,
+            "lon": 43.2
+        },
+        "dt": 1642151414,
+        "dtString": "14-01-2022 10:10:14",
+        "humidity": { "value": 53 }
+    }
+     
 ```
 
 </details>
@@ -396,7 +439,8 @@ In questa rotta è possibile utilizzare un query params di tipo "nome" per cerca
   * **"lon"** è la longitudine
   * **"cityName"** è il nome della città
   * **"id"** è l'id della città
- * **"dt"** è l'orario del giorno della previsione
+ * **"dt"** è l'orario del giorno della previsione espressa in UnixTime
+ * **""dtString** è la data e ora della previsione espressa in GMT+1
  * **"humidity"** è il JSONObject che contiene le informazioni riguardanti l'umidità:
   **"value"** è il valore dell'umidità
  * **"temperature"** è il JSONObject che contiene le informazioni riguardanti le temperature:
@@ -407,11 +451,12 @@ In questa rotta è possibile utilizzare un query params di tipo "nome" per cerca
 
 # GET /stopCurrentService <a name="6"></a>
 
-blocca il salvataggio dei dati.
+Blocca il salvataggio dei dati. Tecnicamente azzera l'intervallo del timer definito in precedenza.
 
 # GET /getHumidityStats <a name="7"></a>
+Questa rotta va utilizzata **esclusivamente** dopo aver chiamato l'endpoint  <a href = "#4">/getCompleteForecast</a><br> 
+Crea statistiche riguardanti l'umidità nei prossimi 5 giorni. Prende il vettore statico riguardante le previsioni dei prossimi 5 giorni e ne crea statistiche sull'umidità minima e massima assoluta e la media di tutte le umidità.
 
-Crea statistiche riguardanti l'umidità nei prossimi 5 giorni.
 
 <details>
 <summary>MODEL</summary>
@@ -419,23 +464,35 @@ Crea statistiche riguardanti l'umidità nei prossimi 5 giorni.
 
 ```
 {
-"city": {
-"lat": 45.4643,
-"lon": 9.1895,
-"country": null,
-"cityName": "Milan",
-"id": 3173435
-},
-"umiditaMinimaAssoluta": 34.0,
-"umiditaMassimaAssoluta": 98.0,
-"mediaUmidità": 74.875
+{
+    "city": {
+        "lat": 34.257,
+        "lon": -85.1647,
+        "country": null,
+        "cityName": "Rome",
+        "id": 4219762
+    },
+    "umiditaMinimaAssoluta": 54.0,
+    "umiditaMassimaAssoluta": 99.0,
+    "mediaUmidità": 85.1
 }
 ```
 
 </details>
 
-# GET /load/{City} <a name="8"></a>
+* **"city"** è il JSONObject che contiene le informazioni riguardanti la città:
+  * **"lat"** è la latitudine
+  * **"lon"** è la longitudine
+  * **"cityName"** è il nome della città
+  * **"id"** è l'id della città
+* **"umiditaMinimaAssoluta"** è il minor valore dell'umidità che si registrerà nei prossimi 5 giorni  
+* **"umiditaMassimaAssoluta"** è il massimo valore dell'umidità che si registrerà nei prossimi 5 giorni  
+* **"mediaUmidità"** è il valore dell' umidità media che si registrerà nei prossimi 5 giorni
+
+# GET /load/{cityName} <a name="8"></a>
 Popola un vettore di dati letti da file, con possibilità di caricare dati da una città specifica(Inserire il nome della città al posto di {City}).
+
+//todo//
 
 #### ESEMPIO:
 GET localhost:8080/load/Ancona
@@ -443,9 +500,16 @@ GET localhost:8080/load/Ancona
 Su postman restituirà un valore boolean true se il processo è andato a buon fine
 
 # GET /filter/daily/{initialValue}/{finalValue} <a name="9"></a>
-Questa rotta va utilizzata **esclusivamente** dopo aver chiamato l'endpoint [/load/{cityName}].... .
+Questa rotta va utilizzata **esclusivamente** dopo aver chiamato l'endpoint  <a href = "#7">/load/{cityName}</a><br>
+Si creerà un vettore contenente valori salvati precedentemente in un file e verranno filtrati per le specifiche richieste.
 
-Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss"
+I filtri sono stati programmati dinamicamente, in modo da poter aggiungere elementi di filtraggio. Il vettore è settato a static e posizionato nella classe Filters ci permetterà:<br>
+* di applicare altri filtri in futuro in base ad altri valori es:filteredVectorTemperature, filteredVectorCountry <br>
+* di fare un ulteriore filtraggio degli elementi in comune tra tutti i Vector presenti ad esempio con il metodo equals() 
+
+
+
+Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss" a meno che non si modifichi il formato in ParamsValue---
 
 <details>
 <summary>MODEL</summary>
@@ -476,6 +540,21 @@ Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss"
 
 </details>
 
+  * **"initialDay"** è la data iniziale di filtraggio espressa in UnixTime
+  * **"finalDay"** è la data finale di filtraggio espressa in UnixTime
+  * **"startTime"** è l'ora iniziale di filtraggio espressa in UnixTime
+  * **"stopTime"** è l'ora finale di filtraggio espressa in UnixTime
+  * **"filteredDays"** Sono i giorni filtrati in secondi    (86400 =1)
+ * **"filteredElements"** La quantità degli elementi filtrati
+ * **"tempMin"** è il valore della temperatura minima del periodo filtrato
+  **"tempMax"** è il valore della temperatura massima del periodo filtrato
+ * **"averageTemp"** è il valore medio della temperatura del periodo filtrato
+    **"city"** è il JSONObject che contiene le informazioni riguardanti la città:
+  * **"lat"** è la latitudine
+  * **"lon"** è la longitudine
+  * **"cityName"** è il nome della città
+  * **"id"** è l'id della città
+  * **"perceivedTemperatureVariance"** è il valore della varianza della temperatura percepita;
 
 # ECCEZIONI: <a name="3"></a>
 L'applicazione può lanciare diverse eccezioni alcune standard e altre personalizzate:
