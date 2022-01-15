@@ -1,32 +1,41 @@
-
 # Proggetto OOP 
-Lo scopo di questo progetto è di sviluppare un applicazione SpringBoot che data una città cercata a piacimento dall'utente tramite l'utilizzo di due API.Con l'uso della prima [5 days weather forecast](https://openweathermap.org/forecast5#name5) si visualizzino tutte le informazioni attuali e future relative all'umidità dei successivi 5 giorni e con la seconda [current weather data](https://openweathermap.org/current) si salvino ogni ora le informazioni relative all'umidità e le temperature(massime, minime, reali e percepite).
+Lo scopo di questo progetto è di sviluppare un applicazione SpringBoot web che data una città cercata a piacimento dall'utente tramite l'utilizzo di due API. Con l'uso della prima [5 days weather forecast](https://openweathermap.org/forecast5#name5) si visualizzino tutte le informazioni attuali e future relative all'umidità dei successivi 5 giorni ogni 3 ore e con la seconda [current weather data](https://openweathermap.org/current) si salvino ogni ora le informazioni relative all'umidità e le temperature(massime, minime, reali e percepite).
 
-L'utente grazie a [Postman](https://learning.postman.com/docs/getting-started/introduction/), puo utilizzare le funzionalità dell'applicazione Spring che con la sua dipendenza "spring-boot-starter-web" riesce ad avviare facilmente un server Tomcat embedded   
+L'utente grazie a [Postman](https://learning.postman.com/docs/getting-started/introduction/), puo utilizzare le funzionalità dell'applicazione [Spring](https://docs.spring.io/spring-framework/docs/current/reference/html/) che con la sua dipendenza "spring-boot-starter-web" riesce ad avviare facilmente un server Tomcat embedded sulla porta 8080.  
 
 #### INDICE
 <p>
      • <a href="#1">L'Applicazione</a><br>
+     • <a href="#10">PLUS</a><br>
      • <a href="#2">Rotte Disponibili</a><br>
      • <a href="#3">Eccezioni</a><br> 
 </p>
 
 # L'applicazione <a name="1"></a>
-L'applicazione è strutturata in modo che dopo la call all'api 5 days weather forecast prenda i valori restituiti da essa e li salvi su un vettore statico(in modo che siano accessibili anche dall'endpoint /getHumidityStats).
+Tutti i valori delle temperature restituiti dalla chiamata all'API sono impostati in gradi centigradi (°C)<br>
+L'applicazione è strutturata in modo che dopo la call all'api **5 days weather forecast** prenda i valori restituiti da essa e li salvi su un vettore statico(in modo che siano accessibili anche dall'endpoint <a href="#7">/getHumidityStats </a>).
 
-Invece per quanto riguarda la call all'api current weather data , la risposta viene salvata in stringa su file in formato json tramite l'utilizzo di un vettore statico ogni ora (grazie all'utilizzo di un timer). All'avvio dell'endpoint /startCurrentService l'applicazione verificherà se ci siano o meno dei valori nel file, se già esistenti li caricherà in un vettore. In caso ci siano gia valori nel file,l'applicazione verificherà che l'id della città già salvata in precedenza sia lo stesso della città passata come parametro a Postman.Dopodichè si creerà un javaObject contenente i valori correnti delle previsioni(restituiti dall'api) e si salveranno all'interno del vettore. Ora avremo un vettore popolato da javaObject che verrà salvato su un file in formato JSON(grazie all'utilizzo di un metodo che farà il parsing degli elementi del vettore da JavaObject a JSON). 
+Invece per quanto riguarda la call all'api **current weather data** , la risposta viene salvata in stringa su file in formato json tramite l'utilizzo di un vettore statico ogni ora ,grazie all'utilizzo di un timer. All'avvio dell'endpoint /startCurrentService l'applicazione verificherà se ci siano o meno dei valori nel file, se già esistenti li caricherà in un vettore. In caso ci siano gia valori nel file,l'applicazione verificherà che l'id della città già salvata in precedenza sia lo stesso della città passata come parametro a Postman.Dopodichè si creerà un javaObject contenente i valori correnti delle previsioni(restituiti dall'api) e si salveranno all'interno del vettore. Ora avremo un vettore popolato da javaObject che verrà salvato su un file in formato JSON(grazie all'utilizzo di un metodo che farà il parsing degli elementi del vettore da JavaObject a JSON). 
+
+### PLUS <a name="10"></a>
+L'applicazione oltre alle funzioni richieste:<br>
+•E' possibile avviare e fermare la rotta del salvataggio dei dati su file, in modo tale da salvare città diverse senza dover fermare il programma, i file verranno salvati nell cartella temp con sintassi "CurrentForecastData{cityName}" ("{cityName}" è variabile a seconda della città richiesta).<br>
+•E' possibile modificare dei parametri in [ParamVariable](src/main/java/it/uni/main/utils/ParamVariable.java) dall'utilizzatore dell' applicazione. <br>
+•I filtri sono stati programmati dinamicamente, in modo da poter aggiungere elementi di filtraggio. Il vettore è settato a static e posizionato nella classe Filters ci permetterà: di applicare altri filtri in futuro in base ad altri valori (es:filteredVectorTemperature, filteredVectorCountry) e di fare un ulteriore filtraggio degli elementi in comune tra tutti i Vector presenti ad esempio con il metodo equals() <br>
+• Per realizzare questo progetto abbiamo utilizzato quasi tutti gli argomenti del corso.
+
 
 ### Come funziona: ROTTE DISPONIBILI <a name="2"></a>
 
 | Rotta         |    Metodo    |        Funzione                        |
 |---------------|--------------|----------------------------------------|
 | <a href="#4">/getCompleteForecast</a>   | GET        | Avvia ricerca e mostra dati per i prossimi 5 giorni ogni 3 ore |
+| <a href="#7">/getHumidityStats </a>  | GET          | Crea statistiche relative all'umidità con i dati già presenti   |
 | <a href="#5">/startCurrentService</a> | GET      | Avvia il salvataggio dei dati correnti ogni ora     |
 | <a href="#6">/stopCurrentService </a>   | GET          | Ferma il salvataggio dei dati correnti        |
-| <a href="#7">/getHumidityStats </a>  | GET          | Crea statistiche relative all'umidità con i dati già presenti   |
-| <a href="#8">/load/{City}</a> | GET  | Carica su un vettore i dati salvati in precedenza a seconda della città passata|
+| <a href="#8">/load/{cityName}</a> | GET  | Carica su un vettore i dati salvati in precedenza a seconda della città passata|
 | <a href="#9">/filter/daily/{initialValue}/{finalValue} </a>    | GET          | Filtra le statistiche dei dati salvati ogni ora giornalmente|
-
+| <a href ="#11">/loadFilterTest</a> | GET | Carica su un vettore i dati test salvati in precedenza | 
 
 
 # GET /getCompleteForecast  <a name="4"></a>
@@ -399,6 +408,10 @@ I campi del JSON sopraindicato rappresentano.
 # GET /startCurrentService <a name="5"></a>
 Salva localmente in un file ".json" la risposta di Postman ogni ora grazie ad un timer. Definito l'intervallo del timer, quando la rotta verrà chiamata creerà un JavaObject che verrà passato ad un vettore statico. Quindi tutti i valori verranno memorizzati nella memoria RAM . Successivamente verrà convertito in JSONArray contenente tutti i JSONobject relativi alle previsioni del meteo salvati quando l'intervallo terminerà.
 
+Il timer è impostato di di default ad un ora, è possibile modificarlo a piacimento da [ParamVariable](src/main/java/it/uni/main/utils/ParamVariable.java)<br>
+**N.B.** L'API fornisce valori sulle previsioni ogni ora, quindi impostando un valore minore di un ora si otterranno risultati identici.<br>
+La massima dimensione del vettore di default è 120, è possibile modificarla a piacimento da [ParamVariable](src/main/java/it/uni/main/utils/ParamVariable.java)
+
 In questa rotta è possibile utilizzare un query params con KEY:"nome" e VALUE:"nome della città" per cercare il nome della città scelta. Di default il "nome" è impostato su "Roma".
 
 #### ESEMPIO: 
@@ -484,32 +497,40 @@ Crea statistiche riguardanti l'umidità nei prossimi 5 giorni. Prende il vettore
   * **"lat"** è la latitudine
   * **"lon"** è la longitudine
   * **"cityName"** è il nome della città
+  * **"country"** è lo stato della città
   * **"id"** è l'id della città
 * **"umiditaMinimaAssoluta"** è il minor valore dell'umidità che si registrerà nei prossimi 5 giorni  
 * **"umiditaMassimaAssoluta"** è il massimo valore dell'umidità che si registrerà nei prossimi 5 giorni  
 * **"mediaUmidità"** è il valore dell' umidità media che si registrerà nei prossimi 5 giorni
 
 # GET /load/{cityName} <a name="8"></a>
-Popola un vettore di dati letti da file, con possibilità di caricare dati da una città specifica(Inserire il nome della città al posto di {City}).
-
-//todo//
+Popola un vettore di dati letti da file, con possibilità di caricare dati da una città specifica(Inserire il nome della città al posto di {cityName}).
 
 #### ESEMPIO:
 GET localhost:8080/load/Ancona
 
 Su postman restituirà un valore boolean true se il processo è andato a buon fine
 
+# GET /loadFilterTest <a name ="11"></a>
+
+Popola un vettore di dati letti da file già salvati dagli sviluppatori con la sola finalità di testare il funzionamento dei filtri.
+Oltre a caricare il vettore genererà valori random per temperature e cambiarà il valore dell'orario(il primo orario salvato sarà l'ora attuale e ,con un ciclo for,a tutti gli altri elementi verrà sottratta un ora).
+Il file è composto da 120 elementi, quindi si potranno filtrare i valori dal momento della chiamata all'endpoint fino a 5 giorni prima. 
+
 # GET /filter/daily/{initialValue}/{finalValue} <a name="9"></a>
-Questa rotta va utilizzata **esclusivamente** dopo aver chiamato l'endpoint  <a href = "#7">/load/{cityName}</a><br>
+Questa rotta va utilizzata **esclusivamente** dopo aver chiamato l'endpoint  <a href = "#7">/load/{cityName}</a> oppure <a href ="#11">/loadFilterTest </a><br>
 Si creerà un vettore contenente valori salvati precedentemente in un file e verranno filtrati per le specifiche richieste.
 
 I filtri sono stati programmati dinamicamente, in modo da poter aggiungere elementi di filtraggio. Il vettore è settato a static e posizionato nella classe Filters ci permetterà:<br>
 * di applicare altri filtri in futuro in base ad altri valori es:filteredVectorTemperature, filteredVectorCountry <br>
-* di fare un ulteriore filtraggio degli elementi in comune tra tutti i Vector presenti ad esempio con il metodo equals() 
+* di fare un ulteriore filtraggio degli elementi in comune tra tutti i Vector presenti ad esempio con il metodo equals()<br>
 
+Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss" a meno che non si modifichi il formato in [ParamVariable](src/main/java/it/uni/main/utils/ParamVariable.java) .<br>
 
-
-Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss" a meno che non si modifichi il formato in ParamsValue---
+I valori restituiti sono riferiti alla fascia oraria dei giorni cercati.<br>
+**ESEMPIO** <br>
+localhost:8080/filter/daily/12-01-2022 02:00:00/14-01-2022 10:00:00<br>
+questa chiamatà restituirà i valori nelle fasce orarie tra le 02:00:00 e le 10:00:00 dei giorni 12-13-14 Gennaio 2022
 
 <details>
 <summary>MODEL</summary>
@@ -542,9 +563,9 @@ Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss"
 
   * **"initialDay"** è la data iniziale di filtraggio espressa in UnixTime
   * **"finalDay"** è la data finale di filtraggio espressa in UnixTime
-  * **"startTime"** è l'ora iniziale di filtraggio espressa in UnixTime
-  * **"stopTime"** è l'ora finale di filtraggio espressa in UnixTime
-  * **"filteredDays"** Sono i giorni filtrati in secondi    (86400 =1)
+  * **"startTime"** è l'ora iniziale di filtraggio della fascia oraria espressa in UnixTime
+  * **"stopTime"** è l'ora finale di filtraggio della fascia oraria espressa in UnixTime
+  * **"filteredDays"** Sono i giorni filtrati in secondi    (86400 =1 giorno)
  * **"filteredElements"** La quantità degli elementi filtrati
  * **"tempMin"** è il valore della temperatura minima del periodo filtrato
   **"tempMax"** è il valore della temperatura massima del periodo filtrato
@@ -572,3 +593,7 @@ STANDARD:
 * Exception
 * NullPointerException
 * IllegalArgumentException
+
+## AUTORI 
+•PERAZZOLI LEONARDO<br>
+•URSU LEON
