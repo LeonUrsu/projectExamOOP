@@ -3,7 +3,10 @@ package it.uni.main.statisticsAndFilters;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -36,7 +39,7 @@ public class Filters implements FiltersInterface{
 	 * Vector filteredVectorTime filtrato. il fatto che è settato static e posizionato qui ci permette di 
 	 * applicare altri filtri in futuro in base ad altri valori
 	 * es:filteredVectorTemperature, filteredVectorCountry e fare un ulteriore filtraggio degli elementi in 
-	 * comuni tra tutti i Vector presenti con il metodo equals() o altri
+	 * comuni tra tutti i Vector presenti, ad esempio con il metodo equals()
 	 */
 	public static Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
 	//public static Vector<ForecastDataCurrent> filteredVectorTemperature = new Vector<ForecastDataCurrent>();
@@ -189,7 +192,7 @@ public class Filters implements FiltersInterface{
 	}
 
 
-	
+	@Deprecated
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in una variabile di tipo long 
 	 * @param dtTxt
@@ -207,7 +210,7 @@ public class Filters implements FiltersInterface{
 	 }
 	
 	
-	
+	@Deprecated
 	/**
 	 * Metodo che ci restitusce formato GMT+1 in stringa di un formato unix del tempo
 	 * @param unixTime tempo in unix
@@ -224,7 +227,7 @@ public class Filters implements FiltersInterface{
 		return reportDate;
 	}
 	
-
+	@Deprecated
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in "HH:mm:ss" e trasformato in una 
 	 * variabile di tipo long 
@@ -237,7 +240,7 @@ public class Filters implements FiltersInterface{
 		return millis;
 	}
 	
-	
+	@Deprecated
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in "dd-MM-yyyy" e trasformato in una 
 	 * variabile di tipo long 
@@ -250,6 +253,33 @@ public class Filters implements FiltersInterface{
 		return millis-3600;
 	}
 
-
+	
+	/**
+	 * Metodo che ci restitusce formato GMT+1 in stringa di un formato unix del tempo
+	 * @param unixTime tempo in unix
+	 * @return UTC in stringa
+	 */
+	public String secToDataV2(long unixTime) {
+		Instant instant = Instant.ofEpochMilli(unixTime * 1000);
+		ZoneId ldt = TimeZone.getDefault().toZoneId();
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ldt);
+		return localDateTime.toString();
+	}
+	
+	
+	/**
+	 * Metodo per convertire un formato data ad esempio: "dd-MM-yyyy HH:mm:ss" in una variabile di tipo long 
+	 * @param dtTxt
+	 * @return data in formato long
+	 * @throws ParseException
+	 */
+	public long dataToSecV2(String dtString , String dtformat) {
+		DateTimeFormatter format = DateTimeFormatter.ofPattern(dtformat);
+		LocalDateTime localDateTime = LocalDateTime.parse(dtString, format);
+		ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
+		return zdt.toInstant().getEpochSecond();	
+	}
+	
+	
 
 }

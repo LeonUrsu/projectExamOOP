@@ -17,7 +17,7 @@ public class ParamVariable {
 	public static String filePath = "temp\\currentForecastData{City}.json";
 	
 	/**
-	 * Tempo in secondi del loop che aggiorna le previsioni settato di default a 1 ora
+	 * Tempo in secondi del loop che aggiorna le previsioni settato di default a "1" ora
 	 */
 	public static int updateTime = 1 * 3600000;
 	
@@ -25,4 +25,10 @@ public class ParamVariable {
 	 * Formato della data e ora 
 	 */
 	public static String dataFormat = "dd-MM-yyyy HH:mm:ss";
+	
+	/**
+	 * API key del servizio OpenWeatherMap
+	 */
+	public static String key = "57b8994a4dd46d6b80a3f810f6882a2f";
+	
 }

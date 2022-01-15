@@ -31,8 +31,8 @@ public class CurrentStats {
 			Vector<ForecastDataCurrent> filteredVector,double temperatureMin,double temperatureMax,
 			double tempMedia,double varianzaTempPercepita,double varianzaTempReale){
 			Filters filter = new Filters();
-			this.initialDayInUTC= filter.secToData(initialValueDayInUnix + initialValueInUnix);
-			this.finalDayInUTC = filter.secToData(finalValueInDayInUnix + finalValueInUnix);
+			this.initialDayInUTC= filter.secToDataV2(initialValueDayInUnix + initialValueInUnix);
+			this.finalDayInUTC = filter.secToDataV2(finalValueInDayInUnix + finalValueInUnix);
 			this.initialValueInUnix = initialValueInUnix;
 			this.finalValueInUnix = finalValueInUnix;
 			this.initialValueDayInUnix = initialValueDayInUnix;

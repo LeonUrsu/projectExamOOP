@@ -22,7 +22,7 @@ public class Forecast5Days implements Serializable{
 	public Forecast5Days(Humidity humidity, long dt){
 		this.dt = dt;
 		Filters data = new Filters();
-		dtString = data.secToData(dt);
+		dtString = data.secToDataV2(dt);
 		this.humidity = humidity;
 	}
 	
