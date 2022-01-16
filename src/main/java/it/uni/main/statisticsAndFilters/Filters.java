@@ -192,10 +192,11 @@ public class Filters implements FiltersInterface{
 	}
 
 
-
+	@Deprecated
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in una variabile di tipo long 
-	 * @param dtTxt
+	 * @param dtString data in string
+	 * @param format foramto della data
 	 * @return data in formato long
 	 * @throws ParseException
 	 */
@@ -205,12 +206,11 @@ public class Filters implements FiltersInterface{
 		  df.setTimeZone(TimeZone.getTimeZone(fromTimeZone));
 		  Date dt = df.parse(dtString);
 		  long epoch = dt.getTime();
-		  //epoch += TimeZone.getDefault().getOffset(0);
 		  return (epoch/1000);
 	 }
 	
 	
-
+	@Deprecated
 	/**
 	 * Metodo che ci restitusce formato GMT+1 in stringa di un formato unix del tempo
 	 * @param unixTime tempo in unix
@@ -227,7 +227,7 @@ public class Filters implements FiltersInterface{
 		return reportDate;
 	}
 	
-
+	@Deprecated
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in "HH:mm:ss" e trasformato in una 
 	 * variabile di tipo long 
@@ -240,7 +240,8 @@ public class Filters implements FiltersInterface{
 		return millis;
 	}
 	
-
+	
+	@Deprecated
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in "dd-MM-yyyy" e trasformato in una 
 	 * variabile di tipo long 
@@ -270,9 +271,8 @@ public class Filters implements FiltersInterface{
 	
 	/**
 	 * Metodo per convertire un formato data ad esempio: "dd-MM-yyyy HH:mm:ss" in una variabile di tipo long 
-	 * @param dtTxt
+	 * @param dtString data in string
 	 * @return data in formato long
-	 * @throws ParseException
 	 */
 	public long dataToSecV2(String dtString) {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern(ParamVariable.dataFormat);

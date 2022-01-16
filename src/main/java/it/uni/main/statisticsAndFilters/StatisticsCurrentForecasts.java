@@ -21,7 +21,7 @@ public class StatisticsCurrentForecasts extends Statistics{
 	 * Metodo per generare java object di statistiche che verrà restiruito al chiamante
 	 * @param initialValue tempo d'inizio
 	 * @param finalValue tempo di fine
-	 * @param initial data di inizio
+	 * @param initialDay data di inizio
 	 * @param finalDay data di fine
 	 * @param filteredVector vettore filtrato
 	 * @return CurrentStats object di statistiche

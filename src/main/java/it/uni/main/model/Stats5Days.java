@@ -33,13 +33,13 @@ public class Stats5Days {
 	}
 
 
-	public double getMediaUmidità() {
+	public double getMediaUmidita() {
 		return averageHumidity;
 	}
 
 
-	public void setMediaUmidità(double mediaUmidità) {
-		this.averageHumidity = mediaUmidità;
+	public void setMediaUmidita(double mediaUmidita) {
+		this.averageHumidity = mediaUmidita;
 	}
 
 
@@ -63,14 +63,7 @@ public class Stats5Days {
 	}
 
 
-//	public Vector<Forecast5Days> getForecast5days() {
-//		return forecast5days;
-//	}
-//
-//
-//	public void setForecast5days(Vector<Forecast5Days> forecast5days) {
-//		this.forecast5days = forecast5days;
-//	}
+
 
 	
 	

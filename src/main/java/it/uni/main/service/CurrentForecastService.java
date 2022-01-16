@@ -45,12 +45,11 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 	private static Vector<ForecastDataCurrent> forecastDataCurrentVector = new Vector<ForecastDataCurrent>();
 
 	
-	
+	Timer timer = null;
 	/**
 	 * metodo che aggiorna il file locale con una nuova previsione
-	 * @param name - nome della città
+	 * @param name nome della città
 	 */
-	Timer timer = null;
 	public void ripetizioneMetodo(String name)  throws ParseException, IOException {
 		if(timer == null) {
 		    TimerTask task = new TimerTask() {
@@ -88,9 +87,9 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 
 	
 	/**
-	 * Metodo che serializza su file locale in formato JSON un array di oggetti java di tipo Vector<ForecastDataCurrent>
+	 * Metodo che serializza su file locale in formato JSON un array di oggetti java di tipo VectorForecastDataCurrent
 	 * ogni 3600s (60 minuti) e riempie il ForecastDataCurrentVector della classe
-	 * @param cityName - nome della città passata 
+	 * @param cityName nome della città passata 
 	 * @throws ParseException
 	 * @throws IOException
 	 */	
@@ -149,7 +148,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 
 	/**
 	 * metodo che carica un vettore di oggetti da un file  nomeFile e lo carica su un vettore
-	 * @param nomeFile - file locale
+	 * @param nomeFile  file locale
 	 * @param vettore 
 	 */
 	public void readVectorFromFile(String nomeFile, Vector<ForecastDataCurrent> vettore){
@@ -172,8 +171,8 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 
 	/**
 	 * metodo per comparare gli ID di due città, una presente nel vettore e la seconda nel cityName
-	 * @param cityName - da cui estrarre l'ID
-	 * @param vettore - da cui estrarre l'ID2
+	 * @param cityName da cui estrarre l'ID
+	 * @param vettore da cui estrarre l'ID2
 	 * @return
 	 */
 	private boolean compareId(String cityName, Vector<ForecastDataCurrent> vettore ) {
@@ -206,7 +205,7 @@ public class CurrentForecastService extends OpenWeatherServiceImp{
 		
 	/**
 	 * Metodo che passando un oggetto Vector come parametro locale lo salva su un file di nome nomeFile
-	 * @param nomeFile - file locale
+	 * @param nomeFile file locale
 	 * @param vettore
 	 * @throws IOException
 	 */

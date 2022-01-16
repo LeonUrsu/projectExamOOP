@@ -134,7 +134,7 @@ public class Loader extends OpenWeatherServiceImp{
 	
 	
 	/**
-	 * Metodo che trasforma una Stringa in oggetto Java Vector<ForecastDataCurrent>
+	 * Metodo che trasforma una Stringa in oggetto Java Vector ForecastDataCurrent
 	 * @param inJson
 	 * @param vettore
 	 */

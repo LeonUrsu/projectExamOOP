@@ -70,8 +70,8 @@ public class OpenWeatherServiceImp implements OpenWeatherService{
 	
 	/**
 	 * metodo che legge stringa da un file
-	 * @param nomeFile - file locale
-	 * @param vettore 
+	 * @param nomeFile file locale
+	 * @return string in json
 	 */
 	public String readStringFromFile(String nomeFile){
 		String inJSON = "";

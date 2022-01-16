@@ -29,7 +29,7 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	/**
 	 * Metodo che chiama l'api e salva temporanemente mella memoria le previsioni 
 	 * per poter richiamare una rotta per le statistiche
-	 * @param nome della citta su cui cercare le previsioni 
+	 * @param cityName nome della citta su cui cercare le previsioni 
 	 */
 	public Forecast5DaysHumidity forecast5day(String cityName) {
 		JsonObject Jcity = callApi(ApiReference.Url5dayP1 + cityName + ApiReference.Url5dayP2);
@@ -45,7 +45,7 @@ public class Forecast5DaysService extends OpenWeatherServiceImp {
 	
 	
 	/**
-	 * Metodo che riempie un Vector<Forecast5Days> con oggetti trasformati da JsonArray
+	 * Metodo che riempie un VectorForecast5Days con oggetti trasformati da JsonArray
 	 * @param vettore da riempire
 	 * @param forecasts40 da cui trasformare
 	 */

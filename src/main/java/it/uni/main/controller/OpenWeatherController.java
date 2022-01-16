@@ -47,7 +47,7 @@ public class OpenWeatherController
 	//un parametro nome della città invece di usare il default
 	/**
 	 * Rotta che ci restituisce un array di oggetti con informazioni sull'umidità degli ultimi 5 giorni
-	 * @param  nome della città su cui prendere le previsioni
+	 * @param cityName della città su cui prendere le previsioni
 	 * @return Vector di previsioni
 	 */
 	@GetMapping("/getCompleteForecast")
@@ -118,11 +118,9 @@ public class OpenWeatherController
 	
 	/**
 	 * Rotta che avvia il salvataggio delle previsoni ogni ora
-	 * @param nome città di cui prendere le previsioni
-	 * @throws IOException
-	 * @throws ParseException
+	 * @param cityName città di cui prendere le previsioni
 	 */
-	@GetMapping("/startCurrentService") //si potrebbe aggiungere un periodo di funzionamento
+	@GetMapping("/startCurrentService")
 	public boolean currentForecast(@RequestParam(value="nome", defaultValue="Rome") String cityName) {
 		try {
 			currentForecast.ripetizioneMetodo(cityName);	
@@ -138,8 +136,6 @@ public class OpenWeatherController
 	
 	/**
 	 * Rotta che ferma il salvataggio delle previsioni ogni ora
-	 * @throws StopNotValidException 
-	 * @throws InterruptedException 
 	 */
 	@GetMapping("/stopCurrentService")
 	public boolean currentForecastStop(Timer timer) {
@@ -156,13 +152,13 @@ public class OpenWeatherController
 	
 	
 	/**
-	 * Rotta per il filtraggio delle previsioni su una fascia oraria (es: 15:00 <= X <= 20:00) negli giorni compresi 
-	 * delle date passate (es: 14/01/2022 <= X <= 17/01/2022)
-	 * @param initialValue ora iniziale di inizio filtraggio "HH:mm:ss"
-	 * @param finalValue ora finale del filtraggio "HH:mm:ss"
+	 * Rotta per il filtraggio delle previsioni su una fascia oraria nei giorni compresi 
+	 * delle date passate 
+	 * @param initialValue ora iniziale di inizio filtraggio 
+	 * @param finalValue ora finale del filtraggio 
+	 * @param initialValueInDay data di inizio filtraggio 
+	 * @param finalValueInDay data di fine filtraggio
 	 * @return oggetto Statistiche degli elementi filtrati
-	 * @throws IllegalTimeException 
-	 * @throws IllegalArgumentException 
 	 */
 	@GetMapping("/filter/{initialValueInDay}/{finalValueInDay}/{initialValue}/{finalValue}")
 	public CurrentStats dailyBand(@PathVariable String initialValueInDay, @PathVariable String finalValueInDay,
