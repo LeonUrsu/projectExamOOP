@@ -3,6 +3,7 @@ package it.uni.main.model;
 import java.util.Vector;
 
 import it.uni.main.statisticsAndFilters.Filters;
+import it.uni.main.utils.ParamVariable;
 
 
 /**
@@ -31,8 +32,8 @@ public class CurrentStats {
 			Vector<ForecastDataCurrent> filteredVector,double temperatureMin,double temperatureMax,
 			double tempMedia,double varianzaTempPercepita,double varianzaTempReale){
 			Filters filter = new Filters();
-			this.initialDayInUTC= filter.secToDataV2(initialValueDayInUnix + initialValueInUnix);
-			this.finalDayInUTC = filter.secToDataV2(finalValueInDayInUnix + finalValueInUnix);
+			this.initialDayInUTC= filter.secToDataV2(initialValueDayInUnix + initialValueInUnix, ParamVariable.dataFormat);
+			this.finalDayInUTC = filter.secToDataV2(finalValueInDayInUnix + finalValueInUnix, ParamVariable.dataFormat);
 			this.initialValueInUnix = initialValueInUnix;
 			this.finalValueInUnix = finalValueInUnix;
 			this.initialValueDayInUnix = initialValueDayInUnix;

@@ -85,7 +85,7 @@ public class Loader extends OpenWeatherServiceImp{
 		Filters data = new Filters();
 		for(long i=0, dt=seconds ; i<dimArr ; i++, dt-=3600) {
 			jsonArray.get((int)i).getAsJsonObject().addProperty("dt", dt);
-			jsonArray.get((int)i).getAsJsonObject().addProperty("dtString", data.secToDataV2(dt));
+			jsonArray.get((int)i).getAsJsonObject().addProperty("dtString", data.secToDataV2(dt,ParamVariable.formatDate));
 			JsonObject jsonObject = jsonArray.get((int)i).getAsJsonObject().get("temperature").getAsJsonObject();
 			jsonObject.addProperty("temp", Math.abs(random.nextInt()%30));
 			jsonObject.addProperty("tempMax", Math.abs(random.nextInt()%40));

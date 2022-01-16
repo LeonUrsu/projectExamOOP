@@ -3,6 +3,7 @@ package it.uni.main.model;
 import java.io.Serializable;
 
 import it.uni.main.statisticsAndFilters.Filters;
+import it.uni.main.utils.ParamVariable;
 
 
 
@@ -22,7 +23,7 @@ public class Forecast5Days implements Serializable{
 	public Forecast5Days(Humidity humidity, long dt){
 		this.dt = dt;
 		Filters data = new Filters();
-		dtString = data.secToDataV2(dt);
+		dtString = data.secToDataV2(dt, ParamVariable.formatDate);
 		this.humidity = humidity;
 	}
 	

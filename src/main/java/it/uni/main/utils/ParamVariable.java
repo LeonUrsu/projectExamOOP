@@ -30,5 +30,14 @@ public class ParamVariable {
 	 * API key del servizio OpenWeatherMap
 	 */
 	public static String key = "57b8994a4dd46d6b80a3f810f6882a2f";
+
+	public static String formatHour = "HH:mm:ss";
+	
+	public static String formatDate = "dd-MM-yyyy";
+
+	
+	
+	
+	
 	
 }

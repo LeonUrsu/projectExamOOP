@@ -56,25 +56,30 @@ public class Filters implements FiltersInterface{
 	 * @throws IllegalTimeException
 	 * @throws ParseException 
 	 */
-	public CurrentStats dailyFilter(String start, String stop)  throws IllegalArgumentException, IllegalTimeException, ParseException
+	public CurrentStats dailyFilter(String initialDay, String finalDay, String initialTime, String finalTime)  throws IllegalArgumentException, IllegalTimeException, ParseException
 	{	
 		if(toFilterVector == null || toFilterVector.size() == 0)
 			return null;
-		long initialValue = timeConverterTime(start); 
-		long finalValue = timeConverterTime(stop);
-		long initialDay = timeConverterDate(start);
-		long finalDay= timeConverterDate(stop);
+//		long initialValue = timeConverterTime(initialValue); 
+//		long finalValue = timeConverterTime(finalValue);
+//		long initialValueInDay = timeConverterDate(initialValueInDay);
+//		long finalValueInDay= timeConverterDate(finalValueInDay);	
+		long initialValue = hourToSecV2(initialTime, ParamVariable.formatHour); 
+		long finalValue = hourToSecV2(finalTime, ParamVariable.formatHour); 
+		long initialValueInDay = hourToSecV2(initialDay, ParamVariable.formatDate);
+		long finalValueInDay = hourToSecV2(finalDay, ParamVariable.formatDate);
+		System.out.println(initialValue + " " + finalValue + " " + initialDay + " " + finalDay);
 		FiltersPrint filtersPrint = new FiltersPrint();
-		verifyBand(initialValue, finalValue, initialDay, finalDay);
+		verifyBand(initialValue, finalValue, initialValueInDay, finalValueInDay);
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
-		daysPeriodFiltering(initialValue,finalValue,initialDay,finalDay, toFilterVector, filteredVectorTime); 	
+		daysPeriodFiltering(initialValue,finalValue,initialValueInDay,finalValueInDay, toFilterVector, filteredVectorTime); 	
 		if(filteredVectorTime.size() == 0){
 			filtersPrint.print1();
 			return null;
 		}else
 			filtersPrint.print2(filteredVectorTime.size());
 		StatisticsCurrentForecasts statisticsCurrentForecasts = new StatisticsCurrentForecasts();
-		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, initialDay, finalDay, filteredVectorTime);
+		return statisticsCurrentForecasts.currentStats(initialValue, finalValue, initialValueInDay, finalValueInDay, filteredVectorTime);
 	}
 	
 	
@@ -192,7 +197,7 @@ public class Filters implements FiltersInterface{
 	}
 
 
-	@Deprecated
+
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in una variabile di tipo long 
 	 * @param dtTxt
@@ -210,7 +215,7 @@ public class Filters implements FiltersInterface{
 	 }
 	
 	
-	@Deprecated
+
 	/**
 	 * Metodo che ci restitusce formato GMT+1 in stringa di un formato unix del tempo
 	 * @param unixTime tempo in unix
@@ -227,7 +232,7 @@ public class Filters implements FiltersInterface{
 		return reportDate;
 	}
 	
-	@Deprecated
+
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in "HH:mm:ss" e trasformato in una 
 	 * variabile di tipo long 
@@ -240,7 +245,7 @@ public class Filters implements FiltersInterface{
 		return millis;
 	}
 	
-	@Deprecated
+
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in "dd-MM-yyyy" e trasformato in una 
 	 * variabile di tipo long 
@@ -259,11 +264,12 @@ public class Filters implements FiltersInterface{
 	 * @param unixTime tempo in unix
 	 * @return UTC in stringa
 	 */
-	public String secToDataV2(long unixTime) {
-		Instant instant = Instant.ofEpochMilli(unixTime * 1000);
+	public String secToDataV2(long unixTime, String desiredFormat) {
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(desiredFormat);
+		Instant instant = Instant.ofEpochMilli((unixTime-3600)*1000);
 		ZoneId ldt = TimeZone.getDefault().toZoneId();
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ldt);
-		return localDateTime.toString();
+		return localDateTime.format(dateTimeFormatter);
 	}
 	
 	
@@ -280,6 +286,10 @@ public class Filters implements FiltersInterface{
 		return zdt.toInstant().getEpochSecond();	
 	}
 	
-	
+
+	public long hourToSecV2(String dtString, String dtFormat) throws ParseException {
+	    DateFormat sdf = new SimpleDateFormat(dtFormat);
+		return sdf.parse(dtString).getTime()/1000+3600;
+	}
 
 }

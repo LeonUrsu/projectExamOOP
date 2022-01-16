@@ -23,23 +23,18 @@ class TestFiltersInHourBandCheck {
 		finalValue = 86399;
 	}
 
+	
 	@AfterEach
 	void tearDown() throws Exception {
 	}
 
+	
 	@Test
 	void test() {
 		assertEquals(true, filters.inHourBandCheck(initialValue, finalValue, forecastDataCurrent));
 	}
 	
 	
-	
-	@Test
-	void test2() {
-		
-		
-		
-	}
 	
 	
 	

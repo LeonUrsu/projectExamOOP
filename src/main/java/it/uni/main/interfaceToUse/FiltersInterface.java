@@ -15,9 +15,10 @@ import it.uni.main.model.ForecastDataCurrent;
  */
 public interface FiltersInterface {
 	
-	public CurrentStats dailyFilter(String start, String stop) throws IllegalArgumentException, IllegalTimeException, ParseException;
+	public CurrentStats dailyFilter(String initialValueInDay, String finalValueInDay, 
+			String initialValue, String finalValue)  throws IllegalArgumentException, IllegalTimeException, ParseException;
 	public void daysPeriodFiltering(long initialValue, long finalValue, long initialDay, long finalDay, Vector<ForecastDataCurrent> toFilterVector,
-			  Vector<ForecastDataCurrent> filteredVector);
+			Vector<ForecastDataCurrent> filteredVector);
 	public boolean inDaysBandCheck(long initialDay, long finalDay, ForecastDataCurrent tmp);
 	public boolean inHourBandCheck(long initialValue, long finalValue, ForecastDataCurrent tmp);
 	public long findBiggestValue(Vector<ForecastDataCurrent> vettore);
