@@ -60,15 +60,10 @@ public class Filters implements FiltersInterface{
 	{	
 		if(toFilterVector == null || toFilterVector.size() == 0)
 			return null;
-//		long initialValue = timeConverterTime(initialValue); 
-//		long finalValue = timeConverterTime(finalValue);
-//		long initialValueInDay = timeConverterDate(initialValueInDay);
-//		long finalValueInDay= timeConverterDate(finalValueInDay);	
 		long initialValue = hourToSecV2(initialTime, ParamVariable.formatHour); 
 		long finalValue = hourToSecV2(finalTime, ParamVariable.formatHour); 
 		long initialValueInDay = hourToSecV2(initialDay, ParamVariable.formatDate);
 		long finalValueInDay = hourToSecV2(finalDay, ParamVariable.formatDate);
-		System.out.println(initialValue + " " + finalValue + " " + initialDay + " " + finalDay);
 		FiltersPrint filtersPrint = new FiltersPrint();
 		verifyBand(initialValue, finalValue, initialValueInDay, finalValueInDay);
 		Vector<ForecastDataCurrent> filteredVectorTime = new Vector<ForecastDataCurrent>();
@@ -232,10 +227,7 @@ public class Filters implements FiltersInterface{
 		return reportDate;
 	}
 	
-<<<<<<< HEAD
 
-=======
->>>>>>> e82910ead485e3938ba73ed27c71da528e28c89c
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in "HH:mm:ss" e trasformato in una 
 	 * variabile di tipo long 
@@ -267,24 +259,14 @@ public class Filters implements FiltersInterface{
 	 * @param unixTime tempo in unix
 	 * @return UTC in stringa
 	 */
-<<<<<<< HEAD
 	public String secToDataV2(long unixTime, String desiredFormat) {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(desiredFormat);
 		Instant instant = Instant.ofEpochMilli((unixTime-3600)*1000);
 		ZoneId ldt = TimeZone.getDefault().toZoneId();
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ldt);
 		return localDateTime.format(dateTimeFormatter);
-=======
-	public String secToDataV2(long unixTime) {
-		DateTimeFormatter format = DateTimeFormatter.ofPattern(ParamVariable.dataFormat);
-		Instant instant = Instant.ofEpochMilli(unixTime * 1000);
-		ZoneId ldt = TimeZone.getDefault().toZoneId();
-		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ldt);
-		localDateTime.format(format);
-		return localDateTime.format(format).toString();
->>>>>>> e82910ead485e3938ba73ed27c71da528e28c89c
 	}
-	
+		
 	
 	/**
 	 * Metodo per convertire un formato data ad esempio: "dd-MM-yyyy HH:mm:ss" in una variabile di tipo long 
@@ -299,7 +281,13 @@ public class Filters implements FiltersInterface{
 		return zdt.toInstant().getEpochSecond();	
 	}
 	
-
+	/**
+	 * Trasforma una stringa data formattata con formato scleto dal utente
+	 * @param dtString stringa della data
+	 * @param dtFormat formato della stringa passata es: HH:mm:ss
+	 * @return secondi dal 1 gen 1970
+	 * @throws ParseException
+	 */
 	public long hourToSecV2(String dtString, String dtFormat) throws ParseException {
 	    DateFormat sdf = new SimpleDateFormat(dtFormat);
 		return sdf.parse(dtString).getTime()/1000+3600;

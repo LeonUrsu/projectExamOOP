@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Versione:
- * OopExamApplication 1.2.0 
+ * OopExamApplication 1.2.1 
  * 
  * @author Perazzoli Leonardo 
  * @author Ursu Leon 
