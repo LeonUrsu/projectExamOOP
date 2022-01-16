@@ -34,7 +34,7 @@ L'applicazione oltre alle funzioni richieste:<br>
 | <a href="#5">/startCurrentService</a> | GET      | Avvia il salvataggio dei dati correnti ogni ora     |
 | <a href="#6">/stopCurrentService </a>   | GET          | Ferma il salvataggio dei dati correnti        |
 | <a href="#8">/load/{cityName}</a> | GET  | Carica su un vettore i dati salvati in precedenza a seconda della città passata|
-| <a href="#9">/filter/daily/{initialValue}/{finalValue} </a>    | GET          | Filtra le statistiche dei dati salvati ogni ora giornalmente|
+| <a href="#9">/filter/{initialValueInDay}/{finalValueInDay}/{initialValue}/{finalValue} </a>    | GET          | Filtra le statistiche dei dati salvati ogni ora giornalmente|
 | <a href ="#11">/loadFilterTest</a> | GET | Carica su un vettore i dati test salvati in precedenza | 
 
 
@@ -403,7 +403,7 @@ I campi del JSON sopraindicato rappresentano.
      * **"value"** è il valore dell'umiditià
      * **"unit"** è l'unità di misura
     * **"dayTime"** è l'orario del giorno della previsione espresso in UnixTime
-    *  **"dtString"** è la data e l'ora del giorno della previsione espresso in GMT+1
+    *  **"dtString"** è la data e l'ora del giorno della previsione espresso in UTC
 
 # GET /startCurrentService <a name="5"></a>
 Salva localmente in un file ".json" la risposta di Postman ogni ora grazie ad un timer. Definito l'intervallo del timer, quando la rotta verrà chiamata creerà un JavaObject che verrà passato ad un vettore statico. Quindi tutti i valori verranno memorizzati nella memoria RAM . Successivamente verrà convertito in JSONArray contenente tutti i JSONobject relativi alle previsioni del meteo salvati quando l'intervallo terminerà.
@@ -453,7 +453,7 @@ In questa rotta è possibile utilizzare un query params con KEY:"nome" e VALUE:"
   * **"cityName"** è il nome della città
   * **"id"** è l'id della città
  * **"dt"** è l'orario del giorno della previsione espressa in UnixTime
- * **""dtString** è la data e ora della previsione espressa in GMT+1
+ * **""dtString** è la data e ora della previsione espressa in UTC
  * **"humidity"** è il JSONObject che contiene le informazioni riguardanti l'umidità:
   **"value"** è il valore dell'umidità
  * **"temperature"** è il JSONObject che contiene le informazioni riguardanti le temperature:
@@ -517,7 +517,7 @@ Popola un vettore di dati letti da file già salvati dagli sviluppatori con la s
 Oltre a caricare il vettore genererà valori random per temperature e cambiarà il valore dell'orario(il primo orario salvato sarà l'ora attuale e ,con un ciclo for,a tutti gli altri elementi verrà sottratta un ora).
 Il file è composto da 120 elementi, quindi si potranno filtrare i valori dal momento della chiamata all'endpoint fino a 5 giorni prima. 
 
-# GET /filter/daily/{initialValue}/{finalValue} <a name="9"></a>
+## GET /filter/{initialValueInDay}/{finalValueInDay}/{initialValue}/{finalValue} <a name="9"></a>
 Questa rotta va utilizzata **esclusivamente** dopo aver chiamato l'endpoint  <a href = "#7">/load/{cityName}</a> oppure <a href ="#11">/loadFilterTest </a><br>
 Si creerà un vettore contenente valori salvati precedentemente in un file e verranno filtrati per le specifiche richieste.
 
@@ -525,57 +525,62 @@ I filtri sono stati programmati dinamicamente, in modo da poter aggiungere eleme
 * di applicare altri filtri in futuro in base ad altri valori es:filteredVectorTemperature, filteredVectorCountry <br>
 * di fare un ulteriore filtraggio degli elementi in comune tra tutti i Vector presenti ad esempio con il metodo equals()<br>
 
-Il formato dei parametri {initialValue} e {finalValue} è "dd-MM-yyyy HH:mm::ss" a meno che non si modifichi il formato in [ParamVariable](src/main/java/it/uni/main/utils/ParamVariable.java) .<br>
+Il formato dei parametri **{initialValue}** e **{finalValue}** è **"HH:mm:ss"** e il formato dei parametri **{initialValueInDay}** e **{finalValueInDay}** è **"dd-MM-yyyy"** a meno che non si modifichi il formato in FormatHour e FormatDate nella classe [ParamVariable](src/main/java/it/uni/main/utils/ParamVariable.java) .<br>
 
 I valori restituiti sono riferiti alla fascia oraria dei giorni cercati.<br>
+
 **ESEMPIO** <br>
-localhost:8080/filter/daily/12-01-2022 02:00:00/14-01-2022 10:00:00<br>
-questa chiamatà restituirà i valori nelle fasce orarie tra le 02:00:00 e le 10:00:00 dei giorni 12-13-14 Gennaio 2022
+localhost:8080/filter/12-01-2022/15-01-2022/05:00:00/15:50:00<br>
+questa chiamatà restituirà i valori nelle fasce orarie tra le 05:00:00 e le 15:50:00 dei giorni 12-13-14-15 Gennaio 2022
 
 <details>
 <summary>MODEL</summary>
 <br>
 
  ```
- {
-    "initialDay": 1642032000,
-    "finalDay": 1642118400,
-    "startTime": 3600,
-    "stopTime": 50400,
-    "filteredDays": 86400,
-    "filteredElements": 26,
-    "tempMin": 5.27,
-    "tempMax": 18.92,
-    "averageTemp": 15.27,
-    "realTemperatureVariance": 78.04,
+{
+    "initialDayInUTC": "12-01-2022 05:00:00",
+    "finalDayInUTC": "15-01-2022 15:50:00",
+    "initialValueInUnix": 18000,
+    "finalValueInUnix": 57000,
+    "initialValueDayInUnix": 1641945600,
+    "finalValueInDayInUnix": 1642204800,
+    "filteredElements": 44,
+    "temperatureMin": 4.34,
+    "temperatureMax": 18.86,
+    "averageTemperature": 16.11,
+    "perceivedTemperatureVariance": 21.97,
+    "realTemperatureVariance": 82.65,
     "city": {
-       "lat": 13.1667,
-       "lon": 43.2,
-       "country": null,
-       "cityName": "Provincia di Macerata",
-       "id": 3174379
-    },
-    "perceivedTemperatureVariance": 33.54
- }
+        "lat": 13.1667,
+        "lon": 43.2,
+        "country": null,
+        "cityName": "Provincia di Macerata",
+        "id": 3174379
+    }
+}
 ```
 
 </details>
 
-  * **"initialDay"** è la data iniziale di filtraggio espressa in UnixTime
-  * **"finalDay"** è la data finale di filtraggio espressa in UnixTime
-  * **"startTime"** è l'ora iniziale di filtraggio della fascia oraria espressa in UnixTime
-  * **"stopTime"** è l'ora finale di filtraggio della fascia oraria espressa in UnixTime
-  * **"filteredDays"** Sono i giorni filtrati in secondi    (86400 =1 giorno)
+  * **"initialDayInUTC"** sono la data e l'ora iniziale di filtraggio espressa in UTC
+  * **"finalDayInUTC"** sono la data e l'ora finale di filtraggio espressa in UTC
+  * **"initialValueInUnix"** è l'ora iniziale di filtraggio della fascia oraria espressa in UnixTime
+  * **"finalValueInUnix"** è l'ora finale di filtraggio della fascia oraria espressa in UnixTime
+ * **"initialValueDayInUnix"** è la data finale di filtraggio della fascia oraria espressa in UnixTime
+ * **"finalValueInDayInUnix"** è la data finale di filtraggio della fascia oraria espressa in UnixTime 
  * **"filteredElements"** La quantità degli elementi filtrati
- * **"tempMin"** è il valore della temperatura minima del periodo filtrato
-  **"tempMax"** è il valore della temperatura massima del periodo filtrato
+ * **"temperatureMin"** è il valore della temperatura minima del periodo filtrato
+  **"temperatureMax"** è il valore della temperatura massima del periodo filtrato
  * **"averageTemp"** è il valore medio della temperatura del periodo filtrato
+ * **"perceivedTemperatureVariance"** è il valore della varianza della temperatura percepita
+ * **"realTemperatureVariance"** è il valore della varianza della temperatura reale
     **"city"** è il JSONObject che contiene le informazioni riguardanti la città:
   * **"lat"** è la latitudine
   * **"lon"** è la longitudine
   * **"cityName"** è il nome della città
   * **"id"** è l'id della città
-  * **"perceivedTemperatureVariance"** è il valore della varianza della temperatura percepita;
+ 
 
 # ECCEZIONI: <a name="3"></a>
 L'applicazione può lanciare diverse eccezioni alcune standard e altre personalizzate:
