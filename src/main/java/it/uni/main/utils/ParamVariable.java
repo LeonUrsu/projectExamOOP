@@ -24,17 +24,20 @@ public class ParamVariable {
 	/**
 	 * Formato della data e ora 
 	 */
-	public static String dataFormat = "dd-MM-yyyy HH:mm:ss";
+	
+	
+	public static String formatHour = "HH:mm:ss";
+	
+	public static String formatDate = "dd-MM-yyyy";
+	
+	public static final String dataFormat = formatDate + " " + formatHour;
 	
 	/**
 	 * API key del servizio OpenWeatherMap
 	 */
 	public static String key = "57b8994a4dd46d6b80a3f810f6882a2f";
 
-	public static String formatHour = "HH:mm:ss";
 	
-	public static String formatDate = "dd-MM-yyyy";
-
 	
 	
 	

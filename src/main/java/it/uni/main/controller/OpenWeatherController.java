@@ -164,7 +164,7 @@ public class OpenWeatherController
 	 * @throws IllegalTimeException 
 	 * @throws IllegalArgumentException 
 	 */
-	@GetMapping("/filter/daily/{initialValueInDay}/{finalValueInDay}/{initialValue}/{finalValue}")
+	@GetMapping("/filter/{initialValueInDay}/{finalValueInDay}/{initialValue}/{finalValue}")
 	public CurrentStats dailyBand(@PathVariable String initialValueInDay, @PathVariable String finalValueInDay,
 								  @PathVariable String initialValue, @PathVariable String finalValue) {
 		CurrentStats currentStats = null;
