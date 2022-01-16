@@ -25,7 +25,7 @@ class TestFilters {
 	@BeforeEach
 	void setUp() throws Exception {
 		data = "15-01-2022 16:21:11";
-		data1 = "16:21:11";
+		data1 = "15:21:11";
 		data2 = "15-01-2022";
 		format = "dd-MM-yyyy HH:mm:ss";
 		format1 = "HH:mm:ss";
