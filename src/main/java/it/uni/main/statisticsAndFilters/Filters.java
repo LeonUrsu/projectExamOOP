@@ -232,7 +232,10 @@ public class Filters implements FiltersInterface{
 		return reportDate;
 	}
 	
+<<<<<<< HEAD
 
+=======
+>>>>>>> e82910ead485e3938ba73ed27c71da528e28c89c
 	/**
 	 * Metodo per convertire un formato data: "dd-MM-yyyy HH:mm:ss" in "HH:mm:ss" e trasformato in una 
 	 * variabile di tipo long 
@@ -264,12 +267,22 @@ public class Filters implements FiltersInterface{
 	 * @param unixTime tempo in unix
 	 * @return UTC in stringa
 	 */
+<<<<<<< HEAD
 	public String secToDataV2(long unixTime, String desiredFormat) {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(desiredFormat);
 		Instant instant = Instant.ofEpochMilli((unixTime-3600)*1000);
 		ZoneId ldt = TimeZone.getDefault().toZoneId();
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ldt);
 		return localDateTime.format(dateTimeFormatter);
+=======
+	public String secToDataV2(long unixTime) {
+		DateTimeFormatter format = DateTimeFormatter.ofPattern(ParamVariable.dataFormat);
+		Instant instant = Instant.ofEpochMilli(unixTime * 1000);
+		ZoneId ldt = TimeZone.getDefault().toZoneId();
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ldt);
+		localDateTime.format(format);
+		return localDateTime.format(format).toString();
+>>>>>>> e82910ead485e3938ba73ed27c71da528e28c89c
 	}
 	
 	
@@ -279,8 +292,8 @@ public class Filters implements FiltersInterface{
 	 * @return data in formato long
 	 * @throws ParseException
 	 */
-	public long dataToSecV2(String dtString , String dtformat) {
-		DateTimeFormatter format = DateTimeFormatter.ofPattern(dtformat);
+	public long dataToSecV2(String dtString) {
+		DateTimeFormatter format = DateTimeFormatter.ofPattern(ParamVariable.dataFormat);
 		LocalDateTime localDateTime = LocalDateTime.parse(dtString, format);
 		ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
 		return zdt.toInstant().getEpochSecond();	
